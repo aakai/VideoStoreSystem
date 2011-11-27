@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="2.1" xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" xmlns:uml="http://www.eclipse.org/uml2/3.0.0/UML" xmi:id="_qb8akM37EdqwVrslYOdUDA" name="VSClassDiagram">
+  <packagedElement xmi:type="uml:Package" xmi:id="_w8IxIM37EdqwVrslYOdUDA" name="UseCaseView"/>
+  <packagedElement xmi:type="uml:Package" xmi:id="_wSRJAHFzEduxYLkhQoh7Ag" name="LogicalView">
+    <packagedElement xmi:type="uml:Class" xmi:id="_Cz-QkAsGEeG0Gp3zshdutA" name="Member">
+      <ownedAttribute xmi:id="_zB4bYAsGEeG0Gp3zshdutA" name="id: int"/>
+      <ownedAttribute xmi:id="_03Tr8AsGEeG0Gp3zshdutA" name="name:String"/>
+      <ownedAttribute xmi:id="_2RUL0gsGEeG0Gp3zshdutA" name="phone: int"/>
+      <ownedAttribute xmi:id="_-ZOuIgsGEeG0Gp3zshdutA" name="address: String"/>
+      <ownedAttribute xmi:id="_BJEYggsHEeG0Gp3zshdutA" name="email: String"/>
+      <ownedAttribute xmi:id="_TSe08gsHEeG0Gp3zshdutA" name="currentVideos []: Video"/>
+      <ownedAttribute xmi:id="_ZZf2ggsHEeG0Gp3zshdutA" name="currentGames[]:Games"/>
+      <ownedAttribute xmi:id="_lNsrEAsMEeG0Gp3zshdutA" name="balance: double"/>
+      <ownedAttribute xmi:id="_khBV0gsNEeG0Gp3zshdutA" name="password:String"/>
+      <ownedOperation xmi:id="_CRi_UgsOEeG0Gp3zshdutA" name="reserveItem:void"/>
+      <ownedOperation xmi:id="_2WdGUAsNEeG0Gp3zshdutA" name="rent: void"/>
+      <ownedOperation xmi:id="_5gNskAsNEeG0Gp3zshdutA" name="purchase:void"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_D3LaAAsGEeG0Gp3zshdutA" name="Item">
+      <ownedAttribute xmi:id="_e0jJ8gsHEeG0Gp3zshdutA" name="title: String"/>
+      <ownedAttribute xmi:id="_l_H6QgsHEeG0Gp3zshdutA" name="barCodeNo: int"/>
+      <ownedAttribute xmi:id="_qfDpQgsHEeG0Gp3zshdutA" name="dateRented:Date"/>
+      <ownedAttribute xmi:id="_4XvQUgsHEeG0Gp3zshdutA" name="dataReturned: Date"/>
+      <ownedAttribute xmi:id="_C5DdggsJEeG0Gp3zshdutA" name="reserved: boolean"/>
+      <ownedAttribute xmi:id="_VtLOYAsKEeG0Gp3zshdutA" name="Status{instock, purchased, rented}: enum"/>
+      <ownedAttribute xmi:id="_vyLL4gsLEeG0Gp3zshdutA" name="purchasePrice: double"/>
+      <ownedAttribute xmi:id="_epfXMgsMEeG0Gp3zshdutA" name="rentalPrice: double"/>
+      <ownedAttribute xmi:id="_IOAeEgsLEeG0Gp3zshdutA" name="description: String"/>
+      <ownedAttribute xmi:id="_jewyIgsOEeG0Gp3zshdutA" name="overdue: boolean"/>
+      <ownedAttribute xmi:id="_LZ2yMAsPEeG0Gp3zshdutA" name="pickUpDate: Date"/>
+      <ownedOperation xmi:id="_L0y3MgsOEeG0Gp3zshdutA" name="getbarCode: int"/>
+      <ownedOperation xmi:id="_OoNaAgsOEeG0Gp3zshdutA" name="getTitle:String"/>
+      <ownedOperation xmi:id="_QaDLEAsOEeG0Gp3zshdutA" name="checkStatus:Status"/>
+      <ownedOperation xmi:id="_zUoeogsOEeG0Gp3zshdutA" name="getPrice:double"/>
+      <ownedOperation xmi:id="_8V5q0gsOEeG0Gp3zshdutA" name="checkOverdue:boolean"/>
+      <ownedOperation xmi:id="_VBtdQAsPEeG0Gp3zshdutA" name="getPickupDate:Date"/>
+      <ownedOperation xmi:id="_acUEwAsPEeG0Gp3zshdutA" name="getReturnDate:Date"/>
+      <ownedOperation xmi:id="_sMh-EAsPEeG0Gp3zshdutA" name="addCopy:void"/>
+      <ownedOperation xmi:id="_xJeZMgsPEeG0Gp3zshdutA" name="setReturnDate:void"/>
+      <ownedOperation xmi:id="_LmjU8AsQEeG0Gp3zshdutA" name="setPrices:void"/>
+      <ownedOperation xmi:id="_R_S_sgsQEeG0Gp3zshdutA" name="setStatus:void"/>
+      <ownedOperation xmi:id="_XnA2IAsQEeG0Gp3zshdutA" name="setPickUpDate:void"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_EuxJUAsGEeG0Gp3zshdutA" name="Video">
+      <generalization xmi:id="_JgRJcAsGEeG0Gp3zshdutA" general="_D3LaAAsGEeG0Gp3zshdutA"/>
+      <ownedAttribute xmi:id="_CgoEggsLEeG0Gp3zshdutA" name="genre: String"/>
+      <ownedAttribute xmi:id="_MeZ8QgsLEeG0Gp3zshdutA" name="actors []: String"/>
+      <ownedAttribute xmi:id="_XV1_4gsLEeG0Gp3zshdutA" name="Duration: int"/>
+      <ownedAttribute xmi:id="_hhetcgsLEeG0Gp3zshdutA" name="videoType{vhs, dvd, bluray}:enum"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_FYyWsAsGEeG0Gp3zshdutA" name="Games">
+      <generalization xmi:id="_KCP1IAsGEeG0Gp3zshdutA" general="_D3LaAAsGEeG0Gp3zshdutA"/>
+      <ownedAttribute xmi:id="_o9dhYgsMEeG0Gp3zshdutA" name="console: String"/>
+      <ownedAttribute xmi:id="_zSUcYgsMEeG0Gp3zshdutA" name="genre:String"/>
+      <ownedAttribute xmi:id="_IlVHAgsNEeG0Gp3zshdutA" name="gameType{cd, dvd, hd_dvd, bluray}"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_RmuTMAsGEeG0Gp3zshdutA" name="VideoStoreControl"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_Y1JBsAsGEeG0Gp3zshdutA" name="Employee">
+      <ownedAttribute xmi:id="_UrluMgsNEeG0Gp3zshdutA" name="id: int">
+        <qualifier xmi:id="_ZJ_MIAsNEeG0Gp3zshdutA" name="phone: int"/>
+        <qualifier xmi:id="_ZJ_MIQsNEeG0Gp3zshdutA" name="address: String"/>
+        <qualifier xmi:id="_ZJ_MIgsNEeG0Gp3zshdutA" name="email: String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:id="_VtTp4QsNEeG0Gp3zshdutA" name="name: String"/>
+      <ownedAttribute xmi:id="_euk2EAsNEeG0Gp3zshdutA" name="phone: int"/>
+      <ownedAttribute xmi:id="_euk2EQsNEeG0Gp3zshdutA" name="address: String"/>
+      <ownedAttribute xmi:id="_euk2EgsNEeG0Gp3zshdutA" name="email: String"/>
+      <ownedAttribute xmi:id="_oqHSIAsNEeG0Gp3zshdutA" name="phone: int"/>
+      <ownedAttribute xmi:id="_oqHSIQsNEeG0Gp3zshdutA" name="address: String"/>
+      <ownedAttribute xmi:id="_oqHSIgsNEeG0Gp3zshdutA" name="email: String"/>
+      <ownedAttribute xmi:id="_qV_lIgsNEeG0Gp3zshdutA" name="password:String"/>
+      <ownedOperation xmi:id="_ooI00gsQEeG0Gp3zshdutA" name="createMemberAccount:void"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_r6yc4AsGEeG0Gp3zshdutA" name="Database">
+      <ownedAttribute xmi:id="__pB3MAsIEeG0Gp3zshdutA" name=""/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Enumeration" xmi:id="_pcRZwAsLEeG0Gp3zshdutA" name="hgjuj"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_ypXjQHFzEduxYLkhQoh7Ag" name="ComponentView">
+    <packagedElement xmi:type="uml:Component" xmi:id="_zwUu0HF0EduxYLkhQoh7Ag" name="Main"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Package" xmi:id="_1coVEHFzEduxYLkhQoh7Ag" name="DeploymentView"/>
+</uml:Model>
