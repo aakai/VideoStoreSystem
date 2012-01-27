@@ -30,23 +30,29 @@ public class AdminLoginSuccess extends javax.swing.JFrame {
 
         createAccount = new javax.swing.JButton();
         makeReservation = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        rentItem = new javax.swing.JButton();
         purchaseItem = new javax.swing.JButton();
         cancelReservation = new javax.swing.JButton();
         editAccountInfo = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        removeItem = new javax.swing.JButton();
+        addItem = new javax.swing.JButton();
         renewMembership = new javax.swing.JButton();
         suspension = new javax.swing.JButton();
         returnItem = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Successful Login[admin]");
 
         createAccount.setText("Create Account");
 
         makeReservation.setText("Make Reservation");
 
-        jButton1.setText("Rent Item");
+        rentItem.setText("Rent Item");
+        rentItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rentItemActionPerformed(evt);
+            }
+        });
 
         purchaseItem.setText("Purchase Item");
         purchaseItem.addActionListener(new java.awt.event.ActionListener() {
@@ -64,9 +70,9 @@ public class AdminLoginSuccess extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Remove Item");
+        removeItem.setText("Remove Item");
 
-        jButton3.setText("Add Item");
+        addItem.setText("Add Item");
 
         renewMembership.setText("Renew Membership");
         renewMembership.addActionListener(new java.awt.event.ActionListener() {
@@ -100,13 +106,13 @@ public class AdminLoginSuccess extends javax.swing.JFrame {
                         .addComponent(cancelReservation))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton3)
-                            .addComponent(jButton1))
+                            .addComponent(addItem)
+                            .addComponent(rentItem))
                         .addGap(76, 76, 76)
                         .addComponent(returnItem)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton2)
+                            .addComponent(removeItem)
                             .addComponent(purchaseItem))))
                 .addGap(27, 27, 27))
         );
@@ -116,7 +122,7 @@ public class AdminLoginSuccess extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(purchaseItem)
-                    .addComponent(jButton1)
+                    .addComponent(rentItem)
                     .addComponent(returnItem))
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -132,8 +138,8 @@ public class AdminLoginSuccess extends javax.swing.JFrame {
                     .addComponent(suspension))
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3))
+                    .addComponent(removeItem)
+                    .addComponent(addItem))
                 .addGap(66, 66, 66))
         );
 
@@ -152,6 +158,11 @@ private void renewMembershipActionPerformed(java.awt.event.ActionEvent evt) {//G
 // TODO add your handling code here:
     //use dialog box
 }//GEN-LAST:event_renewMembershipActionPerformed
+
+private void rentItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rentItemActionPerformed
+// TODO add your handling code here:
+    
+}//GEN-LAST:event_rentItemActionPerformed
 
     /**
      * @param args the command line arguments
@@ -189,15 +200,15 @@ private void renewMembershipActionPerformed(java.awt.event.ActionEvent evt) {//G
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addItem;
     private javax.swing.JButton cancelReservation;
     private javax.swing.JButton createAccount;
     private javax.swing.JButton editAccountInfo;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton makeReservation;
     private javax.swing.JButton purchaseItem;
+    private javax.swing.JButton removeItem;
     private javax.swing.JButton renewMembership;
+    private javax.swing.JButton rentItem;
     private javax.swing.JButton returnItem;
     private javax.swing.JButton suspension;
     // End of variables declaration//GEN-END:variables

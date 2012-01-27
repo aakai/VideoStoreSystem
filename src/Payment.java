@@ -42,10 +42,11 @@ public class Payment extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Pay");
 
         jLabel2.setText("Total");
 
-        totalRentalCost.setText("Amount");
+        totalRentalCost.setText("$$$$");
 
         rentedItems.setModel(new javax.swing.AbstractListModel() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
@@ -53,10 +54,10 @@ public class Payment extends javax.swing.JFrame {
             public Object getElementAt(int i) { return strings[i]; }
         });
         rentedItems.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 rentedItemsInputMethodTextChanged(evt);
-            }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         jScrollPane1.setViewportView(rentedItems);

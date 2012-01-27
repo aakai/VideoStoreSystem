@@ -32,7 +32,7 @@ public class RenewMembershipPayment extends javax.swing.JFrame {
         memberID = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         accountBalance1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        payButton = new javax.swing.JButton();
         accountBalance = new javax.swing.JLabel();
         paymentMethodcomboBox = new javax.swing.JComboBox();
         addressCity = new javax.swing.JLabel();
@@ -51,6 +51,7 @@ public class RenewMembershipPayment extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Renew Membership");
 
         jLabel4.setText("Account Balance");
 
@@ -60,7 +61,12 @@ public class RenewMembershipPayment extends javax.swing.JFrame {
 
         accountBalance1.setText("Payment Method");
 
-        jButton1.setText("Pay");
+        payButton.setText("Pay");
+        payButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                payButtonActionPerformed(evt);
+            }
+        });
 
         accountBalance.setText("$$$$");
 
@@ -125,7 +131,7 @@ public class RenewMembershipPayment extends javax.swing.JFrame {
                         .addComponent(lastName1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(37, 37, 37)
-                        .addComponent(jButton1))
+                        .addComponent(payButton))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(accountBalance1)
                         .addGap(34, 34, 34)
@@ -186,7 +192,7 @@ public class RenewMembershipPayment extends javax.swing.JFrame {
                     .addComponent(accountBalance1)
                     .addComponent(paymentMethodcomboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(7, 7, 7)
-                .addComponent(jButton1)
+                .addComponent(payButton)
                 .addContainerGap())
         );
 
@@ -196,6 +202,10 @@ public class RenewMembershipPayment extends javax.swing.JFrame {
 private void paymentMethodcomboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymentMethodcomboBoxActionPerformed
 // TODO add your handling code here:
 }//GEN-LAST:event_paymentMethodcomboBoxActionPerformed
+
+private void payButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payButtonActionPerformed
+// TODO add your handling code here:
+}//GEN-LAST:event_payButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -239,7 +249,6 @@ private void paymentMethodcomboBoxActionPerformed(java.awt.event.ActionEvent evt
     private javax.swing.JLabel addressProvince;
     private javax.swing.JLabel emailAddress;
     private javax.swing.JLabel firstName;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -251,6 +260,7 @@ private void paymentMethodcomboBoxActionPerformed(java.awt.event.ActionEvent evt
     private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel lastName1;
     private javax.swing.JLabel memberID;
+    private javax.swing.JButton payButton;
     private javax.swing.JComboBox paymentMethodcomboBox;
     private javax.swing.JLabel phoneNo;
     private javax.swing.JLabel streetAddress;

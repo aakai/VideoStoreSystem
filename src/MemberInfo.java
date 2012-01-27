@@ -47,6 +47,7 @@ public class MemberInfo extends javax.swing.JFrame {
         print = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Member Info");
 
         jLabel9.setText("Phone number");
 
@@ -65,6 +66,11 @@ public class MemberInfo extends javax.swing.JFrame {
         jLabel7.setText("MemberID");
 
         print.setText("PRINT ");
+        print.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -155,6 +161,10 @@ public class MemberInfo extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+private void printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printActionPerformed
+// TODO add your handling code here:
+}//GEN-LAST:event_printActionPerformed
 
     /**
      * @param args the command line arguments

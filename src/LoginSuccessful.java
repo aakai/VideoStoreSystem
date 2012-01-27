@@ -28,7 +28,7 @@ public class LoginSuccessful extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        rentItem = new javax.swing.JButton();
         purchase = new javax.swing.JButton();
         createAccount = new javax.swing.JButton();
         makeReservation = new javax.swing.JButton();
@@ -37,8 +37,9 @@ public class LoginSuccessful extends javax.swing.JFrame {
         returnItem = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Successful Login");
 
-        jButton1.setText("Rent Item");
+        rentItem.setText("Rent Item");
 
         purchase.setText("Purchase Item");
         purchase.addActionListener(new java.awt.event.ActionListener() {
@@ -79,7 +80,7 @@ public class LoginSuccessful extends javax.swing.JFrame {
                                 .addComponent(makeReservation)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 91, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton1)
+                                .addComponent(rentItem)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                                 .addComponent(returnItem)
                                 .addGap(4, 4, 4)))
@@ -93,7 +94,7 @@ public class LoginSuccessful extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
+                    .addComponent(rentItem)
                     .addComponent(purchase)
                     .addComponent(returnItem))
                 .addGap(47, 47, 47)
@@ -157,9 +158,9 @@ private void editAccountInfoActionPerformed(java.awt.event.ActionEvent evt) {//G
     private javax.swing.JButton cancelReservation;
     private javax.swing.JButton createAccount;
     private javax.swing.JButton editAccountInfo;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton makeReservation;
     private javax.swing.JButton purchase;
+    private javax.swing.JButton rentItem;
     private javax.swing.JButton returnItem;
     // End of variables declaration//GEN-END:variables
 }
