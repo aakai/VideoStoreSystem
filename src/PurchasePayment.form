@@ -104,7 +104,7 @@
     </Container>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Purchase Items"/>
+        <Property name="text" type="java.lang.String" value="Scanned Items"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel2">

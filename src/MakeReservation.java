@@ -19,6 +19,10 @@ public class MakeReservation extends javax.swing.JFrame {
         initComponents();
     }
 
+    MakeReservation(Employee employee) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is

@@ -1,3 +1,7 @@
+
+import java.sql.*;
+import java.util.ArrayList;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -13,9 +17,17 @@
  * @author anearcan
  */
 public class AddGame extends javax.swing.JFrame {
-
+    private Game newGame;
+    private Employee employee;
+    private ItemControl gameControl;
+    private ArrayList<String> console;
+    
     /** Creates new form AddGame */
+    
     public AddGame() {
+        gameControl = new ItemControl();
+        newGame = new Game();
+        console = new ArrayList();
         initComponents();
     }
 
@@ -28,6 +40,7 @@ public class AddGame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        query1 = java.beans.Beans.isDesignTime() ? null : ((javax.persistence.EntityManager)null).createQuery("");
         jLabel1 = new javax.swing.JLabel();
         xbox = new javax.swing.JCheckBox();
         pc = new javax.swing.JCheckBox();
@@ -38,18 +51,25 @@ public class AddGame extends javax.swing.JFrame {
         nWii = new javax.swing.JCheckBox();
         jLabel2 = new javax.swing.JLabel();
         genre = new javax.swing.JComboBox();
-        gameType = new javax.swing.JComboBox();
-        jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        title = new javax.swing.JLabel();
-        rentPrice = new javax.swing.JLabel();
-        purchasePrice = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         gameDescription = new javax.swing.JTextArea();
         add = new javax.swing.JButton();
+        title = new javax.swing.JTextField();
+        rentPrice = new javax.swing.JTextField();
+        purchasePrice = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        numberOfCopies = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        ratingOptions = new javax.swing.JComboBox();
+        jLabel9 = new javax.swing.JLabel();
+        developerField = new javax.swing.JTextField();
+        jLabel10 = new javax.swing.JLabel();
+        publisherField = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Add Game");
@@ -57,6 +77,11 @@ public class AddGame extends javax.swing.JFrame {
         jLabel1.setText("Console:");
 
         xbox.setText("Xbox");
+        xbox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                xboxActionPerformed(evt);
+            }
+        });
 
         pc.setText("PC");
         pc.addActionListener(new java.awt.event.ActionListener() {
@@ -66,32 +91,48 @@ public class AddGame extends javax.swing.JFrame {
         });
 
         ps3.setText("PS3");
+        ps3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ps3ActionPerformed(evt);
+            }
+        });
 
         xbox360.setText("Xbox360");
+        xbox360.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                xbox360ActionPerformed(evt);
+            }
+        });
 
         ps1.setText("PS One");
+        ps1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ps1ActionPerformed(evt);
+            }
+        });
 
         ps2.setText("PS2");
+        ps2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ps2ActionPerformed(evt);
+            }
+        });
 
         nWii.setText("Nintendo Wii");
+        nWii.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nWiiActionPerformed(evt);
+            }
+        });
 
         jLabel2.setText("Genre");
 
-        genre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        genre.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Action-Adventure", "Sports", "Fantasy", "1st person shooter", "3rd person shooter", "Role playing", "Simultaion", "Strategy", "Party" }));
         genre.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 genreActionPerformed(evt);
             }
         });
-
-        gameType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        gameType.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                gameTypeActionPerformed(evt);
-            }
-        });
-
-        jLabel3.setText("Game Type");
 
         jLabel4.setText("Game Description");
 
@@ -101,33 +142,53 @@ public class AddGame extends javax.swing.JFrame {
 
         jLabel7.setText("Title");
 
-        title.setText("title");
-
-        rentPrice.setText("$$$");
-
-        purchasePrice.setText("$$$");
-
         gameDescription.setColumns(20);
         gameDescription.setRows(5);
         jScrollPane1.setViewportView(gameDescription);
 
         add.setText("Add");
+        add.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Number in stock:");
+
+        jLabel8.setText("Rating:");
+
+        jRadioButton1.setText("jRadioButton1");
+
+        ratingOptions.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "eC", "E", "E10+", "M", "T", "Ao", "RP" }));
+
+        jLabel9.setText("Developer:");
+
+        developerField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                developerFieldActionPerformed(evt);
+            }
+        });
+
+        jLabel10.setText("Publisher:");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(468, Short.MAX_VALUE)
+                .addComponent(add))
             .addGroup(layout.createSequentialGroup()
+                .addGap(88, 88, 88)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
-                        .addGap(18, 18, 18)
+                        .addGap(30, 30, 30)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(nWii)
+                            .addComponent(genre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(xbox)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -139,49 +200,84 @@ public class AddGame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(ps3)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(pc))
-                            .addComponent(genre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(gameType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(44, 44, 44)
+                                .addComponent(pc)))
+                        .addContainerGap())
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel3)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(numberOfCopies, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addContainerGap())
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(purchasePrice, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rentPrice, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(title, javax.swing.GroupLayout.Alignment.LEADING))))
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(347, Short.MAX_VALUE)
-                .addComponent(add))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel6)
+                                    .addComponent(jLabel7)
+                                    .addComponent(jLabel5)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel8)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(ratingOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(12, 12, 12)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 191, Short.MAX_VALUE)
+                                    .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                        .addComponent(rentPrice, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(purchasePrice, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 66, Short.MAX_VALUE)))
+                                .addContainerGap(138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel10)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(publisherField))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(jLabel9)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(developerField, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap())))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(39, Short.MAX_VALUE)
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(title, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(rentPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(purchasePrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel7)
-                            .addComponent(title))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(rentPrice))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(purchasePrice)
-                            .addComponent(jLabel6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel4)
-                        .addGap(81, 81, 81))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 50, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(developerField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel10)
+                            .addComponent(publisherField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(17, 17, 17)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel8)
+                            .addComponent(ratingOptions, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(numberOfCopies, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(131, 131, 131)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(ps1)
@@ -191,19 +287,13 @@ public class AddGame extends javax.swing.JFrame {
                     .addComponent(ps3)
                     .addComponent(pc))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(nWii)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel2)
-                            .addComponent(genre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(gameType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap())
-                    .addComponent(add)))
+                .addComponent(nWii)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(genre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addComponent(add))
         );
 
         pack();
@@ -211,15 +301,56 @@ public class AddGame extends javax.swing.JFrame {
 
 private void pcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pcActionPerformed
 // TODO add your handling code here:
+        console.add("pc");
 }//GEN-LAST:event_pcActionPerformed
 
 private void genreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_genreActionPerformed
 // TODO add your handling code here:
+    
 }//GEN-LAST:event_genreActionPerformed
 
-private void gameTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gameTypeActionPerformed
+private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
 // TODO add your handling code here:
-}//GEN-LAST:event_gameTypeActionPerformed
+    gameControl.addGame(title.getText(), Integer.parseInt(rentPrice.getText()), Integer.parseInt(purchasePrice.getText())
+            , gameDescription.getText(), console, (String)genre.getSelectedItem(), developerField.getText(), publisherField.getText());
+
+    new GameInfo(employee, newGame).setVisible(true);
+    this.setVisible(false);
+}//GEN-LAST:event_addActionPerformed
+
+private void xboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xboxActionPerformed
+// TODO add your handling code here:
+    console.add("xbox");
+}//GEN-LAST:event_xboxActionPerformed
+
+private void xbox360ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_xbox360ActionPerformed
+// TODO add your handling code here:
+        console.add("xbox360");
+}//GEN-LAST:event_xbox360ActionPerformed
+
+private void ps1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ps1ActionPerformed
+// TODO add your handling code here:
+    console.add("ps1");
+}//GEN-LAST:event_ps1ActionPerformed
+
+private void ps2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ps2ActionPerformed
+// TODO add your handling code here:
+    console.add("ps2");
+}//GEN-LAST:event_ps2ActionPerformed
+
+private void ps3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ps3ActionPerformed
+// TODO add your handling code here:
+    console.add("ps3");
+}//GEN-LAST:event_ps3ActionPerformed
+
+private void nWiiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nWiiActionPerformed
+// TODO add your handling code here:
+    console.add("wii");
+}//GEN-LAST:event_nWiiActionPerformed
+
+private void developerFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_developerFieldActionPerformed
+// TODO add your handling code here:
+}//GEN-LAST:event_developerFieldActionPerformed
 
     /**
      * @param args the command line arguments
@@ -258,25 +389,33 @@ private void gameTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add;
+    private javax.swing.JTextField developerField;
     private javax.swing.JTextArea gameDescription;
-    private javax.swing.JComboBox gameType;
     private javax.swing.JComboBox genre;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JCheckBox nWii;
+    private javax.swing.JTextField numberOfCopies;
     private javax.swing.JCheckBox pc;
     private javax.swing.JCheckBox ps1;
     private javax.swing.JCheckBox ps2;
     private javax.swing.JCheckBox ps3;
-    private javax.swing.JLabel purchasePrice;
-    private javax.swing.JLabel rentPrice;
-    private javax.swing.JLabel title;
+    private javax.swing.JTextField publisherField;
+    private javax.swing.JTextField purchasePrice;
+    private javax.persistence.Query query1;
+    private javax.swing.JComboBox ratingOptions;
+    private javax.swing.JTextField rentPrice;
+    private javax.swing.JTextField title;
     private javax.swing.JCheckBox xbox;
     private javax.swing.JCheckBox xbox360;
     // End of variables declaration//GEN-END:variables

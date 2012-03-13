@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workbench progressCount="43" version="2.0">
+<workbenchAdvisor/>
+<window height="738" maximized="true" width="892" x="476" y="-10">
+<fastViewData fastViewLocation="1024">
+<orientation position="512" view="org.eclipse.ui.views.PropertySheet"/>
+<orientation position="512" view="org.eclipse.ui.texteditor.TemplatesView"/>
+<orientation position="512" view="org.eclipse.gef.ui.palette_view"/>
+<orientation position="512" view="org.topcased.modeler.documentation.DocView"/>
+</fastViewData>
+<perspectiveBar>
+<itemSize x="160"/>
+</perspectiveBar>
+<coolbarLayout locked="0">
+<coolItem id="group.file" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.ui.workbench.file" itemType="typeToolBarContribution" x="724" y="23"/>
+<coolItem id="additions" itemType="typeGroupMarker"/>
+<coolItem id="fr.tm.elibel.smartqvt.launch.ui.actionSets.QvtActionSet" itemType="typeToolBarContribution" x="53" y="23"/>
+<coolItem id="org.eclipse.debug.ui.launchActionSet" itemType="typeToolBarContribution" x="53" y="23"/>
+<coolItem id="org.eclipse.gmt.modisco.common.editor.actionSet" itemType="typeToolBarContribution" x="38" y="23"/>
+<coolItem id="org.eclipse.search.searchActionSet" itemType="typeToolBarContribution" x="53" y="23"/>
+<coolItem id="org.topcased.requirement.core.mainToolbar" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="org.topcased.layouttool.toolbarlayout" itemType="typeToolBarContribution" x="53" y="23"/>
+<coolItem id="org.eclipse.papyrus.layouttool.toolbarlayout" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="org.eclipes.papyrus.menu.toolbar" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="org.eclipse.papyrus.diagram.ui.toolbar" itemType="typeToolBarContribution" x="-1" y="-1"/>
+<coolItem id="group.nav" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.ui.workbench.navigate" itemType="typeToolBarContribution" x="190" y="23"/>
+<coolItem id="group.editor" itemType="typeGroupMarker"/>
+<coolItem id="org.topcased.modeler.uml.editor.UMLEditor" itemType="typeToolBarContribution" x="620" y="22"/>
+<coolItem id="org.eclipse.uml2.uml.editor.presentation.UMLEditorID" itemType="typePlaceholder" x="-1" y="-1"/>
+<coolItem id="group.help" itemType="typeGroupMarker"/>
+<coolItem id="org.eclipse.ui.workbench.help" itemType="typeToolBarContribution" x="-1" y="-1"/>
+</coolbarLayout>
+<page aggregateWorkingSetId="Aggregate for window 1330275030947" focus="true" label="Workspace - Topcased Modeling">
+<editors>
+<editorArea activeWorkbook="DefaultEditorWorkbook">
+<info part="DefaultEditorWorkbook">
+<folder appearance="1" expanded="2">
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">
+<part id="0"/>
+<part id="1"/>
+</presentation>
+</folder>
+</info>
+</editorArea>
+<editor id="org.topcased.modeler.uml.editor.UMLEditor" name="VSClassDiagram.umldi" partName="VSClassDiagram.umldi" path="C:/Users/anearcan/Documents/NetBeansProjects/VideoStoreSystem/VideoStoreUML/Models/Plugin_Resources/VSClassDiagram.umldi" title="VSClassDiagram.umldi" tooltip="Plugin_Resources/VSClassDiagram.umldi" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Plugin_Resources/VSClassDiagram.umldi"/>
+</editor>
+<editor activePart="true" focus="true" id="org.topcased.modeler.uml.editor.UMLEditor" name="vsBoundaryClassDiagram.umldi" partName="vsBoundaryClassDiagram.umldi" path="C:/Users/anearcan/Documents/NetBeansProjects/VideoStoreSystem/VideoStoreUML/Models/Plugin_Resources/vsBoundaryClassDiagram.umldi" title="vsBoundaryClassDiagram.umldi" tooltip="Plugin_Resources/vsBoundaryClassDiagram.umldi" workbook="DefaultEditorWorkbook">
+<input factoryID="org.eclipse.ui.part.FileEditorInputFactory" path="/Plugin_Resources/vsBoundaryClassDiagram.umldi"/>
+</editor>
+</editors>
+<views>
+<view id="org.eclipse.ui.navigator.ProjectExplorer" partName="Project Explorer">
+<viewState CommonNavigator.LINKING_ENABLED="0" CommonNavigator.LINKING_ENABLED.delayed="0" org.eclipse.cdt.ui.cview.groupincludes="false" org.eclipse.cdt.ui.cview.groupmacros="false" org.eclipse.cdt.ui.editor.CUChildren="true" org.eclipse.ui.navigator.resources.workingSets.showTopLevelWorkingSets="0"/>
+</view>
+<view id="org.eclipse.ui.views.PropertySheet" partName="Properties">
+<viewState/>
+</view>
+<view id="org.eclipse.ui.views.ResourceNavigator" partName="Navigator">
+<viewState LINK_NAVIGATOR_TO_EDITOR="0" sorter="1">
+<filters>&#x0A;<filter element="*.class" isEnabled="false"/>
+<filter element=".*" isEnabled="false"/>
+</filters>
+<expanded>&#x0A;<element path="/Plugin_Resources"/>
+</expanded>
+</viewState>
+</view>
+<view id="org.topcased.ui.navigator.view" partName="Topcased Navigator">
+<viewState CommonNavigator.LINKING_ENABLED="0" org.eclipse.ui.navigator.resources.workingSets.showTopLevelWorkingSets="0"/>
+</view>
+<view id="org.topcased.modeler.documentation.DocView" partName="Documentation">
+<viewState/>
+</view>
+<view id="org.eclipse.ui.views.TaskList" partName="Tasks">
+<viewState PRIMARY_SORT_FIELD="org.eclipse.ui.ide.completionField" categoryGroup="none" markerContentGenerator="org.eclipse.ui.ide.tasksGenerator" partName="Tasks">
+<columnWidths org.eclipse.ui.ide.completionField="40" org.eclipse.ui.ide.descriptionField="304" org.eclipse.ui.ide.locationField="64" org.eclipse.ui.ide.markerType="94" org.eclipse.ui.ide.pathField="124" org.eclipse.ui.ide.priorityField="20" org.eclipse.ui.ide.resourceField="94"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.completionField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.priorityField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.descriptionField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.resourceField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.pathField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.locationField"/>
+<visible IMemento.internal.id="org.eclipse.ui.ide.markerType"/>
+</viewState>
+</view>
+<view id="org.eclipse.ui.views.ContentOutline" partName="Outline">
+<viewState/>
+</view>
+</views>
+<perspectives activePart="org.topcased.modeler.uml.editor.UMLEditor" activePerspective="org.topcased.modeler.perspective">
+<perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
+<descriptor class="org.eclipse.ui.internal.ide.application.ResourcePerspective" id="org.eclipse.ui.resourcePerspective" label="Resource"/>
+<alwaysOnActionSet id="fr.tm.elibel.smartqvt.launch.ui.actionSets.QvtActionSet"/>
+<alwaysOnActionSet id="fr.tm.elibel.smartqvt.modulesmanager.getregisteredmodules.actionSet"/>
+<alwaysOnActionSet id="eclipsemonkeyAction.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.gmt.modisco.common.editor.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.cheatsheets.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.search.searchActionSet"/>
+<alwaysOnActionSet id="org.eclipse.team.svn.ui.menu.help"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.annotationNavigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.navigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.convertLineDelimitersTo"/>
+<alwaysOnActionSet id="org.eclipse.ui.externaltools.ExternalToolsSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.keyBindings"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.openFiles"/>
+<alwaysOnActionSet id="org.eclipse.ui.NavigateActionSet"/>
+<alwaysOnActionSet id="org.eclipse.m2m.qvt.oml.runtime.actions"/>
+<show_view_action id="org.eclipse.ui.navigator.ProjectExplorer"/>
+<show_view_action id="org.eclipse.ui.views.BookmarkView"/>
+<show_view_action id="org.eclipse.ui.views.ContentOutline"/>
+<show_view_action id="org.eclipse.ui.views.PropertySheet"/>
+<show_view_action id="org.eclipse.ui.views.ProblemView"/>
+<show_view_action id="org.eclipse.ui.views.ProgressView"/>
+<show_view_action id="org.eclipse.ui.views.TaskList"/>
+<show_view_action id="org.eclipse.ant.ui.views.AntView"/>
+<show_view_action id="org.eclipse.pde.runtime.LogView"/>
+<new_wizard_action id="org.eclipse.ui.wizards.new.folder"/>
+<new_wizard_action id="org.eclipse.ui.wizards.new.file"/>
+<new_wizard_action id="org.eclipse.ui.editors.wizards.UntitledTextFileWizard"/>
+<perspective_action id="edu.cmu.sei.osate.ui.perspective.AadlPerspective"/>
+<perspective_action id="org.eclipse.cdt.ui.CPerspective"/>
+<perspective_action id="org.eclipse.jdt.ui.JavaPerspective"/>
+<perspective_action id="org.eclipse.jdt.ui.JavaBrowsingPerspective"/>
+<perspective_action id="org.eclipse.team.cvs.ui.cvsPerspective"/>
+<perspective_action id="org.eclipse.team.ui.TeamSynchronizingPerspective"/>
+<hide_toolbar_item_id id="org.eclipse.jdt.ui.actions.OpenProjectWizard"/>
+<hide_toolbar_item_id id="org.eclipse.ui.edit.text.toggleShowSelectedElementOnly"/>
+<view id="org.eclipse.ui.navigator.ProjectExplorer"/>
+<view id="org.eclipse.ui.views.ContentOutline"/>
+<view id="org.eclipse.ui.views.TaskList"/>
+<view id="org.eclipse.ui.internal.introview"/>
+<fastViewBars/>
+<layout>&#x0A;<mainWindow>&#x0A;<info folder="true" part="topLeft">&#x0A;<folder activePageID="org.eclipse.ui.navigator.ProjectExplorer" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.ui.navigator.ProjectExplorer" label="Project Explorer"/>
+<page content="org.eclipse.ui.views.BookmarkView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.views.ResourceNavigator" label="LabelNotFound"/>
+<page content="org.eclipse.team.ccvs.ui.RepositoriesView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+</presentation>
+</folder>
+</info>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@1400c1d" ratio="0.75" ratioLeft="750" ratioRight="250" relationship="2" relative="topLeft">&#x0A;<folder activePageID="org.eclipse.ui.internal.introview" appearance="2" expanded="1">&#x0A;<page content="org.eclipse.ui.internal.introview" label="Welcome"/>
+<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.cheatsheets.views.CheatSheetView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+</presentation>
+</folder>
+</info>
+<info part="org.eclipse.gef.ui.palette_view" ratio="0.26" ratioLeft="260" ratioRight="740" relationship="2" relative="topLeft"/>
+<info folder="true" part="bottomRight" ratio="0.65912765" ratioLeft="408" ratioRight="211" relationship="4" relative="org.eclipse.gef.ui.palette_view">&#x0A;<folder activePageID="org.eclipse.ui.views.TaskList" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.ui.views.TaskList" label="Tasks"/>
+<page content="org.eclipse.team.ui.GenericHistoryView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+</presentation>
+</folder>
+</info>
+<info part="org.eclipse.ui.editorss" ratio="0.15945946" ratioLeft="118" ratioRight="622" relationship="2" relative="org.eclipse.gef.ui.palette_view"/>
+<info folder="true" part="bottomLeft" ratio="0.49919224" ratioLeft="309" ratioRight="310" relationship="4" relative="topLeft">&#x0A;<folder activePageID="org.eclipse.ui.views.ContentOutline" appearance="2" expanded="2">&#x0A;<page content="org.eclipse.ui.views.ContentOutline" label="Outline"/>
+<page content="org.eclipse.ant.ui.views.AntView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory">&#x0A;<part id="0"/>
+</presentation>
+</folder>
+</info>
+</mainWindow>
+</layout>
+</perspective>
+<perspective editorAreaTrimState="2" editorAreaVisible="1" fixed="0" version="0.016">
+<descriptor class="org.topcased.modeler.internal.ModelerPerspectiveFactory" id="org.topcased.modeler.perspective" label="Topcased Modeling"/>
+<alwaysOnActionSet id="fr.tm.elibel.smartqvt.launch.ui.actionSets.QvtActionSet"/>
+<alwaysOnActionSet id="fr.tm.elibel.smartqvt.modulesmanager.getregisteredmodules.actionSet"/>
+<alwaysOnActionSet id="eclipsemonkeyAction.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.gmt.modisco.common.editor.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.cheatsheets.actionSet"/>
+<alwaysOnActionSet id="org.eclipse.search.searchActionSet"/>
+<alwaysOnActionSet id="org.eclipse.team.svn.ui.menu.help"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.annotationNavigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.navigation"/>
+<alwaysOnActionSet id="org.eclipse.ui.edit.text.actionSet.convertLineDelimitersTo"/>
+<alwaysOnActionSet id="org.eclipse.ui.externaltools.ExternalToolsSet"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.keyBindings"/>
+<alwaysOnActionSet id="org.eclipse.ui.actionSet.openFiles"/>
+<show_view_action id="org.topcased.modeler.documentation.DocView"/>
+<new_wizard_action id="fr.irisa.espresso.sme.compilation.presentation.SmeCompModelWizardID"/>
+<new_wizard_action id="fr.irisa.espresso.sme.presentation.SmeModelWizardID"/>
+<new_wizard_action id="fr.irisa.espresso.sme.modeler.wizards.NewSmeDiagrams"/>
+<new_wizard_action id="org.topcased.adele.editor.wizards.NewADELEDiagrams"/>
+<new_wizard_action id="org.topcased.editors.ocleditor.newFileWizard"/>
+<new_wizard_action id="org.eclipse.ui.wizards.new.folder"/>
+<new_wizard_action id="org.eclipse.ui.wizards.new.file"/>
+<new_wizard_action id="org.topcased.modeler.aui.wizards.NewAUIDiagrams"/>
+<new_wizard_action id="org.topcased.modeler.sysml.wizards.NewSysMLDiagrams"/>
+<new_wizard_action id="org.topcased.modeler.uml.wizards.NewUMLDiagrams"/>
+<new_wizard_action id="org.topcased.traceability.hmi.wizards.NewTtmDiagrams"/>
+<hide_toolbar_item_id id="org.eclipse.jdt.ui.actions.OpenProjectWizard"/>
+<hide_toolbar_item_id id="org.eclipse.ui.edit.text.toggleShowSelectedElementOnly"/>
+<fastViews>
+<view id="org.topcased.modeler.documentation.DocView" ratio="0.29977462"/>
+<view id="org.eclipse.ui.views.PropertySheet" ratio="0.4169797"/>
+</fastViews>
+<fastViewBars>
+<fastViewBar fastViewLocation="16384" id="topLeft" orientation="512" selectedTabId="org.eclipse.ui.views.ResourceNavigator" style="0">
+<fastViews>
+<view id="org.eclipse.ui.views.ResourceNavigator" ratio="0.29977462"/>
+<view id="org.topcased.ui.navigator.view" ratio="0.29977462"/>
+</fastViews>
+</fastViewBar>
+<fastViewBar fastViewLocation="16384" id="org.eclipse.ui.internal.ViewStack@188fa41" orientation="512" selectedTabId="org.eclipse.ui.views.ContentOutline" style="0">
+<fastViews>
+<view id="org.eclipse.ui.views.ContentOutline" ratio="0.29977462"/>
+</fastViews>
+</fastViewBar>
+</fastViewBars>
+<viewLayoutRec closeable="false" id="org.eclipse.ui.views.PropertySheet"/>
+<viewLayoutRec closeable="false" id="org.eclipse.ui.views.ResourceNavigator"/>
+<viewLayoutRec closeable="false" id="org.eclipse.ui.views.ContentOutline"/>
+<layout>
+<mainWindow>
+<info folder="true" part="topLeft">
+<folder appearance="2" expanded="2">
+<page content="org.eclipse.ui.views.ResourceNavigator" label="LabelNotFound"/>
+<page content="org.topcased.ui.navigator.view" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
+</folder>
+</info>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@102410e" ratio="0.75" ratioLeft="750" ratioRight="250" relationship="2" relative="topLeft">
+<folder appearance="2" expanded="2">
+<page content="org.eclipse.help.ui.HelpView" label="LabelNotFound"/>
+<page content="org.eclipse.ui.internal.introview" label="LabelNotFound"/>
+<page content="org.eclipse.ui.cheatsheets.views.CheatSheetView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
+</folder>
+</info>
+<info part="org.eclipse.ui.editorss" ratio="0.13328314" ratioLeft="177" ratioRight="1151" relationship="2" relative="topLeft"/>
+<info folder="true" part="bottom" ratio="0.64203614" ratioLeft="391" ratioRight="218" relationship="4" relative="org.eclipse.ui.editorss">
+<folder appearance="2" expanded="2">
+<page content="org.eclipse.ui.views.PropertySheet" label="LabelNotFound"/>
+<page content="org.eclipse.ui.views.ProblemView" label="LabelNotFound"/>
+<page content="fr.irisa.espresso.sme.compilation.utils.views.CompilationView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
+</folder>
+</info>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@1c3b136" ratio="0.5" ratioLeft="370" ratioRight="370" relationship="2" relative="bottom">
+<folder appearance="2" expanded="2">
+<page content="org.topcased.modeler.documentation.DocView" label="LabelNotFound"/>
+<page content="org.eclipse.pde.runtime.LogView" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
+</folder>
+</info>
+<info folder="true" part="org.eclipse.ui.internal.ViewStack@188fa41" ratio="0.5" ratioLeft="324" ratioRight="324" relationship="4" relative="topLeft">
+<folder appearance="2" expanded="2">
+<page content="org.eclipse.ui.views.ContentOutline" label="LabelNotFound"/>
+<presentation id="org.eclipse.ui.presentations.WorkbenchPresentationFactory"/>
+</folder>
+</info>
+</mainWindow>
+</layout>
+</perspective>
+</perspectives>
+<workingSets/>
+<navigationHistory>
+<editors>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.topcased.modeler.uml.editor.UMLEditor" path="/Plugin_Resources/VSClassDiagram.umldi"/>
+<editor factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.topcased.modeler.uml.editor.UMLEditor" path="/Plugin_Resources/vsBoundaryClassDiagram.umldi"/>
+</editors>
+<item historyLabel="VSClassDiagram.umldi" index="0"/>
+<item historyLabel="vsBoundaryClassDiagram.umldi" index="1"/>
+<item historyLabel="VSClassDiagram.umldi" index="0"/>
+<item historyLabel="vsBoundaryClassDiagram.umldi" index="1"/>
+<item historyLabel="VSClassDiagram.umldi" index="0"/>
+<item historyLabel="vsBoundaryClassDiagram.umldi" index="1"/>
+<item historyLabel="VSClassDiagram.umldi" index="0"/>
+<item historyLabel="vsBoundaryClassDiagram.umldi" index="1"/>
+<item historyLabel="VSClassDiagram.umldi" index="0"/>
+<item active="true" historyLabel="vsBoundaryClassDiagram.umldi" index="1"/>
+</navigationHistory>
+<input factoryID="org.eclipse.ui.internal.model.ResourceFactory" path="/" type="8"/>
+</page>
+<workbenchWindowAdvisor/>
+<actionBarAdvisor/>
+<trimLayout>
+<trimArea IMemento.internal.id="16384">
+<trimItem IMemento.internal.id="topLeft"/>
+<trimItem IMemento.internal.id="org.eclipse.ui.internal.ViewStack@188fa41"/>
+</trimArea>
+<trimArea IMemento.internal.id="128">
+<trimItem IMemento.internal.id="org.eclipse.ui.internal.WorkbenchWindow.topBar"/>
+</trimArea>
+<trimArea IMemento.internal.id="1024">
+<trimItem IMemento.internal.id="org.eclise.ui.internal.FastViewBar"/>
+<trimItem IMemento.internal.id="org.eclipse.jface.action.StatusLineManager"/>
+<trimItem IMemento.internal.id="org.eclipse.ui.internal.progress.ProgressRegion"/>
+</trimArea>
+</trimLayout>
+</window>
+<mruList>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.topcased.modeler.uml.editor.UMLEditor" name="vsBoundaryClassDiagram.umldi" tooltip="Plugin_Resources/vsBoundaryClassDiagram.umldi">
+<persistable path="/Plugin_Resources/vsBoundaryClassDiagram.umldi"/>
+</file>
+<file factoryID="org.eclipse.ui.part.FileEditorInputFactory" id="org.topcased.modeler.uml.editor.UMLEditor" name="VSClassDiagram.umldi" tooltip="Plugin_Resources/VSClassDiagram.umldi">
+<persistable path="/Plugin_Resources/VSClassDiagram.umldi"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.topcased.modeler.uml.editor.UMLEditor" name="VSUseCase.umldi" tooltip="C:\Users\anearcan\Documents\NetBeansProjects\VideoStoreSystem\VideoStoreUML\Models\VSUseCase.umldi">
+<persistable uri="file:/C:/Users/anearcan/Documents/NetBeansProjects/VideoStoreSystem/VideoStoreUML/Models/VSUseCase.umldi"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.uml2.uml.editor.presentation.UMLEditorID" name="VSUseCase.uml" tooltip="C:\Users\anearcan\Documents\NetBeansProjects\VideoStoreSystem\VideoStoreUML\Models\VSUseCase.uml">
+<persistable uri="file:/C:/Users/anearcan/Documents/NetBeansProjects/VideoStoreSystem/VideoStoreUML/Models/VSUseCase.uml"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.topcased.modeler.uml.editor.UMLEditor" name="VSClassDiagram.umldi" tooltip="C:\Users\anearcan\Documents\NetBeansProjects\VideoStoreSystem\VideoStoreUML\Models\VSClassDiagram.umldi">
+<persistable uri="file:/C:/Users/anearcan/Documents/NetBeansProjects/VideoStoreSystem/VideoStoreUML/Models/VSClassDiagram.umldi"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.uml2.uml.editor.presentation.UMLEditorID" name="VSClassDiagram.uml" tooltip="C:\Users\anearcan\Documents\NetBeansProjects\VideoStoreSystem\VideoStoreUML\Models\VSClassDiagram.uml">
+<persistable uri="file:/C:/Users/anearcan/Documents/NetBeansProjects/VideoStoreSystem/VideoStoreUML/Models/VSClassDiagram.uml"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.topcased.modeler.uml.editor.UMLEditor" name="EmployeeVSUSeCase.umldi" tooltip="C:\Users\anearcan\Documents\NetBeansProjects\VideoStoreSystem\VideoStoreUML\Models\EmployeeVSUSeCase.umldi">
+<persistable uri="file:/C:/Users/anearcan/Documents/NetBeansProjects/VideoStoreSystem/VideoStoreUML/Models/EmployeeVSUSeCase.umldi"/>
+</file>
+<file factoryID="org.eclipse.ui.ide.FileStoreEditorInputFactory" id="org.eclipse.uml2.uml.editor.presentation.UMLEditorID" name="EmployeeVSUSeCase.uml" tooltip="C:\Users\anearcan\Documents\NetBeansProjects\VideoStoreSystem\VideoStoreUML\Models\EmployeeVSUSeCase.uml">
+<persistable uri="file:/C:/Users/anearcan/Documents/NetBeansProjects/VideoStoreSystem/VideoStoreUML/Models/EmployeeVSUSeCase.uml"/>
+</file>
+</mruList>
+</workbench>

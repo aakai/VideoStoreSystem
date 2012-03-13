@@ -19,6 +19,10 @@ public class PurchasePayment extends javax.swing.JFrame {
         initComponents();
     }
 
+    PurchasePayment(Employee employee) {
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -54,7 +58,7 @@ public class PurchasePayment extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(scannedItemList);
 
-        jLabel1.setText("Purchase Items");
+        jLabel1.setText("Scanned Items");
 
         jLabel2.setText("Total");
 

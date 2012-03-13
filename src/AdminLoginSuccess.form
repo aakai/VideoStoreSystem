@@ -26,32 +26,38 @@
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="1" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
                       <Component id="renewMembership" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="191" max="32767" attributes="0"/>
                       <Component id="suspension" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="addItem" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="263" max="32767" attributes="0"/>
+                      <Component id="removeItem" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <Component id="createAccount" min="-2" max="-2" attributes="0"/>
                       <EmptySpace pref="221" max="32767" attributes="0"/>
                       <Component id="editAccountInfo" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Component id="makeReservation" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="193" max="32767" attributes="0"/>
-                      <Component id="cancelReservation" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <Group type="102" alignment="1" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="addItem" min="-2" max="-2" attributes="0"/>
-                          <Component id="rentItem" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="0" attributes="0">
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Group type="102" alignment="1" attributes="1">
+                              <Component id="makeReservation" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="searchButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="rentItem" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
+                              <Component id="returnItem" min="-2" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace min="-2" pref="76" max="-2" attributes="0"/>
-                      <Component id="returnItem" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="88" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="removeItem" alignment="1" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace pref="64" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="purchaseItem" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="cancelReservation" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -72,23 +78,24 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cancelReservation" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="makeReservation" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="searchButton" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="createAccount" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="editAccountInfo" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="56" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="renewMembership" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="suspension" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="renewMembership" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="28" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="removeItem" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="addItem" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="removeItem" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -98,11 +105,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Create Account"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createAccountActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="makeReservation">
       <Properties>
         <Property name="text" type="java.lang.String" value="Make Reservation"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="makeReservationActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="rentItem">
       <Properties>
@@ -124,6 +137,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Cancel Reservation"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelReservationActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="editAccountInfo">
       <Properties>
@@ -137,11 +153,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Remove Item"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeItemActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="addItem">
       <Properties>
         <Property name="text" type="java.lang.String" value="Add Item"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addItemActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="renewMembership">
       <Properties>
@@ -155,11 +177,25 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Suspend Privileges"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="suspensionActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="returnItem">
       <Properties>
         <Property name="text" type="java.lang.String" value="Return Item"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="returnItemActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="searchButton">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Search"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="searchButtonActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

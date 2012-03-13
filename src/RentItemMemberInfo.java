@@ -1,3 +1,8 @@
+
+import java.sql.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -13,10 +18,90 @@
  * @author anearcan
  */
 public class RentItemMemberInfo extends javax.swing.JFrame {
-
+    private static Employee employee;
+    private static MemberAccount member;
+    private static Item[] items = new Item [50];//this is stored so as to be able to pass it into the next  window frame
+    private static String[] scannedItemsTitle = new String[50];//only the titles of the items are needed in this window frame
+    private static int count = 0;
+    static DefaultListModel listModel = new DefaultListModel();
     /** Creates new form RentItemMemberInfo */
     public RentItemMemberInfo() {
         initComponents();
+        employee = null;
+        member = null;
+        rentedItemList = new JList(listModel);
+ 
+    }
+
+    public RentItemMemberInfo(Employee employee, Item item) {
+        initComponents();
+        this.employee = employee;
+        this.member = member;
+        scannedItemsTitle[0] = item.getTitle();    
+        rentedItemList = new JList(listModel);
+    }
+
+    //Scans item and add item to list of scanned items.
+    public static void addItemsToList(){
+        String id = null;
+        JFrame frame = new JFrame(); 
+        do{
+            id = (String)JOptionPane.showInputDialog(frame, "Scan Item(enter 0 to stop)","Rent",JOptionPane.PLAIN_MESSAGE);                
+
+            String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
+            String dbClass = "com.mysql.jdbc.Driver";
+            String queryGames = "SELECT id, title, rentalPrice FROM games where id = "+ id;
+            String queryMovies = "SELECT id, title, rentalPrice FROM movies where id = " + id;
+
+            try {
+                Class.forName(dbClass);
+                Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
+
+                PreparedStatement gameStmt = con.prepareStatement(queryGames);
+                PreparedStatement movieStmt = con.prepareStatement(queryMovies);
+                
+                
+                ResultSet rsGame = gameStmt.executeQuery();
+                while (rsGame.next() && count < scannedItemsTitle.length) {
+                     listModel.addElement("movie"+ count);//rsGame.getString("title"));
+                    // scannedItemsTitle[count] = "game "+count;//rsGame.getString("title");
+                     items[count].setTitle(rsGame.getString("title"));
+                     items[count].setRentalPrice(rsGame.getInt("rentalPrice"));
+                     items[count].setNoOfCopies(rsGame.getInt("noOfCopies"));
+                     //Select the new item and make it visible.
+                    rentedItemList.setSelectedIndex(count);
+                    rentedItemList.ensureIndexIsVisible(count);
+                } //end while
+
+                ResultSet rsMovies = movieStmt.executeQuery();
+                while(rsMovies.next()){
+                    listModel.addElement("movie"+ count);
+                //    scannedItemsTitle[count] = "movie "+count;//rsGame.getString("title");
+                     items[count].setTitle(rsGame.getString("title"));
+                     items[count].setRentalPrice(rsGame.getInt("rentalPrice"));
+                     items[count].setNoOfCopies(rsGame.getInt("noOfCopies"));
+                     rentedItemList.setSelectedIndex(count);
+                     rentedItemList.ensureIndexIsVisible(count);
+                     
+                }
+                listModel.addElement("movie"+count);
+                rentedItemList.setSelectedIndex(count);
+                rentedItemList.ensureIndexIsVisible(count);
+                
+                count++;
+
+            //}while(id != "0");
+                con.close();
+            } //end try
+
+            catch(ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            catch(SQLException e) {
+                e.printStackTrace();
+            }
+        }while(id!="0");
     }
 
     /** This method is called from within the constructor to
@@ -28,22 +113,74 @@ public class RentItemMemberInfo extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel1 = new javax.swing.JLabel();
+        memberID = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        rentedItemList = new javax.swing.JList();
+        rentButton = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Rent Item");
+
+        jLabel1.setText("Member ID");
+
+        memberID.setText("000005");
+
+        jLabel3.setText("Items to rent:");
+
+        rentedItemList.setModel(listModel);
+        jScrollPane1.setViewportView(rentedItemList);
+
+        rentButton.setText("Rent");
+        rentButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rentButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(memberID))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(40, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(245, Short.MAX_VALUE)
+                .addComponent(rentButton)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(memberID))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel3)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addComponent(rentButton)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+private void rentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rentButtonActionPerformed
+// TODO add your handling code here:
+}//GEN-LAST:event_rentButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -76,10 +213,17 @@ public class RentItemMemberInfo extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new RentItemMemberInfo().setVisible(true);
+                new RentItemMemberInfo().setVisible(true);            
             }
         });
+       new RentItemMemberInfo().addItemsToList();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel3;
+    private static javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel memberID;
+    private javax.swing.JButton rentButton;
+    private static javax.swing.JList rentedItemList;
     // End of variables declaration//GEN-END:variables
 }

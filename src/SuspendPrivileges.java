@@ -13,10 +13,15 @@
  * @author anearcan
  */
 public class SuspendPrivileges extends javax.swing.JFrame {
-
+   public MembershipControl control;
+   private MemberAccount member;
     /** Creates new form SuspendPrivileges */
     public SuspendPrivileges() {
         initComponents();
+    }
+
+    SuspendPrivileges(Employee employee) {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     /** This method is called from within the constructor to
@@ -29,16 +34,16 @@ public class SuspendPrivileges extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        Reason = new javax.swing.JTextArea();
+        suspensionReason = new javax.swing.JTextArea();
         jLabel1 = new javax.swing.JLabel();
         suspendButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Suspending Privileges");
 
-        Reason.setColumns(20);
-        Reason.setRows(5);
-        jScrollPane1.setViewportView(Reason);
+        suspensionReason.setColumns(20);
+        suspensionReason.setRows(5);
+        jScrollPane1.setViewportView(suspensionReason);
 
         jLabel1.setText("Reason:");
 
@@ -82,6 +87,7 @@ public class SuspendPrivileges extends javax.swing.JFrame {
 
 private void suspendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suspendButtonActionPerformed
 // TODO add your handling code here:
+    control.suspend(member,suspensionReason.getText());
 }//GEN-LAST:event_suspendButtonActionPerformed
 
     /**
@@ -120,9 +126,9 @@ private void suspendButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea Reason;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton suspendButton;
+    private javax.swing.JTextArea suspensionReason;
     // End of variables declaration//GEN-END:variables
 }

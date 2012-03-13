@@ -12,11 +12,58 @@
  *
  * @author anearcan
  */
-public class AdminLoginSuccess extends javax.swing.JFrame {
+
+public class AdminLoginSuccess extends javax.swing.JFrame{
+    private Employee employee = null;
+    private final SearchResults search;
+    private final CreateAccount createAcc;
+    private final UpdateAccount updateAcc;
+    private final MakeReservation reserve;
+    private final PaymentPage payment;
+    private final PurchasePayment purchasePay;
+    private final RentItemMemberInfo rent;
+    private final ReturnItem returnIt;
+    private final CancelReservation cancelReserve;
+    private final SuspendPrivileges suspend;
+    private final RemoveItem remove_item;
+    private final AddItem add_item;
+    private final RenewMembershipPayment renew;
 
     /** Creates new form AdminLoginSuccess */
     public AdminLoginSuccess() {
         initComponents();
+        cancelReserve = new CancelReservation(this.employee, null);
+        search = new SearchResults(this.employee);
+        createAcc = new CreateAccount(this.employee);
+        updateAcc = new UpdateAccount(this.employee);
+        reserve = new MakeReservation(this.employee);
+        payment = new PaymentPage(this.employee);
+        purchasePay= new PurchasePayment(this.employee);
+        renew = new RenewMembershipPayment(this.employee);
+        rent = new RentItemMemberInfo(this.employee, null);
+        returnIt = new ReturnItem(this.employee);
+        suspend = new SuspendPrivileges(this.employee);
+        add_item = new AddItem(this.employee);
+        remove_item = new RemoveItem(this.employee);
+    }
+
+    AdminLoginSuccess(Employee employee) {
+        initComponents();
+        this.employee = employee;
+        cancelReserve = new CancelReservation(this.employee, null);
+        search = new SearchResults(this.employee);
+        createAcc = new CreateAccount(this.employee);
+        updateAcc = new UpdateAccount(this.employee);
+        reserve = new MakeReservation(this.employee);
+        payment = new PaymentPage(this.employee);
+        purchasePay= new PurchasePayment(this.employee);
+        renew = new RenewMembershipPayment(this.employee);
+        rent = new RentItemMemberInfo(this.employee, null);
+        returnIt = new ReturnItem(this.employee);
+        suspend = new SuspendPrivileges(this.employee);
+        add_item = new AddItem(this.employee);
+        remove_item = new RemoveItem(this.employee);
+
     }
 
     /** This method is called from within the constructor to
@@ -39,13 +86,24 @@ public class AdminLoginSuccess extends javax.swing.JFrame {
         renewMembership = new javax.swing.JButton();
         suspension = new javax.swing.JButton();
         returnItem = new javax.swing.JButton();
+        searchButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Successful Login[admin]");
 
         createAccount.setText("Create Account");
+        createAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                createAccountActionPerformed(evt);
+            }
+        });
 
         makeReservation.setText("Make Reservation");
+        makeReservation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                makeReservationActionPerformed(evt);
+            }
+        });
 
         rentItem.setText("Rent Item");
         rentItem.addActionListener(new java.awt.event.ActionListener() {
@@ -62,6 +120,11 @@ public class AdminLoginSuccess extends javax.swing.JFrame {
         });
 
         cancelReservation.setText("Cancel Reservation");
+        cancelReservation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cancelReservationActionPerformed(evt);
+            }
+        });
 
         editAccountInfo.setText("Update Account");
         editAccountInfo.addActionListener(new java.awt.event.ActionListener() {
@@ -71,8 +134,18 @@ public class AdminLoginSuccess extends javax.swing.JFrame {
         });
 
         removeItem.setText("Remove Item");
+        removeItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeItemActionPerformed(evt);
+            }
+        });
 
         addItem.setText("Add Item");
+        addItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addItemActionPerformed(evt);
+            }
+        });
 
         renewMembership.setText("Renew Membership");
         renewMembership.addActionListener(new java.awt.event.ActionListener() {
@@ -82,8 +155,25 @@ public class AdminLoginSuccess extends javax.swing.JFrame {
         });
 
         suspension.setText("Suspend Privileges");
+        suspension.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                suspensionActionPerformed(evt);
+            }
+        });
 
         returnItem.setText("Return Item");
+        returnItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                returnItemActionPerformed(evt);
+            }
+        });
+
+        searchButton.setText("Search");
+        searchButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -92,28 +182,32 @@ public class AdminLoginSuccess extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(renewMembership)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 191, Short.MAX_VALUE)
                         .addComponent(suspension))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(addItem)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 263, Short.MAX_VALUE)
+                        .addComponent(removeItem))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(createAccount)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 221, Short.MAX_VALUE)
                         .addComponent(editAccountInfo))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(makeReservation)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 193, Short.MAX_VALUE)
-                        .addComponent(cancelReservation))
-                    .addGroup(layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(makeReservation)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(searchButton))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(rentItem)
+                                .addGap(76, 76, 76)
+                                .addComponent(returnItem)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 64, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(addItem)
-                            .addComponent(rentItem))
-                        .addGap(76, 76, 76)
-                        .addComponent(returnItem)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(removeItem)
-                            .addComponent(purchaseItem))))
+                            .addComponent(purchaseItem, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cancelReservation, javax.swing.GroupLayout.Alignment.TRAILING))))
                 .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(
@@ -127,20 +221,21 @@ public class AdminLoginSuccess extends javax.swing.JFrame {
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cancelReservation)
-                    .addComponent(makeReservation))
+                    .addComponent(makeReservation)
+                    .addComponent(searchButton))
                 .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(createAccount)
                     .addComponent(editAccountInfo))
-                .addGap(18, 18, 18)
+                .addGap(56, 56, 56)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(renewMembership)
-                    .addComponent(suspension))
-                .addGap(28, 28, 28)
+                    .addComponent(suspension)
+                    .addComponent(renewMembership))
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(removeItem)
-                    .addComponent(addItem))
-                .addGap(66, 66, 66))
+                    .addComponent(addItem)
+                    .addComponent(removeItem))
+                .addGap(27, 27, 27))
         );
 
         pack();
@@ -148,21 +243,91 @@ public class AdminLoginSuccess extends javax.swing.JFrame {
 
 private void purchaseItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseItemActionPerformed
 // TODO add your handling code here:
+    this.setVisible(false);
+    purchasePay.setVisible(true);
 }//GEN-LAST:event_purchaseItemActionPerformed
 
 private void editAccountInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editAccountInfoActionPerformed
 // TODO add your handling code here:
+    this.setVisible(false);
+    updateAcc.setVisible(true);
 }//GEN-LAST:event_editAccountInfoActionPerformed
 
 private void renewMembershipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renewMembershipActionPerformed
 // TODO add your handling code here:
-    //use dialog box
+    //use dialog box askin to scan card 1st.
+  /*  if(member.suspend == false){
+        this.setVisible(false);
+        renew.setVisible(true);
+    }
+*/
+        this.setVisible(false);
+        renew.setVisible(true);
+
 }//GEN-LAST:event_renewMembershipActionPerformed
 
 private void rentItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rentItemActionPerformed
 // TODO add your handling code here:
-    
+    this.setVisible(false);
+    rent.setVisible(true);
 }//GEN-LAST:event_rentItemActionPerformed
+
+private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+// TODO add your handling code here:
+    this.setVisible(false);
+    search.setVisible(true);
+    
+}//GEN-LAST:event_searchButtonActionPerformed
+
+private void returnItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnItemActionPerformed
+// TODO add your handling code here:
+    this.setVisible(false);
+    returnIt.setVisible(true);
+
+}//GEN-LAST:event_returnItemActionPerformed
+
+private void makeReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_makeReservationActionPerformed
+// TODO add your handling code here:
+    this.setVisible(false);
+    reserve.setVisible(true);
+
+}//GEN-LAST:event_makeReservationActionPerformed
+
+private void cancelReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelReservationActionPerformed
+// TODO add your handling code here:
+    this.setVisible(false);
+    cancelReserve.setVisible(true);
+
+}//GEN-LAST:event_cancelReservationActionPerformed
+
+private void createAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountActionPerformed
+// TODO add your handling code here:
+    this.setVisible(false);
+    createAcc.setVisible(true);
+
+}//GEN-LAST:event_createAccountActionPerformed
+
+private void suspensionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suspensionActionPerformed
+// TODO add your handling code here:
+        this.setVisible(false);
+        suspend.setVisible(true);
+
+}//GEN-LAST:event_suspensionActionPerformed
+
+private void addItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItemActionPerformed
+// TODO add your handling code here:
+        this.setVisible(false);
+        add_item.setVisible(true);
+
+}//GEN-LAST:event_addItemActionPerformed
+
+private void removeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeItemActionPerformed
+// TODO add your handling code here:
+        this.setVisible(false);
+        remove_item.setVisible(true);
+
+}//GEN-LAST:event_removeItemActionPerformed
+
 
     /**
      * @param args the command line arguments
@@ -210,6 +375,7 @@ private void rentItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
     private javax.swing.JButton renewMembership;
     private javax.swing.JButton rentItem;
     private javax.swing.JButton returnItem;
+    private javax.swing.JButton searchButton;
     private javax.swing.JButton suspension;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,3 +1,6 @@
+
+import java.sql.*;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -13,10 +16,20 @@
  * @author anearcan
  */
 public class CreateAccount extends javax.swing.JFrame {
-
+    private Employee employee;
+    private MemberAccount newMember = null;
+    public MembershipControl control;
     /** Creates new form CreateAccount */
     public CreateAccount() {
         initComponents();
+        employee = new Employee();
+        control = new MembershipControl(employee);
+    }
+
+    public CreateAccount(Employee employee) {
+        initComponents();
+        this.employee = employee;
+        control = new MembershipControl(this.employee);
     }
 
     /** This method is called from within the constructor to
@@ -100,12 +113,12 @@ public class CreateAccount extends javax.swing.JFrame {
                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                             .addComponent(jLabel1)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(firstName, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(91, 91, 91)
+                            .addComponent(firstName, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
                             .addComponent(jLabel2)
                             .addGap(10, 10, 10)
-                            .addComponent(lastName, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(104, 104, 104))
+                            .addComponent(lastName, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(34, 34, 34))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,6 +162,14 @@ public class CreateAccount extends javax.swing.JFrame {
 
 private void enterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterButtonActionPerformed
 // TODO add your handling code here:
+
+    newMember = control.createAccount( firstName.getText(),lastName.getText(),streetAddress.getText(),
+            addressCity.getText(),addressProvince.getText(),email.getText(), Integer.parseInt(phoneNo.getText()));
+       
+
+    this.setVisible(false);
+    new MemberInfo(newMember).setVisible(true);
+
 }//GEN-LAST:event_enterButtonActionPerformed
 
     /**
