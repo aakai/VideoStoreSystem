@@ -19,13 +19,15 @@ public class CancelReservation extends javax.swing.JFrame {
         private Employee employee;
         private MemberAccount member;
         private DefaultListModel listModel;
+        private ReservationControl rControl;
+        private Reservation[] reserves;
     /** Creates new form CancelReservation */
     public CancelReservation() {
-        initComponents();
-        member = null;
-        employee = null;
-        listModel = new DefaultListModel();
-                
+          listModel = new DefaultListModel();
+          initComponents();
+          member = null;
+          employee = null;
+        reservationList = new JList(listModel);
     }
 
     CancelReservation(Employee employee, MemberAccount member) {
@@ -33,10 +35,20 @@ public class CancelReservation extends javax.swing.JFrame {
         initComponents();
         this.employee = employee;
         this.member = member;
+        reservationList = new JList(listModel);
+        reserves = member.getReservations();
+        for(int i = 0; i<reserves.length; i++){
+           listModel.addElement(Integer.toString(reserves[i].getReservationId()));
+        }
     }
 
     public void setMember(MemberAccount member){
         this.member = member;
+        reserves = member.getReservations();
+        for(int i = 0; i<reserves.length; i++){
+            listModel.addElement(Integer.toString(reserves[i].getReservationId()));
+        }
+
     }
     /** This method is called from within the constructor to
      * initialize the form.
@@ -105,6 +117,8 @@ public class CancelReservation extends javax.swing.JFrame {
 
 private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
 // TODO add your handling code here:
+   new ReservationInformation(member, (Integer)reservationList.getSelectedIndex()).setVisible(true);
+   this.setVisible(false);  
 }//GEN-LAST:event_cancelActionPerformed
 
     /**
