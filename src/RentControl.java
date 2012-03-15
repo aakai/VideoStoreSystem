@@ -32,20 +32,20 @@ public class RentControl{
 
 	
 	public Rental rent(MemberAccount member, Rental r, int rentalID, Employee employee, Item copy, int charge, Date rentalDate, Date returnDate, 
-			         Date dueDate, ArrayList<String> status ){
+			         Date dueDate){
 		//Notify the system that one item copy is no longer in stock and the no of copies in stock is one less.
 		
 		
 		//add Item to Member's list of items he/she is currently in possesion of.
-		r = new Rental(rentalID, copy,  employee, member, charge, rentalDate, dueDate, returnDate, status );
+		r = new Rental(rentalID, copy,  employee, member, charge, rentalDate, dueDate, returnDate);
 	 	
-	         String newRentalInformation = null;
+	        String newRentalInformation = null;
 	          try {
                       connect();
 
 	              newRentalInformation = "('"+Integer.toString(r.getRentalId())+"', '"+ r.getEmployee().toString()+ "', '"+r.getMember().toString()
 	                      +"', '" + r.getItem().toString()+"', '"+ Double.toString(r.getCharge())+ "', '" + r.getDueDate().toString()+ "', '" +
-	                       r.getReturnDate().toString() + "', '" + r.getRentalDate().toString() + "', '" + r.getStatus().toString() + ")";
+	                       r.getReturnDate().toString() + "', '" + r.getRentalDate().toString() + ")";
 
 	              int rs = stmt.executeUpdate("INSERT INTO rental ('rentalID', 'copy', 'Employee', 'memeber', 'charge', 'rentalDate'," 
 	            		  + "'dueDate','returnDate', 'status')"
@@ -80,7 +80,14 @@ public class RentControl{
                           System.out.println(videoQuery.getInt("noOfCopies"));
                           videoQuery.updateInt("noOfCopies", videoQuery.getInt("noOfCopies") - 1);
                           videoQuery.updateRow();
-                      }                      
+                      }                  
+                      
+                      ResultSet payment = stmt.executeQuery("SELECT Balance FROM member WHERE memberID = "
+                              + Integer.toString(member.getMemberID()));
+                      
+                      while(payment.next()){
+                          payment.updateDouble("Balance", (payment.getDouble("Balance") +  r.getCharge()));
+                      }
                       con.close();
 	          } //end try
 

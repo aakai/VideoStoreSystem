@@ -57,7 +57,7 @@ class MembershipControl{
 	}
 	
 	 public MemberAccount createAccount(String firstName, String lastName, String streetAddress, String addressCity,
-                String addressProvince, String email, int phoneNo){
+            String addressProvince, String email, int phoneNo){
             int memberID = 0;
             String newMemberInformation = null;
 
@@ -106,39 +106,43 @@ class MembershipControl{
 	}
 	
 	//Suspend privileges
-	public void suspend(AccountMember member, ArrayList<String> s ){
-		
-		for(int i = 0; i< s.size(); i++ ){
-				if(member.getBalance()> 50){
-			
-					s.add(i, "Account is Suspended");
-					
-					member.setStatus(s);
-		}
-		}
-		
-	}
-	//pay overdue
-	void payOverdue(AccountMember member, Payment p, Rental r){
-		double overDue = addOverDue(member, r);
-		p.setAmount(overDue);
+	public void suspend(MemberAccount member) throws ClassNotFoundException, SQLException{
+            	connect();
+                member.setStatus("Suspended");
+                ResultSet rs = stmt.executeQuery("SELECT * FROM members WHERE memberID = "
+                        +Integer.toString(member.getMemberID()));
+                while(rs.next()){
+                    rs.updateString("Status", "Suspended");
+                }
+        }
+        
+	public void pay(MemberAccount member, Payment p) throws ClassNotFoundException, SQLException{
+		connect();
+                ResultSet rs = stmt.executeQuery("SELECT * FROM members WHERE memberID = "
+                         + Integer.toString(member.getMemberID()));
+                while(rs.next()){
+                    rs.updateDouble("Balance", (rs.getDouble("Balance")- p.getAmount()));
+                    member.setTotalCharge(rs.getDouble("Balance")- p.getAmount());
+                    rs.updateRow();
+                } 
 	
 	}
 	
 	//add overdue charge to member account for item(s) that are yet to be returned past the return date 
-	double addOverDue(AccountMember member, Rental r){
+	double addOverDue(MemberAccount member, Rental r) throws ClassNotFoundException, SQLException{
 		
 		double charge = r.getCharge();
-		double chargePerDay = 0.80;
-		long diff = r.getReturnDate().getTime()- r.getDueDate().getTime(); 
+		double overdueCharge = 30.00;
+                if(r.getDueDate().before(today)){
+                    member.setTotalCharge(member.getTotalCharge() + overdueCharge);
+                    connect();
+                    ResultSet rs= stmt.executeQuery("SELECT * FROM members WHERE memberID = "+ Integer.toString(member.getMemberID()));
+                    while(rs.next()){
+                        rs.updateDouble("Balance", member.getTotalCharge());
+                        rs.updateRow();
+                    }
+                }
 		
-		if(diff > 0){
-			charge = chargePerDay*diff;
-			member.setTotalCharge(charge);
-			member.setBalance(charge);
-			
-			
-		}
 		return charge;
 	
 	}

@@ -21,7 +21,6 @@ public class Item implements Comparable<Item>, Comparator<Item> {
 	protected int numTimesChecked;	// the number of times the movie was checked out
 	private int productID;
 	private boolean isReserved;
-	private boolean isRented;
 	private boolean overDue;
 	private Date dateReturned;
 	private Date dateRented;
@@ -132,11 +131,6 @@ public class Item implements Comparable<Item>, Comparator<Item> {
 	public boolean getIsReserved() {
 		
 		return isReserved;
-	}
-
-	public void setIsRented(boolean rented) {
-		// TODO Auto-generated method stub
-		isRented = rented;
 	}
 
 	public boolean getIsReserved(boolean reserved) {

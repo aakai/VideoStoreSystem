@@ -12,14 +12,13 @@ public class Rental {
 	private Date RentalDate;
 	private Date DueDate;
 	private Date ReturnDate;
-	private ArrayList<String> Status;
 	
 	
 	
 	
 	public Rental(int rentalId, Item item, Employee employee,
 			MemberAccount member, int charge, Date rentalDate, Date dueDate,
-			Date returnDate, ArrayList<String> status) {
+			Date returnDate) {
 		
 		RentalId = rentalId;
 		this.item = item;
@@ -29,7 +28,6 @@ public class Rental {
 		RentalDate = rentalDate;
 		DueDate = dueDate;
 		ReturnDate = returnDate;
-		Status = status;
 	}
 
 	public void setRentalId(int rentalId) {
@@ -80,11 +78,4 @@ public class Rental {
 	public Date getReturnDate() {
 		return ReturnDate;
 	}
-	public void setStatus(ArrayList<String> status) {
-		Status = status;
-	}
-	public ArrayList<String> getStatus() {
-		return Status;
-	}
-
 }
