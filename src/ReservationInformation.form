@@ -33,9 +33,9 @@
           <Group type="102" attributes="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="-2" pref="20" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="cancelButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="361" max="32767" attributes="0"/>
+                      <EmptySpace pref="311" max="32767" attributes="0"/>
                       <Component id="printReservation" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
@@ -65,13 +65,11 @@
                       <EmptySpace min="-2" pref="178" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel12" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel11" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
                           <Component id="jLabel10" alignment="0" min="-2" pref="40" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="itemTitle" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="itemType" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="pickUpDate" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
@@ -112,12 +110,7 @@
                   <Component id="jLabel10" alignment="3" min="-2" pref="13" max="-2" attributes="0"/>
                   <Component id="itemTitle" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jLabel11" alignment="3" min="-2" pref="13" max="-2" attributes="0"/>
-                  <Component id="itemType" alignment="3" min="-2" max="-2" attributes="0"/>
-              </Group>
-              <EmptySpace min="-2" pref="3" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel12" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="pickUpDate" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -136,6 +129,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Print"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="printReservationActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>
@@ -187,11 +183,6 @@
         <Property name="text" type="java.lang.String" value="Title:"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="jLabel11">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Type:"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="jLabel12">
       <Properties>
         <Property name="text" type="java.lang.String" value="Pick up date:"/>
@@ -202,11 +193,6 @@
         <Property name="text" type="java.lang.String" value="yyyy/mm/dd"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JLabel" name="itemType">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="______"/>
-      </Properties>
-    </Component>
     <Component class="javax.swing.JLabel" name="itemTitle">
       <Properties>
         <Property name="text" type="java.lang.String" value="______"/>
@@ -214,7 +200,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="cancelButton">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Cancel"/>
+        <Property name="text" type="java.lang.String" value="Cancel Reservation"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelButtonActionPerformed"/>

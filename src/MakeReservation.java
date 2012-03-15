@@ -1,3 +1,9 @@
+
+import java.sql.*;
+import javax.swing.*;
+import java.util.logging.*;
+import java.util.Date.*;
+import java.util.Random;
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -13,16 +19,38 @@
  * @author anearcan
  */
 public class MakeReservation extends javax.swing.JFrame {
-
+    private Employee employee;
+    private MemberAccount member;
+    private Item item;
+    private ReservationControl rControl;
+    private Date today;
+    private Date pickUp;
+    private Random rID;
     /** Creates new form MakeReservation */
     public MakeReservation() {
         initComponents();
+        employee = new Employee();
+        today = new Date();
+        rID = new Random();
     }
 
     MakeReservation(Employee employee) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        initComponents();
+        this.employee = employee;
+        today = new java.util.Date();
+            rID = new Random();
     }
 
+    MakeReservation(Employee employee, MemberAccount member) {
+        initComponents();
+        
+        this.employee = employee;
+        this.member = member;
+        memberId.setText(Integer.toString(member.getMemberID()));
+            rID = new Random();    
+    }
+    
+    
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -36,7 +64,7 @@ public class MakeReservation extends javax.swing.JFrame {
         itemType = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         itemTitle = new javax.swing.JTextField();
-        findItem = new javax.swing.JButton();
+        reserveButton = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         memberId = new javax.swing.JLabel();
 
@@ -45,7 +73,7 @@ public class MakeReservation extends javax.swing.JFrame {
 
         jLabel2.setText("Enter Item Title");
 
-        itemType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        itemType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Game", "Movie" }));
         itemType.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 itemTypeActionPerformed(evt);
@@ -60,10 +88,10 @@ public class MakeReservation extends javax.swing.JFrame {
             }
         });
 
-        findItem.setText("Reserve");
-        findItem.addActionListener(new java.awt.event.ActionListener() {
+        reserveButton.setText("Reserve");
+        reserveButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                findItemActionPerformed(evt);
+                reserveButtonActionPerformed(evt);
             }
         });
 
@@ -94,7 +122,7 @@ public class MakeReservation extends javax.swing.JFrame {
                 .addContainerGap(138, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(317, Short.MAX_VALUE)
-                .addComponent(findItem)
+                .addComponent(reserveButton)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -113,16 +141,26 @@ public class MakeReservation extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(itemTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
-                .addComponent(findItem)
+                .addComponent(reserveButton)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-private void findItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_findItemActionPerformed
+private void reserveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reserveButtonActionPerformed
 // TODO add your handling code here:
-}//GEN-LAST:event_findItemActionPerformed
+    if(itemType.getSelectedItem() =="Game"){
+        item = new Game();
+        item = queryGame(itemTitle.getText());
+    }else if(itemType.getSelectedItem() == "Movie"){
+        item = new Video();
+        item = queryMovie(itemTitle.getText());
+    }
+    Reservation reservation = rControl.makeReservation(item, member, rID.nextInt(1000),pickUp , today);
+    new ReservationInformation(employee, member, reservation.getReservationId()).setVisible(true);
+    this.setVisible(false);
+}//GEN-LAST:event_reserveButtonActionPerformed
 
 private void itemTypeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemTypeActionPerformed
 // TODO add your handling code here:
@@ -168,12 +206,61 @@ private void itemTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton findItem;
     private javax.swing.JTextField itemTitle;
     private javax.swing.JComboBox itemType;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel memberId;
+    private javax.swing.JButton reserveButton;
     // End of variables declaration//GEN-END:variables
+
+    private Video queryMovie(String title) {
+        Video movie = null;
+        String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
+        String query = "SELECT * FROM movies WHERE Title = " + title;
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                movie = new Video(rs.getInt("id"), title, rs.getInt("rentalPrice"), rs.getInt("purchasePrice"));
+            } //end while
+
+            con.close();
+        } //end try
+
+        catch(ClassNotFoundException e) { e.printStackTrace();}
+        catch(SQLException e) { e.printStackTrace(); }
+        
+        return movie;
+    }
+
+    private Game queryGame(String title) {
+        Game game = null;
+        String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
+        String query = "SELECT * FROM movies WHERE Title = " + title;
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                game = new Game(rs.getInt("id"), title, rs.getInt("rentalPrice"), rs.getInt("purchasePrice"));
+            } //end while
+
+            con.close();
+        } //end try
+
+        catch(ClassNotFoundException e) { e.printStackTrace();}
+        catch(SQLException e) { e.printStackTrace(); }
+        
+       
+        return game;
+    }
 }

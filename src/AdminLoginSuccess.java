@@ -1,3 +1,9 @@
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
+import java.sql.*;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -28,9 +34,19 @@ public class AdminLoginSuccess extends javax.swing.JFrame{
     private final RemoveItem remove_item;
     private final AddItem add_item;
     private final RenewMembershipPayment renew;
-
+    private MemberAccount member;
+    String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
+     Connection con;
+     Statement stmt;
+     PreparedStatement pStmt;
+     
+    public void connectToDatabase() throws ClassNotFoundException, SQLException{
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
+        Statement stmt = con.createStatement();
+    }
     /** Creates new form AdminLoginSuccess */
-    public AdminLoginSuccess() {
+    public AdminLoginSuccess() throws SQLException, ClassNotFoundException {
         initComponents();
         cancelReserve = new CancelReservation(this.employee, null);
         search = new SearchResults(this.employee);
@@ -45,16 +61,17 @@ public class AdminLoginSuccess extends javax.swing.JFrame{
         suspend = new SuspendPrivileges(this.employee);
         add_item = new AddItem(this.employee);
         remove_item = new RemoveItem(this.employee);
+
     }
 
-    AdminLoginSuccess(Employee employee) {
+    AdminLoginSuccess(Employee employee) throws ClassNotFoundException, SQLException {
         initComponents();
+        reserve = null;
         this.employee = employee;
         cancelReserve = new CancelReservation(this.employee, null);
         search = new SearchResults(this.employee);
         createAcc = new CreateAccount(this.employee);
         updateAcc = new UpdateAccount(this.employee);
-        reserve = new MakeReservation(this.employee);
         payment = new PaymentPage(this.employee);
         purchasePay= new PurchasePayment(this.employee);
         renew = new RenewMembershipPayment(this.employee);
@@ -63,7 +80,6 @@ public class AdminLoginSuccess extends javax.swing.JFrame{
         suspend = new SuspendPrivileges(this.employee);
         add_item = new AddItem(this.employee);
         remove_item = new RemoveItem(this.employee);
-
     }
 
     /** This method is called from within the constructor to
@@ -249,6 +265,9 @@ private void purchaseItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 
 private void editAccountInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editAccountInfoActionPerformed
 // TODO add your handling code here:
+        String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
+                JOptionPane.PLAIN_MESSAGE, null, null,null);
+
     this.setVisible(false);
     updateAcc.setVisible(true);
 }//GEN-LAST:event_editAccountInfoActionPerformed
@@ -256,18 +275,19 @@ private void editAccountInfoActionPerformed(java.awt.event.ActionEvent evt) {//G
 private void renewMembershipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renewMembershipActionPerformed
 // TODO add your handling code here:
     //use dialog box askin to scan card 1st.
-  /*  if(member.suspend == false){
-        this.setVisible(false);
-        renew.setVisible(true);
-    }
-*/
-        this.setVisible(false);
-        renew.setVisible(true);
+    String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
+                JOptionPane.PLAIN_MESSAGE, null, null,null);
+
+    this.setVisible(false);
+    renew.setVisible(true);
 
 }//GEN-LAST:event_renewMembershipActionPerformed
 
 private void rentItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rentItemActionPerformed
 // TODO add your handling code here:
+    String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
+                JOptionPane.PLAIN_MESSAGE, null, null,null);
+
     this.setVisible(false);
     rent.setVisible(true);
 }//GEN-LAST:event_rentItemActionPerformed
@@ -281,6 +301,9 @@ private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 
 private void returnItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnItemActionPerformed
 // TODO add your handling code here:
+    String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
+                JOptionPane.PLAIN_MESSAGE, null, null,null);
+
     this.setVisible(false);
     returnIt.setVisible(true);
 
@@ -288,20 +311,86 @@ private void returnItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
 private void makeReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_makeReservationActionPerformed
 // TODO add your handling code here:
+    Reservation [] reservations = new Reservation[10];
+    String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
+                JOptionPane.PLAIN_MESSAGE, null, null,null);
+    
+    String queryMember = "SELECT MemberID, FirstName, LastName, email, PhoneNumber, reservations  FROM members WHERE id = " + Integer.parseInt(s);
+    try {
+            connectToDatabase();
+    } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+    }
+        String reservationString = null;
+    
+    try {
+            ResultSet rs = stmt.executeQuery(queryMember);
+
+            while (rs.next()) {
+                member = new MemberAccount(rs.getInt("MemberID"),rs.getString("FirstName"), rs.getString("LastName"), 
+                        rs.getString("email"),rs.getInt("PhoneNumber"));
+                reservationString = rs.getString("reservations");
+                
+            } //end while
+            for(int i = 0; i<reservationString.split(", ").length; i++){
+                reservations[i].setReservationId(Integer.parseInt(reservationString.split(", ")[i]));
+            }
+            member.setReservations(reservations);
+            
+            con.close();
+        } //end try
+        
+        catch(SQLException e) {e.printStackTrace();}
+    
+    new MakeReservation(this.employee, member);
     this.setVisible(false);
-    reserve.setVisible(true);
 
 }//GEN-LAST:event_makeReservationActionPerformed
 
 private void cancelReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelReservationActionPerformed
 // TODO add your handling code here:
-    this.setVisible(false);
-    cancelReserve.setVisible(true);
+     Reservation [] reservations = new Reservation[10];
+    String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Customized Dialog",
+                    JOptionPane.PLAIN_MESSAGE, null, null,null);
+    String reservationString = null;
+    try {
+        connectToDatabase();
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    String queryMember = "SELECT MemberID, FirstName, LastName, email, PhoneNumber, reservations  FROM members WHERE id = " + Integer.parseInt(s);
 
+    try {
+            ResultSet rs = stmt.executeQuery(queryMember);
+
+            while (rs.next()) {
+                member = new MemberAccount(rs.getInt("MemberID"),rs.getString("FirstName"), rs.getString("LastName"), 
+                        rs.getString("email"),rs.getInt("PhoneNumber"));
+                reservationString = rs.getString("reservations");
+                
+            } //end while
+            for(int i = 0; i<reservationString.split(", ").length; i++){
+                reservations[i].setReservationId(Integer.parseInt(reservationString.split(", ")[i]));
+            }
+            member.setReservations(reservations);
+            
+                
+            con.close();
+        } //end try
+        catch(SQLException e) {e.printStackTrace();}
+
+    this.setVisible(false);
+    cancelReserve.setMember(member);
+    cancelReserve.setVisible(true);
 }//GEN-LAST:event_cancelReservationActionPerformed
 
 private void createAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountActionPerformed
 // TODO add your handling code here:
+    
     this.setVisible(false);
     createAcc.setVisible(true);
 
@@ -309,13 +398,17 @@ private void createAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN
 
 private void suspensionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suspensionActionPerformed
 // TODO add your handling code here:
-        this.setVisible(false);
+        String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
+                JOptionPane.PLAIN_MESSAGE, null, null,null);
+
+    this.setVisible(false);
         suspend.setVisible(true);
 
 }//GEN-LAST:event_suspensionActionPerformed
 
 private void addItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addItemActionPerformed
 // TODO add your handling code here:
+        
         this.setVisible(false);
         add_item.setVisible(true);
 
@@ -360,7 +453,13 @@ private void removeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new AdminLoginSuccess().setVisible(true);
+                try {
+                    new AdminLoginSuccess().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

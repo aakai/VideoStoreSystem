@@ -22,6 +22,7 @@ class MemberAccount {
     private String FirstName;
     private String LastName;
     private String address;
+    private String province;
     private String PostalCode;
     private String city;
     private int phoneNumber;
@@ -30,7 +31,7 @@ class MemberAccount {
     private Item pastItems;
     private Reservation[] reservations = new Reservation[10];
     private int reserveCount = 0;
-    
+    private String status;//may be {suspended, expired, active}
 
     /*******************
      * CONSTRUCTOR(S)
@@ -112,6 +113,15 @@ class MemberAccount {
 		this.city = city;
 	}
 
+        public void setProvince(String addressProvince) {
+            province = addressProvince;
+        }
+        
+        public String getProvince(){
+            return province;
+        }
+
+        
 	public int getPhone() {
 		return phoneNumber;
 	}
@@ -196,5 +206,18 @@ class MemberAccount {
 
 	public Item getPastItems() {
 		return pastItems;
-	}
+        }
+        
+        public String getStatus() {
+            return status;
+        }
+
+        public void setStatus(String string) {
+            if((string == "Active") ||(string == "Expired")||(string =="Suspended")){
+                status = string;
+            }else{
+                System.err.println("Status entered is invalid. Check entry.");
+            }
+        }
+
 }

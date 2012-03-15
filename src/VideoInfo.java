@@ -1,3 +1,8 @@
+
+import javax.swing.*;
+import java.sql.*;
+import java.util.Date;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -16,11 +21,13 @@ public class VideoInfo extends javax.swing.JFrame {
     
     Employee employee;
     Video newVideo;
+    DefaultListModel listModel;
     /** Creates new form VideoInfo */
     public VideoInfo() {
         initComponents();
         employee = null;
-        video = null;
+        newVideo = null;
+        actorList = new JList(listModel);
     }
 
     public VideoInfo(Employee employee, Video video){
@@ -32,10 +39,15 @@ public class VideoInfo extends javax.swing.JFrame {
         purchasePrice.setText(Integer.toString(newVideo.getPurchasePrice()));
         description.setText(newVideo.getDescription());
         noOfCopies.setText(Integer.toString(newVideo.getNoOfCopies()));
-        duration.setText(newVideo.getDuration());
-        rating.setText(newVideo.getMovieRating());
+        duration.setText(newVideo.getRunTime());
+        rating.setText(newVideo.getRating());
         genre.setText(newVideo.getGenre());
-        actorList.setListData(newVideo.getActors());
+        actorList = new JList(listModel);
+        for (int i = 0; i<video.getActors().length; i++){
+            listModel.addElement(video.getActors()[i]);
+        }
+        
+
     }
     /** This method is called from within the constructor to
      * initialize the form.
@@ -101,11 +113,7 @@ public class VideoInfo extends javax.swing.JFrame {
 
         jLabel10.setText("/10");
 
-        actorList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
+        actorList.setModel(listModel);
         jScrollPane2.setViewportView(actorList);
 
         jLabel12.setText("mins");
@@ -190,8 +198,7 @@ public class VideoInfo extends javax.swing.JFrame {
                                 .addGap(2, 2, 2)
                                 .addComponent(purchaseButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(printButton)
-                                .addGap(27, 27, 27)))
+                                .addComponent(printButton)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
                         .addComponent(doneButton))))
         );
@@ -236,25 +243,19 @@ public class VideoInfo extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(genre, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel12)
-                        .addGap(46, 46, 46)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jLabel12))
+                .addGap(6, 6, 6)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(rentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(purchaseButton)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(doneButton)
-                            .addComponent(printButton))))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(rentButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(purchaseButton))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(doneButton)
+                        .addComponent(printButton)))
                 .addContainerGap())
         );
 

@@ -9,9 +9,12 @@
  */
 class PrinterInterface {
     MemberAccount member;
+    Reservation resInfo;
+    Game gameInfo;
+    Payment paymentInfo;
+    
     
     PrinterInterface(){
-    
     }
 
     PrinterInterface(MemberAccount memberInfo){
@@ -19,15 +22,22 @@ class PrinterInterface {
     }
     
     private void printReceipt(Payment payment){
-    
+        System.out.println(payment.toString());
     }
     
-    private void printMemberInfo(Member member){
-    
+    private void printMemberInfo(MemberAccount member){
+        System.out.println(member.toString());
     }
 
     void printGameInfo(Game newGame) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        System.out.println(newGame.toString());
+    }
+
+    void printReservationInfo(Reservation reservation, MemberAccount member) {
+        this.member = member;
+        this.resInfo = reservation;
+        System.out.println(this.resInfo.toString());
+        
     }
 
 }

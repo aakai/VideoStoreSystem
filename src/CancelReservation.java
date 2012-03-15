@@ -117,7 +117,7 @@ public class CancelReservation extends javax.swing.JFrame {
 
 private void cancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelActionPerformed
 // TODO add your handling code here:
-   new ReservationInformation(member, (Integer)reservationList.getSelectedIndex()).setVisible(true);
+   new ReservationInformation(employee, member, (Integer)reservationList.getSelectedIndex()).setVisible(true);
    this.setVisible(false);  
 }//GEN-LAST:event_cancelActionPerformed
 

@@ -8,57 +8,35 @@ import javax.sql.*;
 class ItemControl{
     private Game game;
     private Video video;    
+    String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
+    String dbClass = "com.mysql.jdbc.Driver";
+    Connection con;
+    Statement stmt;
+    public ItemControl(){
 
-	public ItemControl(){
+    }
+    public void connect() throws ClassNotFoundException, SQLException{
+        Class.forName(dbClass);
+        con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
+        stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+    
+    }
 
-        }
-	
-	public void purchaseVid(Video video){
-               video.noOfCopies--;
-        }
+    public void purchaseVid(Video video){
 
-	public void purchaseGame(Game game){
-               game.noOfCopies--;
-        }
-        
-        public void returnVideo(Video video){
-            video.noOfCopies++;
-        }
-
-        public void returnGame(Video video){
-            game.noOfCopies++;
-        }
-        
-        public void addVideo(String title, int noOfCopies, int rentPrice, int purchasePrice, String description, String[] actors, 
-                String duration, String genre, String ratingScore, String type){
-          //addto database
-           video = new Video(title, noOfCopies, rentPrice, purchasePrice, description, actors, duration, genre, ratingScore, type);
-           
-           String dbtime;
-           String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
-           String dbClass = "com.mysql.jdbc.Driver";
-           String insertString = null;
-           int productID;
            try {
-
-            Class.forName(dbClass);
-            Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
-            Statement stmt = con.createStatement();
+             connect();
+             
+            ResultSet rs = stmt.executeQuery("SELECT noOfCopies FROM movies WHERE id = "+ Integer.toString(video.getProductID()));
             
-            insertString = "('"+video.getTitle()+"', '"+video.getActorsString()+"', '"+video.getDirector()+"', '"+video.getRating()
-                    + "', '"+video.getRuntime()+"', '"+video.getCategory()
-                    +"', '" + video.getMedium()+ "', "+video.getNoOfCopies()+ ", "
-                    +video.getRentPrice()+","+video.getPurchasePrice()+")";
-            
-            int rs = stmt.executeUpdate("INSERT INTO movies ('Title', 'Actors', 'Director', 'Rating', 'Runtime',"
-                    + " 'Category', 'Medium', 'noOfCopies', 'rentalPrice', 'purchasePrice')"
-                    + " VALUES" + insertString, Statement.RETURN_GENERATED_KEYS);
-            ResultSet results = stmt.getGeneratedKeys();
-            if ( results.next() ) {
+            while(rs.next()) {
                 // Retrieve the auto generated key(s).
-                    productID = results.getInt(1);
+                    System.out.println("#of copies = "+ Integer.toString(rs.getInt("noOfCopies")));
+                    rs.updateInt("noOfCopies", (rs.getInt("noOfCopies")- 1));
+                    rs.updateRow();
+                    System.out.println("#of copies = "+ Integer.toString(rs.getInt("noOfCopies")));
+                    video.setNoOfCopies(rs.getInt("noOfCopies"));
             }
-            video.setproductID(productID);
             
             con.close();
         } //end try
@@ -70,61 +48,227 @@ class ItemControl{
         catch(SQLException e) {
             e.printStackTrace();
         }
+    }
 
-   
+    public void purchaseGame(Game game){
+           try {
+             connect();
+             
+            ResultSet rs = stmt.executeQuery("SELECT noOfCopies FROM games WHERE id = "+ Integer.toString(game.getProductID()));
+            
+            while(rs.next()) {
+                // Retrieve the auto generated key(s).
+                    System.out.println("#of copies = "+ Integer.toString(rs.getInt("noOfCopies")));
+                    rs.updateInt("noOfCopies", (rs.getInt("noOfCopies")- 1));
+                    rs.updateRow();
+                    System.out.println("#of copies = "+ Integer.toString(rs.getInt("noOfCopies")));
+                    game.setNoOfCopies(rs.getInt("noOfCopies"));
+            }
+            
+            con.close();
+        } //end try
+
+        catch(ClassNotFoundException e) {
+            e.printStackTrace();
         }
 
-        public void addGame(String title, double rentPrice, double purchasePrice, String description, ArrayList<String> console, 
-                String genre, String developer, String publisher){
-          //add to database
-           game = new Game(title, rentPrice, purchasePrice, description, console, genre, developer, publisher);  
-           String dbtime;
-           String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
-           String dbClass = "com.mysql.jdbc.Driver";
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
-           String newGameInformation = null;
-           int productID = 0;
-            try {
+    public void returnVideo(Video video, MemberAccount member){
+             try {
+             connect();
+             
+            ResultSet rs = stmt.executeQuery("SELECT noOfCopies FROM movies WHERE id = "+ Integer.toString(video.getProductID()));
+            
+            while(rs.next()) {
+                // Retrieve the auto generated key(s).
+                    System.out.println("#of copies = "+ Integer.toString(rs.getInt("noOfCopies")));
+                    rs.updateInt("noOfCopies", (rs.getInt("noOfCopies")+ 1));
+                    rs.updateRow();
+                    System.out.println("#of copies = "+ Integer.toString(rs.getInt("noOfCopies")));
+                    video.setNoOfCopies(rs.getInt("noOfCopies"));
+            }
+    
+             ResultSet results = stmt.executeQuery("SELECT pastItems FROM members WHERE id = "+ Integer.toString(member.getMemberID()));
+              while(results.next()){
+                  System.out.println(results.getString("pastItems"));
+                  results.updateString("pastItems", results.getString("pastItems")+ ", "+ video.getTitle());
+                  results.updateRow();
+              }        
 
-                Class.forName(dbClass);
-                Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
-                Statement stmt = con.createStatement();
+            con.close();
+        } //end try
 
-                newGameInformation = "('"+game.getTitle()+"', '"+ game.getRating()+ "', '"+game.getCategory()
-                        +"', '" + game.getDeveloper()+"', '"+ game.getPublisher()+ "', '"+game.getConsole()
-                        +"', "+game.getNoOfCopies()+", "+game.getRentalPrice()+", "+game.getPurchasePrice()+")";
+        catch(ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
-                int rs = stmt.executeUpdate("INSERT INTO games ('title', 'rating', 'category', 'developer', 'publisher', 'system',"
-                        + "'noOfCopies','rentalPrice','purchasePrice')"
-                        + " VALUES" + newGameInformation, Statement.RETURN_GENERATED_KEYS);
-                ResultSet results = stmt.getGeneratedKeys();
-                if ( results.next() ) {
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+  }
+
+    public void returnGame(Game game, MemberAccount member){
+             try {
+                 connect();
+
+                ResultSet rs = stmt.executeQuery("SELECT noOfCopies FROM games WHERE id = "+ Integer.toString(game.getProductID()));
+
+                while(rs.next()) {
                     // Retrieve the auto generated key(s).
-                        productID = results.getInt(1);
-                }
-                game.setProductID(productID);
+                        System.out.println("#of copies = "+ Integer.toString(rs.getInt("noOfCopies")));
+                        rs.updateInt("noOfCopies", (rs.getInt("noOfCopies")- 1));
+                        rs.updateRow();
+                        System.out.println("#of copies = "+ Integer.toString(rs.getInt("noOfCopies")));
+                        game.setNoOfCopies(rs.getInt("noOfCopies"));
+             }
+             ResultSet results = stmt.executeQuery("SELECT pastItems FROM members WHERE id = "+ Integer.toString(member.getMemberID()));
+              while(results.next()){
+                  System.out.println(results.getString("pastItems"));
+                  results.updateString("pastItems", results.getString("pastItems")+ ", "+ game.getTitle());
+                  results.updateRow();
+              }        
 
-                con.close();
-            } //end try
+                
+            con.close();
+        } //end try
 
-            catch(ClassNotFoundException e) {
-                e.printStackTrace();
-            }
+        catch(ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
-            catch(SQLException e) {
-                e.printStackTrace();
-            }
+        catch(SQLException e) {
+            e.printStackTrace();
+        }
+  }
 
+    public void addVideo(String title, int noOfCopies, int rentPrice, int purchasePrice, String description, String[] actors, 
+            String duration, String genre, String rating, String medium, String director, String category, int productID){
+      //addto database
+       video = new Video(productID, title, actors, director, rating, duration, category, medium, noOfCopies, rentPrice, purchasePrice);
+
+
+       String insertString = null;
+
+       try {
+         connect();
+        insertString = "('"+video.getTitle()+"', '"+video.getActors()+"', '"+video.getDirector()+"', '"+video.getRating()
+                + "', '"+video.getRunTime()+"', '"+video.getCategory()
+                +"', '" + video.getMedium()+ "', "+video.getNoOfCopies()+ ", "
+                +video.getRentalPrice()+","+video.getPurchasePrice()+")";
+
+        int rs = stmt.executeUpdate("INSERT INTO movies ('Title', 'Actors', 'Director', 'Rating', 'Runtime',"
+                + " 'Category', 'Medium', 'noOfCopies', 'rentalPrice', 'purchasePrice')"
+                + " VALUES" + insertString, Statement.RETURN_GENERATED_KEYS);
+        ResultSet results = stmt.getGeneratedKeys();
+        if ( results.next() ) {
+            // Retrieve the auto generated key(s).
+                productID = results.getInt(1);
+        }
+        video.setProductID(productID);
+
+        con.close();
+    } //end try
+
+    catch(ClassNotFoundException e) {
+        e.printStackTrace();
+    }
+
+    catch(SQLException e) {
+        e.printStackTrace();
+    }
 }
-        
-        public void removeVideo(Video video){
-            //remove from database
-            
+
+    public void addGame(String title, int rentPrice, int purchasePrice, String description, ArrayList<String> console, 
+            String genre, String developer, String publisher, String rating, String category){
+      //add to database
+       game = new Game(title, rentPrice, purchasePrice, description, rating, console, category, developer, publisher);  
+
+       String newGameInformation = null;
+       int productID = 0;
+        try {
+
+            connect();
+            newGameInformation = "('"+game.getTitle()+"', '"+ game.getRating()+ "', '"+game.getCategory()
+                    +"', '" + game.getDeveloper()+"', '"+ game.getPublisher()+ "', '"+Integer.toString(game.getProductID())
+                    +"', "+Integer.toString(game.getNoOfCopies())+", "+Integer.toString(game.getRentalPrice())+", "
+                    +Integer.toString(game.getPurchasePrice())+")";
+
+            int rs = stmt.executeUpdate("INSERT INTO games ('title', 'rating', 'category', 'developer', 'publisher', 'system',"
+                    + "'noOfCopies','rentalPrice','purchasePrice')"
+                    + " VALUES" + newGameInformation, Statement.RETURN_GENERATED_KEYS);
+            ResultSet results = stmt.getGeneratedKeys();
+            if (results.next()) {
+                // Retrieve the auto generated key(s).
+                    productID = results.getInt(1);
+            }
+            game.setProductID(productID);
+
+            con.close();
+        } //end try
+
+        catch(ClassNotFoundException e) {
+            e.printStackTrace();
         }
-        
-        public void removeGame(Game game){
-            //remove from database
-            
+
+        catch(SQLException e) {
+            e.printStackTrace();
         }
-       
+
+    }
+
+    public void removeVideo(int productID){
+        //remove from database
+
+
+         try {
+              connect();
+              int rs = stmt.executeUpdate("DELETE FROM movies WHERE id = " + Integer.toString(productID));
+
+              if (rs == 1 ) {
+                  // Retrieve the auto generated key(s).
+                  System.out.println("Video Deleted!");
+              }else{
+                  System.out.println("ERROR with video removal from database");
+              }
+              con.close();
+      } //end try
+        catch(ClassNotFoundException e) {
+          e.printStackTrace();
+      }
+
+      catch(SQLException e) {
+          e.printStackTrace();
+      }        	 
+    }
+
+    public void removeGame(int productID){
+      
+           try { 
+               connect();
+               
+              int rs = stmt.executeUpdate("DELETE FROM games WHERE id = " +  productID);
+              if (rs == 1 ) {
+                  // Retrieve the auto generated key(s).
+                  System.out.println("Game Deleted!");
+              }else{
+                  System.out.println("ERROR with game removal from database");
+              }
+
+               con.close();
+           } //end try
+
+           catch(ClassNotFoundException e) {
+               e.printStackTrace();
+           }
+
+           catch(SQLException e) {
+               e.printStackTrace();
+           }
+
+    }
+
 }

@@ -12,46 +12,56 @@
  *
  * @author anearcan
  */
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import java.sql.*;
+import java.util.*;
+import java.text.*;
         
 
 public class ReservationInformation extends javax.swing.JFrame {
+    private Employee employee;
     private MemberAccount member;
     private Reservation reservationInfo;
     private Item item;
+    private ReservationControl rControl;
     private ResultSet rsReservation = null;
-    
+    private java.util.Date today;
+    private PrinterInterface printer;
     /** Creates new form ReservationInformation */
+
     public ReservationInformation() {
         initComponents();
-  
-
+        printer = new PrinterInterface();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        today = new java.util.Date();
+        System.out.println(dateFormat.format(today));
+        
     }
 
-    public ReservationInformation(MemberAccount member, Integer rID) {
+    public ReservationInformation(Employee employee, MemberAccount member, Integer rID) {
         initComponents();
+        this.employee = employee;
         this.member = member;
+        reservationInfo = new Reservation(rID, today);
         memberFirstname.setText(member.getFirstName());
         memberLastname.setText(member.getLastName());
         memberEmail.setText(member.getEmail());
         phoneNumber.setText(Integer.toString(member.getPhone()));    
         String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
-        String queryRes = "SELECT reservationID, itemNo, itemTitle, type, pickUpDate FROM reservations WHERE reservationID = "+ rID;
+        String queryRes = "SELECT reservationID, itemNo, itemTitle, pickUpDate FROM reservations WHERE reservationID = "+ rID;
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
             PreparedStatement stmtRes = con.prepareStatement(queryRes);
-        //    PreparedStatement stmtItm = con.prepareStatement("SELECT title FROM WHERE") 
             rsReservation = stmtRes.executeQuery();
             
             while (rsReservation.next()) {
                 itemTitle.setText(rsReservation.getString("itemTitle"));
-                itemType.setText(rsReservation.getString("type"));
                 pickUpDate.setText(rsReservation.getDate("pickUpDate").toString());
             } //end while
-
             con.close();
         } //end try
 
@@ -81,10 +91,8 @@ public class ReservationInformation extends javax.swing.JFrame {
         memberEmail = new javax.swing.JLabel();
         phoneNumber = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         pickUpDate = new javax.swing.JLabel();
-        itemType = new javax.swing.JLabel();
         itemTitle = new javax.swing.JLabel();
         cancelButton = new javax.swing.JButton();
 
@@ -92,6 +100,11 @@ public class ReservationInformation extends javax.swing.JFrame {
         setTitle("Reservation Information");
 
         printReservation.setText("Print");
+        printReservation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printReservationActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Member First Name:");
 
@@ -113,17 +126,13 @@ public class ReservationInformation extends javax.swing.JFrame {
 
         jLabel10.setText("Title:");
 
-        jLabel11.setText("Type:");
-
         jLabel12.setText("Pick up date:");
 
         pickUpDate.setText("yyyy/mm/dd");
 
-        itemType.setText("______");
-
         itemTitle.setText("______");
 
-        cancelButton.setText("Cancel");
+        cancelButton.setText("Cancel Reservation");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
@@ -137,9 +146,9 @@ public class ReservationInformation extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(20, 20, 20)
+                        .addContainerGap()
                         .addComponent(cancelButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 361, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 311, Short.MAX_VALUE)
                         .addComponent(printReservation))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(115, 115, 115)
@@ -162,12 +171,10 @@ public class ReservationInformation extends javax.swing.JFrame {
                         .addGap(178, 178, 178)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel12)
-                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(itemTitle)
-                            .addComponent(itemType)
                             .addComponent(pickUpDate))))
                 .addContainerGap())
         );
@@ -197,11 +204,7 @@ public class ReservationInformation extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(itemTitle))
-                .addGap(2, 2, 2)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(itemType))
-                .addGap(3, 3, 3)
+                .addGap(19, 19, 19)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(pickUpDate))
@@ -216,7 +219,38 @@ public class ReservationInformation extends javax.swing.JFrame {
 
 private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
 // TODO add your handling code here:
+    rControl.cancelReservation(member, reservationInfo.getReservationId());
+    if(employee.IsAdmin() == true){
+            try {
+                new AdminLoginSuccess(employee).setVisible(true);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ReservationInformation.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(ReservationInformation.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }else{
+        new LoginSuccessful(employee).setVisible(true);
+    }
+    this.setVisible(false);
 }//GEN-LAST:event_cancelButtonActionPerformed
+
+private void printReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printReservationActionPerformed
+// TODO add your handling code here:
+    printer.printReservationInfo(reservationInfo, member);
+    if(employee.IsAdmin() == true){
+            try {
+                new AdminLoginSuccess(employee).setVisible(true);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ReservationInformation.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(ReservationInformation.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }else{
+        new LoginSuccessful(employee).setVisible(true);
+    }
+    this.setVisible(false);
+
+}//GEN-LAST:event_printReservationActionPerformed
 
     /**
      * @param args the command line arguments
@@ -258,10 +292,8 @@ private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton cancelButton;
     private javax.swing.JLabel itemTitle;
-    private javax.swing.JLabel itemType;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

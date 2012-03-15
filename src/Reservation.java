@@ -20,7 +20,12 @@ class Reservation {
     private MemberAccount earliestMember;
     private boolean isReserved = true;
 
-	
+    public Reservation(int id, Date reservationDate) {
+			
+		this.reservationId = id;
+		this.reservationDate = reservationDate;
+
+    }	
 	
     public Reservation(int id, Date pickUp, Date reservationDate) {
 			
@@ -28,8 +33,15 @@ class Reservation {
 		pickUpDate = pickUp;
 		this.reservationDate = reservationDate;
 
-}
+    }
 
+    public Reservation(int id, Date pickUp, Date reservationDate, Item item, MemberAccount member){
+		this.reservationId = id;
+		pickUpDate = pickUp;
+		this.reservationDate = reservationDate;
+                this.item = item;
+                this.item.getWaitingList().add(member);
+    }
     public void setPickUpDate(Date pickUpDate) {
             this.pickUpDate = pickUpDate;
     }
@@ -59,31 +71,26 @@ class Reservation {
         return isReserved;
     }
 
-    public void changeReservationStatus() {
-        if(isReserved == false){
-			isReserved = true;
-		}else{
-			isReserved = false;
-		}			
+    public void changeReservationStatus(boolean active) {
+			isReserved = active;
+    }
+
+    public Item getItem() {
+            return item;
+    }
+
+    public void setEarliestMember(MemberAccount member) {
+            earliestMember = member;
     }
 
 
-	public Item getItem() {
-		return item;
-	}
-
-	public void setEarliestMember(MemberAccount member) {
-		earliestMember = member;
-	}
+    public ArrayList<MemberAccount> getWaitingList() {
+            return item.getWaitingList();
+    }
 
 
-	public ArrayList<MemberAccount> getWaitingList() {
-		return item.membersReserving;
-	}
+    public MemberAccount getEarliestMember() {
+            return earliestMember;
+    }
 
-
-	public MemberAccount getEarliestMemeber() {
-		return earliestMember;
-	}
-   
 }

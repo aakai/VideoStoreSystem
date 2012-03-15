@@ -1,6 +1,7 @@
-
 import javax.swing.*;
 import java.sql.*;      
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this template, choose Tools | Templates
@@ -29,8 +30,15 @@ public class LoginSuccessful extends javax.swing.JFrame {
     private final ReturnItem returnIt;
     private final CancelReservation cancelReserve;
     String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
-    String dbClass = "com.mysql.jdbc.Driver";
-
+     Connection con;
+     Statement stmt;
+     PreparedStatement pStmt;
+     
+    public void connectToDatabase() throws ClassNotFoundException, SQLException{
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
+        Statement stmt = con.createStatement();
+    }
     /** Creates new form LoginSuccessful */
     public LoginSuccessful() {
         initComponents();
@@ -235,8 +243,41 @@ private void returnItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 
 private void makeReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_makeReservationActionPerformed
 // TODO add your handling code here:
+    Reservation [] reservations = new Reservation[10];
+    String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
+                JOptionPane.PLAIN_MESSAGE, null, null,null);
+    
+    String queryMember = "SELECT MemberID, FirstName, LastName, email, PhoneNumber, reservations  FROM members WHERE id = " + Integer.parseInt(s);
+    try {
+            connectToDatabase();
+    } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    String reservationString = null;
+    
+    try {
+            ResultSet rs = stmt.executeQuery(queryMember);
+
+            while (rs.next()) {
+                member = new MemberAccount(rs.getInt("MemberID"),rs.getString("FirstName"), rs.getString("LastName"), 
+                        rs.getString("email"),rs.getInt("PhoneNumber"));
+                reservationString = rs.getString("reservations");
+                
+            } //end while
+            for(int i = 0; i<reservationString.split(", ").length; i++){
+                reservations[i].setReservationId(Integer.parseInt(reservationString.split(", ")[i]));
+            }
+            member.setReservations(reservations);
+            
+            con.close();
+        } //end try
+        
+        catch(SQLException e) {e.printStackTrace();}
+    
+    new MakeReservation(this.employee, member);
     this.setVisible(false);
-    reserve.setVisible(true);
 
 }//GEN-LAST:event_makeReservationActionPerformed
 
@@ -255,9 +296,6 @@ private void cancelReservationActionPerformed(java.awt.event.ActionEvent evt) {/
     String queryMember = "SELECT MemberID, FirstName, LastName, email, PhoneNumber, reservations  FROM members WHERE id = " + Integer.parseInt(s);
 
     try {
-            Class.forName(dbClass);
-            Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
-            Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(queryMember);
 
             while (rs.next()) {
@@ -274,10 +312,6 @@ private void cancelReservationActionPerformed(java.awt.event.ActionEvent evt) {/
                 
             con.close();
         } //end try
-
-        catch(ClassNotFoundException e) {
-            e.printStackTrace();
-        }
 
         catch(SQLException e) {
             e.printStackTrace();
