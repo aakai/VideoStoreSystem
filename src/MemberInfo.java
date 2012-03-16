@@ -1,5 +1,7 @@
 
-import javax.swing.JOptionPane;
+import java.sql.*;
+import java.util.logging.*;
+import javax.swing.*;
 
 /*
  * To change this template, choose Tools | Templates
@@ -16,14 +18,18 @@ import javax.swing.JOptionPane;
  * @author anearcan
  */
 public class MemberInfo extends javax.swing.JFrame {
-    MemberAccount memberAccount;
-    PrinterInterface printer;
+    private MemberAccount memberAccount;
+    private PrinterInterface printer;
+    private Employee employee;
+    private Rental rental;
+    
     /** Creates new form MemberInfo */
     public MemberInfo() {
-        MemberAccount member = new MemberAccount();
+        MemberAccount member = null;
         initComponents();
        
-        String member_id = (String)JOptionPane.showInputDialog(this, "Scan Membership Card","Membership Card",JOptionPane.PLAIN_MESSAGE);
+        String member_id = (String)JOptionPane.showInputDialog(this, "Scan Membership Card","Membership Card",
+                JOptionPane.PLAIN_MESSAGE);
      
         
         addressCity.setText(member.getCity());
@@ -32,7 +38,7 @@ public class MemberInfo extends javax.swing.JFrame {
         firstName.setText(member.getFirstName());
         lastName1.setText(member.getLastName());
         memberID.setText(member_id);
-        phoneNo.setText(member.getPhoneNumber());
+        phoneNo.setText(Integer.toString(member.getPhoneNumber()));
 }
 
     /** Creates new form MemberInfo */
@@ -44,8 +50,8 @@ public class MemberInfo extends javax.swing.JFrame {
         emailAddress.setText(member.getEmail());
         firstName.setText(member.getFirstName());
         lastName1.setText(member.getLastName());
-        memberID.setText(member.getMemberID());
-        phoneNo.setText(member.getPhoneNumber());
+        memberID.setText(Integer.toString(member.getMemberID()));
+        phoneNo.setText(Integer.toString(member.getPhoneNumber()));
     }
 
     /** This method is called from within the constructor to
@@ -191,6 +197,20 @@ public class MemberInfo extends javax.swing.JFrame {
 
 private void printActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printActionPerformed
 // TODO add your handling code here:
+    new PrinterInterface().printMemberInfo(memberAccount);
+    if(employee.IsAdmin() == true){
+            try {
+                new AdminLoginSuccess(employee).setVisible(true);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(GameInfo.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(GameInfo.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        this.setVisible(false);
+    }else {
+        new LoginSuccessful(employee).setVisible(true);
+        this.setVisible(false);
+    }
 }//GEN-LAST:event_printActionPerformed
 
     /**

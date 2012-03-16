@@ -1,26 +1,59 @@
+import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
+import java.util.Date;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /*
  * Payment.java
- *
  * Created on Nov 25, 2011, 10:01:21 PM
  */
 /**
- *
  * @author anearcan
  */
 public class PaymentPage extends javax.swing.JFrame {
-
+    private static DefaultListModel listModel = new DefaultListModel();
+    private Payment payment;
+    private Item [] scannedItems;
+    private MemberAccount member;
+    private MembershipControl control;
+    private Employee employee;
+    private int balance = 0;//current balance for new rentals
+    private Date today = new java.util.Date();
+    
     /** Creates new form Payment */
     public PaymentPage() {
         initComponents();
+        scannedItemsList = new JList(listModel);
     }
 
     PaymentPage(Employee employee) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        initComponents();
+        this.employee = employee;
+        scannedItemsList = new JList(listModel);
+    }
+
+    public PaymentPage(Employee employee, MemberAccount member, Item [] items) {
+        initComponents();
+        scannedItems = items;
+        this.employee = employee;
+        this.member = member;
+        scannedItemsList = new JList(listModel);   
+        memberID.setText(Integer.toString(member.getMemberID()));
+        accountBalance.setText(Double.toString(member.getTotalCharge()));
+        //Populate JList
+        for(int i = 0; i<items.length; i++){
+            listModel.addElement((String)items[i].getTitle());
+        }
+
+        for(int i = 0; i<items.length; i++){
+            balance+=items[i].getRentalPrice();
+        }
+        
     }
 
     /** This method is called from within the constructor to
@@ -35,7 +68,7 @@ public class PaymentPage extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         totalRentalCost = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        scannedItems = new javax.swing.JList();
+        scannedItemsList = new javax.swing.JList();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         memberID = new javax.swing.JLabel();
@@ -43,7 +76,7 @@ public class PaymentPage extends javax.swing.JFrame {
         accountBalance = new javax.swing.JLabel();
         paymentMethodcomboBox = new javax.swing.JComboBox();
         accountBalance1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        payRentalButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Pay");
@@ -52,19 +85,15 @@ public class PaymentPage extends javax.swing.JFrame {
 
         totalRentalCost.setText("$51.00");
 
-        scannedItems.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "$17: The  Elder Scrolls: Skyrim", "$17: Killzone 3", "$17: Halo 3" };
-            public int getSize() { return strings.length; }
-            public Object getElementAt(int i) { return strings[i]; }
-        });
-        scannedItems.addInputMethodListener(new java.awt.event.InputMethodListener() {
+        scannedItemsList.setModel(listModel);
+        scannedItemsList.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-                scannedItemsInputMethodTextChanged(evt);
+                scannedItemsListInputMethodTextChanged(evt);
             }
         });
-        jScrollPane1.setViewportView(scannedItems);
+        jScrollPane1.setViewportView(scannedItemsList);
 
         jLabel1.setText("Scanned Items");
 
@@ -85,7 +114,12 @@ public class PaymentPage extends javax.swing.JFrame {
 
         accountBalance1.setText("Payment Method");
 
-        jButton1.setText("Pay");
+        payRentalButton.setText("Pay");
+        payRentalButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                payRentalButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -94,9 +128,6 @@ public class PaymentPage extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(42, 42, 42)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(37, 37, 37)
-                        .addComponent(jButton1))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
@@ -116,6 +147,10 @@ public class PaymentPage extends javax.swing.JFrame {
                                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 189, Short.MAX_VALUE))
                             .addComponent(accountBalance))))
                 .addGap(150, 150, 150))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(230, Short.MAX_VALUE)
+                .addComponent(payRentalButton)
+                .addGap(197, 197, 197))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,21 +175,36 @@ public class PaymentPage extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(accountBalance1)
                     .addComponent(paymentMethodcomboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(7, 7, 7)
-                .addComponent(jButton1)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addComponent(payRentalButton)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-private void scannedItemsInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_scannedItemsInputMethodTextChanged
+private void scannedItemsListInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_scannedItemsListInputMethodTextChanged
 // TODO add your handling code here:
-}//GEN-LAST:event_scannedItemsInputMethodTextChanged
+}//GEN-LAST:event_scannedItemsListInputMethodTextChanged
 
 private void paymentMethodcomboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paymentMethodcomboBoxActionPerformed
 // TODO add your handling code here:
 }//GEN-LAST:event_paymentMethodcomboBoxActionPerformed
+
+private void payRentalButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_payRentalButtonActionPerformed
+    payment = new Payment(balance, employee, member,  today);
+    try {
+        control.pay(payment);
+    } catch (ClassNotFoundException ex) {
+        Logger.getLogger(PaymentPage.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (SQLException ex) {
+        Logger.getLogger(PaymentPage.class.getName()).log(Level.SEVERE, null, ex);
+    }
+    new PrinterInterface().printReceipt(payment);
+    new CustomDate().returnToMainMenu(employee);
+    this.setVisible(false);
+
+}//GEN-LAST:event_payRentalButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -194,15 +244,15 @@ private void paymentMethodcomboBoxActionPerformed(java.awt.event.ActionEvent evt
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel accountBalance;
     private javax.swing.JLabel accountBalance1;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel memberID;
+    private javax.swing.JButton payRentalButton;
     private javax.swing.JComboBox paymentMethodcomboBox;
-    private javax.swing.JList scannedItems;
+    private javax.swing.JList scannedItemsList;
     private javax.swing.JLabel totalRentalCost;
     // End of variables declaration//GEN-END:variables
 }

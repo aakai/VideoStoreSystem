@@ -19,6 +19,7 @@ public class EmployeeLogin extends javax.swing.JFrame {
     
     private Employee employee;
     /** Creates new form EmployeeLogin */
+
     public EmployeeLogin() {
         initComponents();
 

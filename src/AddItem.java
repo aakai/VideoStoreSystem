@@ -13,7 +13,7 @@
  * @author anearcan
  */
 public class AddItem extends javax.swing.JFrame {
-
+    private Employee employee;
     private AddVideo addVideo;
     private AddGame addGame;
     /** Creates new form AddItem */
@@ -21,10 +21,14 @@ public class AddItem extends javax.swing.JFrame {
         addVideo = new AddVideo();
         addGame = new AddGame();
         initComponents();
+        employee = new Employee();
     }
 
     AddItem(Employee employee) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        addVideo = new AddVideo(employee);
+        addGame = new AddGame(employee);
+        initComponents();    
+        this.employee = employee;
     }
 
     /** This method is called from within the constructor to
@@ -82,14 +86,15 @@ public class AddItem extends javax.swing.JFrame {
 
 private void addVideoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addVideoButtonActionPerformed
 // TODO add your handling code here:
+    addVideo.setVisible(true);   
     this.setVisible(false);
-    addVideo.setVisible(true);
 }//GEN-LAST:event_addVideoButtonActionPerformed
 
 private void addGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addGameButtonActionPerformed
 // TODO add your handling code here:
-        this.setVisible(false);
+        
         addGame.setVisible(true);
+        this.setVisible(false);
 
 }//GEN-LAST:event_addGameButtonActionPerformed
 

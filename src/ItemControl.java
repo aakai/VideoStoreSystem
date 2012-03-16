@@ -34,7 +34,7 @@ class ItemControl{
                     System.out.println("#of copies = "+ Integer.toString(rs.getInt("noOfCopies")));
                     rs.updateInt("noOfCopies", (rs.getInt("noOfCopies")- 1));
                     rs.updateRow();
-                    System.out.println("#of copies = "+ Integer.toString(rs.getInt("noOfCopies")));
+                    System.out.println("# of copies = "+ Integer.toString(rs.getInt("noOfCopies")));
                     video.setNoOfCopies(rs.getInt("noOfCopies"));
             }
             
@@ -146,15 +146,13 @@ class ItemControl{
   }
 
     public void addVideo(String title, int noOfCopies, int rentPrice, int purchasePrice, String description, String[] actors, 
-            String duration, String genre, String rating, String medium, String director, String category, int productID){
-      //addto database
-       video = new Video(productID, title, actors, director, rating, duration, category, medium, noOfCopies, rentPrice, purchasePrice);
-
-
+            String duration, String category, String rating, String medium, String director){
+      //add to database
+       video = new Video(0, title, actors, director, rating, duration, category, medium, noOfCopies, rentPrice, purchasePrice);
        String insertString = null;
-
+       int productID = 0;
        try {
-         connect();
+        connect();
         insertString = "('"+video.getTitle()+"', '"+video.getActors()+"', '"+video.getDirector()+"', '"+video.getRating()
                 + "', '"+video.getRunTime()+"', '"+video.getCategory()
                 +"', '" + video.getMedium()+ "', "+video.getNoOfCopies()+ ", "
@@ -169,7 +167,6 @@ class ItemControl{
                 productID = results.getInt(1);
         }
         video.setProductID(productID);
-
         con.close();
     } //end try
 
@@ -183,7 +180,7 @@ class ItemControl{
 }
 
     public void addGame(String title, int rentPrice, int purchasePrice, String description, ArrayList<String> console, 
-            String genre, String developer, String publisher, String rating, String category){
+            String developer, String publisher, String rating, String category){
       //add to database
        game = new Game(title, rentPrice, purchasePrice, description, rating, console, category, developer, publisher);  
 
@@ -206,7 +203,6 @@ class ItemControl{
                     productID = results.getInt(1);
             }
             game.setProductID(productID);
-
             con.close();
         } //end try
 

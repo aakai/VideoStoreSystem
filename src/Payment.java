@@ -2,9 +2,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 
-/** an abstract class representing a payment of some kind */
-
-abstract public class Payment {
+public class Payment {
 	
 	private Employee employee;
 	private MemberAccount account;
@@ -15,10 +13,19 @@ abstract public class Payment {
 	private boolean isPaid;
   
 	
-	public Payment() { }
+	public Payment() { 
+            amount = 0;
+        }
 
 	public Payment(double amount) {
             this.amount = amount;
+          }
+
+        public Payment(double amount, Employee employee, MemberAccount member, Date date) {
+            this.amount = amount;
+            this.employee= employee;
+            this.account = member;
+            paymentDate = date;
           }
 
         public double getAmount() {

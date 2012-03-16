@@ -1,6 +1,6 @@
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.*;
 
 /*
  * To change this template, choose Tools | Templates
@@ -28,6 +28,13 @@ public class AddGame extends javax.swing.JFrame {
         gameControl = new ItemControl();
         newGame = new Game();
         console = new ArrayList();
+        initComponents();
+    }
+    public AddGame(Employee employee) {
+        gameControl = new ItemControl();
+        newGame = new Game();
+        console = new ArrayList();
+        this.employee = employee;
         initComponents();
     }
 
@@ -311,8 +318,9 @@ private void genreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:e
 
 private void addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addActionPerformed
 // TODO add your handling code here:
-    gameControl.addGame(title.getText(), Integer.parseInt(rentPrice.getText()), Integer.parseInt(purchasePrice.getText())
-            , gameDescription.getText(), console, (String)genre.getSelectedItem(), developerField.getText(), publisherField.getText());
+    gameControl.addGame(title.getText(), Integer.parseInt(rentPrice.getText()), Integer.parseInt(purchasePrice.getText()),           
+            gameDescription.getText(), console, developerField.getText(), publisherField.getText(),(String)ratingOptions.getSelectedItem(),
+            (String)genre.getSelectedItem());
 
     new GameInfo(employee, newGame).setVisible(true);
     this.setVisible(false);

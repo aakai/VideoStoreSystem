@@ -1,14 +1,9 @@
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.*;
-import javax.swing.JComboBox;
-import javax.swing.JList;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
-
+import javax.swing.*;
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -38,14 +33,19 @@ public class SearchResults extends javax.swing.JFrame {
     private String dBurl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
     private String keyword;
     private ArrayList<String> criteria = new ArrayList<String>();
-    
+    private DefaultListModel listModel = new DefaultListModel();
+    private Employee employee;
 
     public SearchResults(){
         initComponents();
+        searchResults = new JList(listModel);
+        employee = null;
     }
 
-    SearchResults(Employee employee) {
-        throw new UnsupportedOperationException("Not yet implemented");
+    public SearchResults(Employee employee) {
+        initComponents();
+        this.employee = employee;
+         searchResults = new JList(listModel);
     }
 
     /** This method is called from within the constructor to
@@ -74,12 +74,14 @@ public class SearchResults extends javax.swing.JFrame {
         developerCheck = new javax.swing.JCheckBox();
         publisherCheck = new javax.swing.JCheckBox();
         itemType = new javax.swing.JComboBox();
+        selectButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Search Results");
 
         jLabel1.setText("Search Results");
 
+        searchResults.setModel(listModel        );
         searchResults.addContainerListener(new java.awt.event.ContainerAdapter() {
             public void componentAdded(java.awt.event.ContainerEvent evt) {
                 searchResultsComponentAdded(evt);
@@ -153,6 +155,13 @@ public class SearchResults extends javax.swing.JFrame {
 
         itemType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Video", "Game" }));
 
+        selectButton.setText("Select Item");
+        selectButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -162,6 +171,7 @@ public class SearchResults extends javax.swing.JFrame {
                 .addComponent(find)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(selectButton)
                     .addComponent(jLabel1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(itemType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -211,7 +221,9 @@ public class SearchResults extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(resultScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(94, 94, 94))
+                .addGap(39, 39, 39)
+                .addComponent(selectButton)
+                .addGap(32, 32, 32))
         );
 
         pack();
@@ -226,7 +238,6 @@ private void searchDirectorCheckActionPerformed(java.awt.event.ActionEvent evt) 
 private void searchKeywordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchKeywordActionPerformed
 // TODO add your handling code here:
     keyword = searchKeyword.getText();
-  
 }//GEN-LAST:event_searchKeywordActionPerformed
 
 private void searchActorCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActorCheckActionPerformed
@@ -260,12 +271,12 @@ private void searchConsoleCheckActionPerformed(java.awt.event.ActionEvent evt) {
 private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
 // TODO add your handling code here:
     ResultSet rs;
+    keyword = searchKeyword.getText();
     try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection (dBurl, "sourceit_SYSC","sysc4907");
             Statement stmt = con.createStatement();
            
-            itemType = (JComboBox)evt.getSource();
             String type = (String)itemType.getSelectedItem();
             System.out.print(type + "\n");
             
@@ -273,15 +284,17 @@ private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
             System.out.print(query +"\n");
             rs = stmt.executeQuery(query);
             while(rs.next()){
-                String result = rs.getString(1);
+                String result = rs.getString("title");
+                listModel.addElement((String)result);
                 System.out.print(result);
             }
-  }
+      }
         catch (SQLException ex) {
             Logger.getLogger(SearchResults.class.getName()).log(Level.SEVERE, null, ex);
         }        catch (ClassNotFoundException ex) {
             Logger.getLogger(SearchResults.class.getName()).log(Level.SEVERE, null, ex);
         }    
+    
 }//GEN-LAST:event_searchButtonActionPerformed
 
 private void publisherCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_publisherCheckActionPerformed
@@ -295,6 +308,49 @@ private void developerCheckActionPerformed(java.awt.event.ActionEvent evt) {//GE
     developerKey = true;
     criteria.add("developer");
 }//GEN-LAST:event_developerCheckActionPerformed
+
+private void selectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtonActionPerformed
+    ResultSet rs;
+    try {
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection con = DriverManager.getConnection (dBurl, "sourceit_SYSC","sysc4907");
+            Statement stmt = con.createStatement();
+           
+            String selectedTitle = (String)searchResults.getSelectedValue();
+            System.out.println(selectedTitle + "\n");
+
+            String type = (String)itemType.getSelectedItem();
+            Video selectedVideo = null;
+            if(type == "Video"){
+                rs = stmt.executeQuery("SELECT * FROM movies WHERE title = " + selectedTitle);
+                while(rs.next()){
+                    selectedVideo = new Video(rs.getInt("id"), selectedTitle, rs.getString("Actors").split(", "),rs.getString("director")
+                            ,rs.getString("Rating"),rs.getString("Runtime"), rs.getString("genre"), rs.getString("Medium"), rs.getInt("noOfCopies")
+                            ,  rs.getInt("rentalPrice"), rs.getInt("purchasePrice"));
+                    
+                    
+                }
+                new VideoInfo(employee, selectedVideo).setVisible(true);
+                this.setVisible(false);
+             }else{
+                Game selectedGame = null;
+                rs = stmt.executeQuery("SELECT * FROM games WHERE title = " + selectedTitle);
+                while(rs.next()){
+                    selectedGame = new Game(rs.getInt("id"), selectedTitle, rs.getInt("rentalPrice"), rs.getInt("purchasePrice"), "...",
+                            rs.getString("Rating"),new ArrayList(Arrays.asList(rs.getString("system").split(", "))), rs.getString("category"), 
+                            rs.getString("developer"), rs.getString("publisher"));
+                                
+                }
+                new GameInfo(employee, selectedGame).setVisible(true);
+                this.setVisible(false);
+             }
+        }
+        catch (SQLException ex) {
+            Logger.getLogger(SearchResults.class.getName()).log(Level.SEVERE, null, ex);
+        }        catch (ClassNotFoundException ex) {
+            Logger.getLogger(SearchResults.class.getName()).log(Level.SEVERE, null, ex);
+        }    
+}//GEN-LAST:event_selectButtonActionPerformed
 
 private String generateQuery(String item_type) {
     String query = null;
@@ -381,5 +437,6 @@ private String generateQuery(String item_type) {
     private javax.swing.JTextField searchKeyword;
     private javax.swing.JList searchResults;
     private javax.swing.JCheckBox searchTitleCheck;
+    private javax.swing.JButton selectButton;
     // End of variables declaration//GEN-END:variables
 }

@@ -21,19 +21,23 @@ class PrinterInterface {
         member = memberInfo;
     }
     
-    private void printReceipt(Payment payment){
+    public void printReceipt(Payment payment){
         System.out.println(payment.toString());
     }
     
-    private void printMemberInfo(MemberAccount member){
+    public void printMemberInfo(MemberAccount member){
         System.out.println(member.toString());
     }
 
-    void printGameInfo(Game newGame) {
+    public void printGameInfo(Game newGame) {
         System.out.println(newGame.toString());
     }
 
-    void printReservationInfo(Reservation reservation, MemberAccount member) {
+    public void printVideoInfo(Video newVideo) {
+        System.out.println(newVideo.toString());
+    }
+
+    public void printReservationInfo(Reservation reservation, MemberAccount member) {
         this.member = member;
         this.resInfo = reservation;
         System.out.println(this.resInfo.toString());

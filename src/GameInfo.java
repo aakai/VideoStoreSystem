@@ -1,3 +1,8 @@
+
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -16,6 +21,7 @@ public class GameInfo extends javax.swing.JFrame {
     private Employee employee;
     private Game newGame;
     private String consoleString = ""; 
+    
             
     /** Creates new form GameInfo */
     
@@ -272,27 +278,26 @@ public class GameInfo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
-// TODO add your handling code here:
-    if(employee.IsAdmin() == true){
-        new AdminLoginSuccess(employee).setVisible(true);
-        this.setVisible(false);
-    }else{
-        new LoginSuccessful(employee).setVisible(true);
-        this.setVisible(false);
-    }
-}//GEN-LAST:event_doneButtonActionPerformed
+    new CustomDate().returnToMainMenu(employee);
+    this.setVisible(false);}//GEN-LAST:event_doneButtonActionPerformed
 
 private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
 // TODO add your handling code here:
     new PrinterInterface().printGameInfo(newGame);
+    new CustomDate().returnToMainMenu(employee);
+    this.setVisible(false);
 }//GEN-LAST:event_printButtonActionPerformed
 
 private void purchaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseButtonActionPerformed
 // TODO add your handling code here:
+    new PurchasePayment(employee, newGame).setVisible(true);
+    this.setVisible(false);
 }//GEN-LAST:event_purchaseButtonActionPerformed
 
 private void rentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rentButtonActionPerformed
 // TODO add your handling code here:
+    new RentItemMemberInfo(employee, newGame).setVisible(true);
+    this.setVisible(false);
 }//GEN-LAST:event_rentButtonActionPerformed
 
     /**

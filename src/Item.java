@@ -51,6 +51,13 @@ public class Item implements Comparable<Item>, Comparator<Item> {
                 rentalPrice = rentPrice;
                 this.purchasePrice = purchasePrice;
 	}
+
+	public Item(String title, int rentPrice, int purchasePrice) {
+		this.title = title;
+                rentalPrice = rentPrice;
+                this.purchasePrice = purchasePrice;
+	}
+        
         
 	public Item(int id, String title, int rentPrice, int purchasePrice, int quantity) {
 		productID = id;

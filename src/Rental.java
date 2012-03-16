@@ -16,8 +16,7 @@ public class Rental {
 	
 	
 	
-	public Rental(int rentalId, Item item, Employee employee,
-			MemberAccount member, int charge, Date rentalDate, Date dueDate,
+	public Rental(int rentalId, Item item, Employee employee, MemberAccount member, int charge, Date rentalDate,
 			Date returnDate) {
 		
 		RentalId = rentalId;
@@ -26,7 +25,6 @@ public class Rental {
 		this.member = member;
 		this.charge = charge;
 		RentalDate = rentalDate;
-		DueDate = dueDate;
 		ReturnDate = returnDate;
 	}
 

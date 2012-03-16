@@ -167,8 +167,8 @@ private void enterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
             addressCity.getText(),addressProvince.getText(),email.getText(), Integer.parseInt(phoneNo.getText()));
        
 
-    this.setVisible(false);
     new MemberInfo(newMember).setVisible(true);
+    this.setVisible(false);
 
 }//GEN-LAST:event_enterButtonActionPerformed
 

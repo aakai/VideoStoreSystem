@@ -7,7 +7,6 @@ import java.util.Date;
 
 class MembershipControl{
 	Employee employee; //Employee performing the membership related functionality
-	private ArrayList<MemberAccount> members;
 	private MemberAccount member;
         private Date today = new Date();
         private String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
@@ -16,9 +15,9 @@ class MembershipControl{
         private Statement stmt;
         
         
-	MembershipControl(Employee user, ArrayList<MemberAccount> m){
+	MembershipControl(Employee user){
 		employee = user;
-                members = m;
+ 
         }
         
 	MembershipControl(Employee user, MemberAccount m){
@@ -116,10 +115,10 @@ class MembershipControl{
                 }
         }
         
-	public void pay(MemberAccount member, Payment p) throws ClassNotFoundException, SQLException{
+	public void pay(Payment p) throws ClassNotFoundException, SQLException{
 		connect();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM members WHERE memberID = "
-                         + Integer.toString(member.getMemberID()));
+                         + Integer.toString(p.getAccount().getMemberID()));
                 while(rs.next()){
                     rs.updateDouble("Balance", (rs.getDouble("Balance")- p.getAmount()));
                     member.setTotalCharge(rs.getDouble("Balance")- p.getAmount());
@@ -129,7 +128,7 @@ class MembershipControl{
 	}
 	
 	//add overdue charge to member account for item(s) that are yet to be returned past the return date 
-	double addOverDue(MemberAccount member, Rental r) throws ClassNotFoundException, SQLException{
+	public double addOverDue(MemberAccount member, Rental r) throws ClassNotFoundException, SQLException{
 		
 		double charge = r.getCharge();
 		double overdueCharge = 30.00;

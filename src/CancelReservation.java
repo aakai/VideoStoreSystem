@@ -26,8 +26,11 @@ public class CancelReservation extends javax.swing.JFrame {
           listModel = new DefaultListModel();
           initComponents();
           member = null;
+          memberFirstName.setText("Default");
           employee = null;
         reservationList = new JList(listModel);
+        listModel.addElement("#38900");
+        listModel.addElement("#78939");
     }
 
     CancelReservation(Employee employee, MemberAccount member) {
@@ -35,6 +38,7 @@ public class CancelReservation extends javax.swing.JFrame {
         initComponents();
         this.employee = employee;
         this.member = member;
+        memberFirstName.setText(member.getFirstName());
         reservationList = new JList(listModel);
         reserves = member.getReservations();
         for(int i = 0; i<reserves.length; i++){
@@ -44,6 +48,7 @@ public class CancelReservation extends javax.swing.JFrame {
 
     public void setMember(MemberAccount member){
         this.member = member;
+        memberFirstName.setText(member.getFirstName());
         reserves = member.getReservations();
         for(int i = 0; i<reserves.length; i++){
             listModel.addElement(Integer.toString(reserves[i].getReservationId()));

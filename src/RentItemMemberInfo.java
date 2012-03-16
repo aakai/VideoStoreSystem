@@ -1,4 +1,4 @@
-
+import java.util.Date;
 import java.sql.*;
 import javax.swing.*;
 import java.awt.*;
@@ -24,20 +24,22 @@ public class RentItemMemberInfo extends javax.swing.JFrame {
     private static String[] scannedItemsTitle = new String[50];//only the titles of the items are needed in this window frame
     private static int count = 0;
     static DefaultListModel listModel = new DefaultListModel();
-    /** Creates new form RentItemMemberInfo */
+    private Date today = new java.util.Date();
+    private RentControl control = new RentControl(today);
+    private Rental r;
+    
+    /* Creates new form RentItemMemberInfo */
     public RentItemMemberInfo() {
         initComponents();
         employee = null;
         member = null;
         rentedItemList = new JList(listModel);
- 
     }
 
     public RentItemMemberInfo(Employee employee, Item item) {
         initComponents();
         this.employee = employee;
         this.member = member;
-        scannedItemsTitle[0] = item.getTitle();    
         rentedItemList = new JList(listModel);
     }
 
@@ -45,14 +47,15 @@ public class RentItemMemberInfo extends javax.swing.JFrame {
     public static void addItemsToList(){
         String id = null;
         JFrame frame = new JFrame(); 
+        
         do{
             id = (String)JOptionPane.showInputDialog(frame, "Scan Item(enter 0 to stop)","Rent",JOptionPane.PLAIN_MESSAGE);                
-
+            
             String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
             String dbClass = "com.mysql.jdbc.Driver";
             String queryGames = "SELECT id, title, rentalPrice FROM games where id = "+ id;
             String queryMovies = "SELECT id, title, rentalPrice FROM movies where id = " + id;
-
+           
             try {
                 Class.forName(dbClass);
                 Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
@@ -63,34 +66,27 @@ public class RentItemMemberInfo extends javax.swing.JFrame {
                 
                 ResultSet rsGame = gameStmt.executeQuery();
                 while (rsGame.next() && count < scannedItemsTitle.length) {
-                     listModel.addElement("movie"+ count);//rsGame.getString("title"));
-                    // scannedItemsTitle[count] = "game "+count;//rsGame.getString("title");
-                     items[count].setTitle(rsGame.getString("title"));
-                     items[count].setRentalPrice(rsGame.getInt("rentalPrice"));
-                     items[count].setNoOfCopies(rsGame.getInt("noOfCopies"));
+                    
+                     listModel.addElement(rsGame.getString("title"));
+                     listModel.addElement(rsGame.getInt("rentalPrice"));
+                     listModel.addElement(rsGame.getInt("noOfCopies"));
                      //Select the new item and make it visible.
                     rentedItemList.setSelectedIndex(count);
                     rentedItemList.ensureIndexIsVisible(count);
                 } //end while
 
                 ResultSet rsMovies = movieStmt.executeQuery();
-                while(rsMovies.next()){
-                    listModel.addElement("movie"+ count);
-                //    scannedItemsTitle[count] = "movie "+count;//rsGame.getString("title");
-                     items[count].setTitle(rsGame.getString("title"));
-                     items[count].setRentalPrice(rsGame.getInt("rentalPrice"));
-                     items[count].setNoOfCopies(rsGame.getInt("noOfCopies"));
+                while(rsMovies.next()&& count < scannedItemsTitle.length){
+                     listModel.addElement(rsMovies.getString("title"));
+                     listModel.addElement(rsMovies.getInt("rentalPrice"));
+                     listModel.addElement(rsMovies.getInt("noOfCopies"));
                      rentedItemList.setSelectedIndex(count);
-                     rentedItemList.ensureIndexIsVisible(count);
-                     
+                     rentedItemList.ensureIndexIsVisible(count);                     
                 }
-                listModel.addElement("movie"+count);
                 rentedItemList.setSelectedIndex(count);
                 rentedItemList.ensureIndexIsVisible(count);
-                
                 count++;
-
-            //}while(id != "0");
+                
                 con.close();
             } //end try
 
@@ -180,6 +176,12 @@ public class RentItemMemberInfo extends javax.swing.JFrame {
 
 private void rentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rentButtonActionPerformed
 // TODO add your handling code here:
+      for(int i = 0; i< count; i++){
+         r =  control.rent(member, employee, items[i], items[i].getRentalPrice(), today, 
+                 CustomDate.addDays(today, 3));
+      }
+      new PaymentPage(employee, member, items).setVisible(true);
+      this.setVisible(false);
 }//GEN-LAST:event_rentButtonActionPerformed
 
     /**
@@ -216,7 +218,7 @@ private void rentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
                 new RentItemMemberInfo().setVisible(true);            
             }
         });
-       new RentItemMemberInfo().addItemsToList();
+        RentItemMemberInfo.addItemsToList();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
