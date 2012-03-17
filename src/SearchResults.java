@@ -30,7 +30,7 @@ public class SearchResults extends javax.swing.JFrame {
     private boolean consoleKey;
     private boolean developerKey;
     private boolean publisherKey;
-    private String dBurl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
+    private String dBurl = "jdbc:mysql://localhost:3306/sourceit_vss";
     private String keyword;
     private ArrayList<String> criteria = new ArrayList<String>();
     private DefaultListModel listModel = new DefaultListModel();
@@ -253,28 +253,37 @@ private void searchResultsComponentAdded(java.awt.event.ContainerEvent evt) {//G
 private void searchGenreCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchGenreCheckActionPerformed
 // TODO add your handling code here:
     genreKey = true;
-    criteria.add("Category");
+    if((String)itemType.getSelectedItem() == "Video"){
+        criteria.add("genre");
+    }else{
+        criteria.add("category");
+    }
 }//GEN-LAST:event_searchGenreCheckActionPerformed
 
 private void searchTitleCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTitleCheckActionPerformed
 // TODO add your handling code here:
     titleKey = true;
-    criteria.add("Title");
+    if((String)itemType.getSelectedItem() == "Video"){
+        criteria.add("Title");
+    }else{
+        criteria.add("title");
+    }
 }//GEN-LAST:event_searchTitleCheckActionPerformed
 
 private void searchConsoleCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchConsoleCheckActionPerformed
 // TODO add your handling code here:
     consoleKey = true;
-    criteria.add("console");
+    criteria.add("system");
 }//GEN-LAST:event_searchConsoleCheckActionPerformed
 
 private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
 // TODO add your handling code here:
     ResultSet rs;
     keyword = searchKeyword.getText();
+    
     try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection (dBurl, "sourceit_SYSC","sysc4907");
+            Connection con = DriverManager.getConnection (dBurl, "root","");
             Statement stmt = con.createStatement();
            
             String type = (String)itemType.getSelectedItem();
@@ -284,9 +293,15 @@ private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
             System.out.print(query +"\n");
             rs = stmt.executeQuery(query);
             while(rs.next()){
-                String result = rs.getString("title");
-                listModel.addElement((String)result);
-                System.out.print(result);
+                if(type == "Game"){
+                    String result = rs.getString("title");
+                    listModel.addElement((String)result);
+                    System.out.print(result);
+                }else{
+                    String result = rs.getString("Title");
+                    listModel.addElement((String)result);
+                    System.out.print(result);
+                }
             }
       }
         catch (SQLException ex) {
@@ -313,7 +328,7 @@ private void selectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     ResultSet rs;
     try {
             Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection (dBurl, "sourceit_SYSC","sysc4907");
+            Connection con = DriverManager.getConnection (dBurl, "root", "");
             Statement stmt = con.createStatement();
            
             String selectedTitle = (String)searchResults.getSelectedValue();
@@ -356,15 +371,17 @@ private String generateQuery(String item_type) {
     String query = null;
     keyword = searchKeyword.getText();
     if( "Video".equals(item_type) ){
-	query = "SELECT `title` FROM `movies` ";
+	query = "SELECT Title FROM movies ";
 	Iterator<String> itr = criteria.iterator();
 	int i = 0;
         while (itr.hasNext()) {
 		String property = itr.next();
-		if (i ==0)
-			query += " WHERE `" + property + "` LIKE " + keyword + "%";
-		query += " OR `" + property + "` LIKE " + keyword + "%";
-		i++;
+		if (i ==0){
+			query += " WHERE " + property + " LIKE '" + keyword + "%'";
+                }else{
+                    query += " OR " + property + " LIKE '" + keyword + "%'";
+                }
+                i++;
 	}
     }else if("Game".equals(item_type)){
 	query = "SELECT `title` FROM `games` ";
@@ -372,10 +389,12 @@ private String generateQuery(String item_type) {
 	int i = 0;
         while (itr.hasNext()) {
 		String property = itr.next();
-		if (i ==0)
-			query += " WHERE `" + property + "` LIKE " + keyword + "%";
-		query += " OR `" + property + "` LIKE " + keyword + "%";
-		i++;
+		if (i ==0){
+			query += " WHERE `" + property + "` LIKE '" + keyword + "%'";
+                }else{
+                        query += " OR `" + property + "` LIKE '" + keyword + "%'";
+                }
+                i++;
 	}
         
     }    

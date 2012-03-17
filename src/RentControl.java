@@ -12,7 +12,7 @@ import java.util.Date;
 public class RentControl{
 	private Date currentDate;
 	private Date returnDate;//Date that the user should return item
-        String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
+        String dbUrl = "jdbc:mysql://localhost:3306/sourceit_vss";
         String dbClass = "com.mysql.jdbc.Driver";
 	Statement stmt;
         Connection con;
@@ -26,7 +26,7 @@ public class RentControl{
         
         public void connect() throws ClassNotFoundException, SQLException{
                 Class.forName(dbClass);
-                con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
+                con = DriverManager.getConnection (dbUrl, "root","");
                 stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
 
             }
@@ -53,7 +53,7 @@ public class RentControl{
 	                  // Retrieve the auto generated key(s).
 	                      r.setRentalId( results.getInt(1));
 	              }
-                      results = stmt.executeQuery("SELECT currentItems FROM members WHERE id = "+ Integer.toString(r.getMember().getMemberID()));
+                      results = stmt.executeQuery("SELECT currentItems FROM members WHERE id = '"+ Integer.toString(r.getMember().getMemberID())+"'");
                       while(results.next()){
                           System.out.println(results.getString("currentItems"));
                           results.updateString("currentItems", results.getString("curremtItems")+ ", "+ r.getItem().getTitle());

@@ -49,12 +49,12 @@ class Game extends Item{
     
     public Game(String title,int rentPrice, int purchasePrice, String description, String rating, ArrayList<String> console, String genre,
             String developer, String publisher) {
-        super(title, rentPrice, purchasePrice);
+            super(title, rentPrice, purchasePrice);
     }
     public Game(int id, String title,int rentPrice, int purchasePrice, String description, String rating,
             ArrayList<String> console, String genre,
             String developer, String publisher) {
-        super(id, title, rentPrice, purchasePrice);
+            super(id, title, rentPrice, purchasePrice);
     }
     public Game(int id,String title, String genre, String averageRating, int numTimesChecked, Date releaseDate, ArrayList<String> console) {
             super(id, title, genre, releaseDate);

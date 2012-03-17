@@ -107,28 +107,32 @@ private void employeePasswordFieldActionPerformed(java.awt.event.ActionEvent evt
 
 private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
 // TODO add your handling code here:
-        String dbtime, username = null, password  = null;
-        String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
+        String dbtime, username = null;
+        String password = null;
+        String dbUrl = "jdbc:mysql://localhost:3306/sourceit_vss";
         String dbClass = "com.mysql.jdbc.Driver";
         String admin = null; 
-        String queryID = "SELECT password FROM employees " + "WHERE employeeId = '" + employeeIdField.getText() + "'";
+        String queryID = "SELECT email FROM employee " + "WHERE id = '" + employeeIdField.getText() + "'";
       
          try {
-
             Class.forName(dbClass);
-            Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
+            Connection con = DriverManager.getConnection (dbUrl, "root","");
             Statement stmt = con.createStatement();
             ResultSet rsID = stmt.executeQuery(queryID);
+            System.out.println(employeePasswordField.getPassword());
             while (rsID.next()) {
-                password = rsID.getString(1);
-                if(password.equals(employeePasswordField.getPassword())){
-                    employee = new Employee(employeeIdField.getText(), employeePasswordField.getPassword());
-                     ResultSet rsAdmin = stmt.executeQuery("SELECT adminSetting FROM employees WHERE employeeId =" +
+                password = rsID.getString("email");
+                System.out.println(password);
+               
+                if(password.equals(new String(employeePasswordField.getPassword()))){
+                    employee = new Employee(Integer.parseInt(employeeIdField.getText()), new String(employeePasswordField.getPassword()));
+                     ResultSet rsAdmin = stmt.executeQuery("SELECT adminPrivileges FROM employee WHERE id = '" +
                             employeeIdField.getText()+"'");
-                     while(rsID.next()){
-                         admin = rsAdmin.getString(1);
+                     while(rsAdmin.next()){
+                         admin = rsAdmin.getString("adminPrivileges");
+                         System.out.println(admin);
                      }
-                     if(admin == "true"){
+                     if(admin.equals( "y")){
                          new AdminLoginSuccess(employee).setVisible(true);
                          this.setVisible(false);
                      }else{
@@ -136,7 +140,8 @@ private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                          this.setVisible(false);
                      }
                     
-                     
+                }else{
+                    System.out.println("login unsuccessful");
                 }
             } //end while
   

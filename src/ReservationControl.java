@@ -9,20 +9,17 @@ import java.util.Date;
 
 
 public class ReservationControl{
-	private Reservation r;
+	private Reservation r;    
+        private String dbUrl = "jdbc:mysql://localhost:3306/sourceit_vss";
+        private String dbClass = "com.mysql.jdbc.Driver";
 	
 	ReservationControl(){
             r = null;
 	}
 	
         public Reservation makeReservation(Item item, MemberAccount member, int reservationID, Date pickUpDate, Date reservationDate ){
-
-
             r = new Reservation(reservationID, pickUpDate, reservationDate, item, member);
-           
-            String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
-            String dbClass = "com.mysql.jdbc.Driver";
-
+  
 	    if(item.getNoOfCopies() > 0){
 			System.out.println("There is a copy of this item available. No need to make a reservation. YOU MAY RENT NOW.");
 			
@@ -31,7 +28,7 @@ public class ReservationControl{
                 String newReservationInformation = null;
                 try {
                       Class.forName(dbClass);
-                      Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
+                      Connection con = DriverManager.getConnection (dbUrl, "root","");
                       Statement stmt = con.createStatement();
 
                       newReservationInformation = "('"+Integer.toString(r.getReservationId())+"', '"+ r.getPickUpDate().toString()+ "', '"+r.getReservationDate().toString()
@@ -40,7 +37,7 @@ public class ReservationControl{
                       int rs = stmt.executeUpdate("INSERT INTO reservation ('reservationID', 'pickUpDate', 'reservationDate', 'itemID', 'member')"
                               + " VALUES" + newReservationInformation, Statement.RETURN_GENERATED_KEYS);
                       ResultSet results = stmt.getGeneratedKeys();
-                      if ( results.next() ) {
+                      if (results.next()) {
                           // Retrieve the auto generated key(s).
                               reservationID = results.getInt(1);
                       }
@@ -63,10 +60,6 @@ public class ReservationControl{
 	
 	public void cancelReservation(Item item, MemberAccount member, int reservationID, Date pickUpDate, Date reservationDate){
 		 r = new Reservation(reservationID, pickUpDate, reservationDate,item ,member);
-
-                 String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
-                 String dbClass = "com.mysql.jdbc.Driver";
-
                  try {
 
                       Class.forName(dbClass);
@@ -91,5 +84,4 @@ public class ReservationControl{
                       e.printStackTrace();
                   }
             }
-
 }

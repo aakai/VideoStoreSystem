@@ -35,14 +35,14 @@ public class AdminLoginSuccess extends javax.swing.JFrame{
     private final AddItem add_item;
     private final RenewMembershipPayment renew;
     private MemberAccount member;
-    String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
+    String dbUrl = "jdbc:mysql://localhost:3306/sourceit_vss";
      Connection con;
      Statement stmt;
      PreparedStatement pStmt;
      
     public void connectToDatabase() throws ClassNotFoundException, SQLException{
         Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
+        Connection con = DriverManager.getConnection (dbUrl, "root","");
         Statement stmt = con.createStatement();
     }
     /** Creates new form AdminLoginSuccess */
