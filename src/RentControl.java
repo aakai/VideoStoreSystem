@@ -96,7 +96,7 @@ public class RentControl{
 	          catch(SQLException e) {
 	              e.printStackTrace();
 	          }
-                  returnDate = new CustomDate().addDays(currentDate, 3);
+                  returnDate = new Utility().addDays(currentDate, 3);
                   r.setReturnDate(returnDate);
           return r;
 	}

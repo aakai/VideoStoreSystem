@@ -13,7 +13,8 @@ public class Employee {
 
     private int id;
     private String password;
-    private String name;
+    private String FirstName;
+    private String LastName;
     private String address;
     private String postalCode;
     private String city;
@@ -21,32 +22,47 @@ public class Employee {
     private int phoneNumber;
     private String email;
     private String status ;    
-    private int numberOfRecords;
-    private Reservation[] r;
     private Date today = new Date();
-    private Payment p;
-    private double totalAmount;
     private boolean isAdmin;
-
-    private ArrayList<MemberAccount> AccountMembers;
 
     /*******************
      * CONSTRUCTOR(S)
      *******************/
 
-    public Employee(Game[] vg, Video[] m, int id, String address, int phone, String email) {
+    public Employee(int id, String address, int phone, String email) {
         this.address = address;
         this.phoneNumber = phone;
         this.id = id;
         this.email = email;
-        AccountMembers = new ArrayList<MemberAccount>();
-		isAdmin = false;
+        isAdmin = false;
     }
-	
+
+    public Employee(int id, String address, int phone, String email, boolean admin) {
+        this.address = address;
+        this.phoneNumber = phone;
+        this.id = id;
+        this.email = email;
+        isAdmin = admin;
+    }    
+    
+    public Employee(int id, String address, int phone, String email, boolean admin, String status) {
+        this.address = address;
+        this.phoneNumber = phone;
+        this.id = id;
+        this.email = email;
+        isAdmin = admin;
+        this.status = status;
+    }    
+    
     public Employee(int employeeId,  String pass){
         id = employeeId;
         password = pass;
     }
+    
+    public Employee(){
+        
+    }
+ 
     /*******************
      * AccountMember add
      *******************/
@@ -79,17 +95,23 @@ public class Employee {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 	
-
-	public void setName(String name) {
-		this.name = name;
+	public void setFirstName(String name) {
+		this.FirstName = name;
 	}
 
-	public String getName() {
-		return name;
+	public String getFirstName() {
+		return FirstName;
 	}
 
+	public void setLastName(String name) {
+		this.LastName = name;
+	}
+
+	public String getLastName() {
+		return LastName;
+	}        
+        
 	public void setPhoneNumber(int phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}

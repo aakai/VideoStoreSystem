@@ -178,7 +178,7 @@ private void rentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 // TODO add your handling code here:
       for(int i = 0; i< count; i++){
          r =  control.rent(member, employee, items[i], items[i].getRentalPrice(), today, 
-                 CustomDate.addDays(today, 3));
+                 Utility.addDays(today, 3));
       }
       new PaymentPage(employee, member, items).setVisible(true);
       this.setVisible(false);

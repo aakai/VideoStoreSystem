@@ -13,15 +13,30 @@
  * @author anearcan
  */
 public class RenewMembershipPayment extends javax.swing.JFrame {
-
+    private Employee employee;
+    private MemberAccount member;
+    
     /** Creates new form RenewMembershipPayment */
     public RenewMembershipPayment() {
         initComponents();
+        
     }
 
     RenewMembershipPayment(Employee employee) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        initComponents();
+        this.employee = employee;
     }
+
+    RenewMembershipPayment(Employee employee, MemberAccount mem) {
+        initComponents();
+        this.employee = employee;
+        member = mem;
+    }
+    
+    void setMember(MemberAccount mem){
+        member = mem;
+    }
+
 
     /** This method is called from within the constructor to
      * initialize the form.

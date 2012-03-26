@@ -286,13 +286,13 @@ private void purchaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GE
 }//GEN-LAST:event_purchaseButtonActionPerformed
 
 private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
-    new CustomDate().returnToMainMenu(employee);
+    new Utility().returnToMainMenu(employee);
     this.setVisible(false);
 }//GEN-LAST:event_doneButtonActionPerformed
 
 private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
     new PrinterInterface().printVideoInfo(newVideo);
-    new CustomDate().returnToMainMenu(employee);
+    new Utility().returnToMainMenu(employee);
     this.setVisible(false);
 }//GEN-LAST:event_printButtonActionPerformed
 

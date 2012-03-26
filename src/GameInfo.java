@@ -278,13 +278,13 @@ public class GameInfo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
-    new CustomDate().returnToMainMenu(employee);
+    new Utility().returnToMainMenu(employee);
     this.setVisible(false);}//GEN-LAST:event_doneButtonActionPerformed
 
 private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
 // TODO add your handling code here:
     new PrinterInterface().printGameInfo(newGame);
-    new CustomDate().returnToMainMenu(employee);
+    new Utility().returnToMainMenu(employee);
     this.setVisible(false);
 }//GEN-LAST:event_printButtonActionPerformed
 

@@ -16,7 +16,9 @@ import javax.swing.*;
  * @author anearcan
  */
 public class RemoveGame extends javax.swing.JFrame {
-
+    Employee employee;
+    Game game;
+    
     private static JFrame frame;
     /** Creates new form RemoveGame */
     public RemoveGame() {

@@ -58,14 +58,12 @@ public class ReservationControl{
        }
 	
 	
-	public void cancelReservation(Item item, MemberAccount member, int reservationID, Date pickUpDate, Date reservationDate){
-		 r = new Reservation(reservationID, pickUpDate, reservationDate,item ,member);
+	public void cancelReservation(MemberAccount member, int reservationID){
+//		 r = new Reservation(reservationID, pickUpDate, reservationDate,item ,member);
                  try {
-
-                      Class.forName(dbClass);
-                      Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
-                      Statement stmt = con.createStatement();
-                      int delete = stmt.executeUpdate("DELETE FROM reservation WHERE reservationID = " + r.getReservationId());
+                      Utility.connect();
+                    //  Statement stmt = Utility.con.createStatement();
+                      int delete = Utility.stmt.executeUpdate("DELETE FROM reservation WHERE reservationID = " + r.getReservationId());
                       if (delete == 1) {
                           // Retrieve the auto generated key(s).
                           System.out.println("Delete complete");
@@ -73,7 +71,7 @@ public class ReservationControl{
                           System.out.println("Row is not deleted.");
                        }
 
-                      con.close();
+                      Utility.con.close();
                   } //end try
 
                   catch(ClassNotFoundException e) {

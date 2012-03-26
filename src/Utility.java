@@ -14,8 +14,19 @@ import java.sql.*;
  *
  * @author anearcan
  */
-public class CustomDate {
+public class Utility {
+    static Connection con ;
+    static String  dbUrl = "jdbc:mysql://localhost:3306/sourceit_vss";
+    static Statement stmt;
+    static PreparedStatement pStmt;
+    
+    
+    public Utility() throws SQLException{
+           con = DriverManager.getConnection (dbUrl, "root","");
 
+    }
+    
+    
     public static Date addDays(Date date, int days)
     {
         Calendar cal = Calendar.getInstance();
@@ -24,7 +35,8 @@ public class CustomDate {
         return cal.getTime();
     }
 
-    void returnToMainMenu(Employee employee) {
+
+    public static void returnToMainMenu(Employee employee) throws ClassNotFoundException, SQLException {
             if(employee.IsAdmin() == true){
             try {
                 new AdminLoginSuccess(employee).setVisible(true);
@@ -39,5 +51,11 @@ public class CustomDate {
      
             }
     }
+    
+    public static void connect() throws ClassNotFoundException, SQLException{
+                Class.forName("com.mysql.jdbc.Driver");
+                con = DriverManager.getConnection (dbUrl, "root","");
+                //stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+        }
 
 }

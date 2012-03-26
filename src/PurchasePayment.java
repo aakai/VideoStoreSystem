@@ -3,16 +3,6 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * PurchasePayment.java
- *
- * Created on Nov 27, 2011, 6:12:04 AM
- */
 /**
  *
  * @author anearcan
@@ -28,6 +18,7 @@ public class PurchasePayment extends javax.swing.JFrame {
     private static int total = 0;
     private Payment purchasePayment = null;
     /** Creates new form PurchasePayment */
+
     public PurchasePayment() {
       
         initComponents();
@@ -124,14 +115,15 @@ public class PurchasePayment extends javax.swing.JFrame {
                             .addComponent(paymentMethodLabel))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(62, 62, 62)
+                                .addComponent(paymentMethodcomboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(totalCost)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(62, 62, 62)
-                                .addComponent(paymentMethodcomboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(79, Short.MAX_VALUE))
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 465, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(totalCost))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,7 +184,13 @@ private void purchasePayButtonActionPerformed(java.awt.event.ActionEvent evt) {/
                 Logger.getLogger(PurchasePayment.class.getName()).log(Level.SEVERE, null, ex);
             }
         }else{
-            new LoginSuccessful().setVisible(true);
+            try {
+                new LoginSuccessful().setVisible(true);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(PurchasePayment.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(PurchasePayment.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         this.setVisible(false);
 }//GEN-LAST:event_purchasePayButtonActionPerformed
@@ -203,26 +201,23 @@ public static void addItemsToList() {
         do{
             id = (String)JOptionPane.showInputDialog(frame, "Scan Item(enter 0 to stop)","Rent",JOptionPane.PLAIN_MESSAGE);                
             
-            String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VSS";
-            String dbClass = "com.mysql.jdbc.Driver";
             String queryGames = "SELECT id, title, purchasePrice FROM games where id = "+ id;
             String queryMovies = "SELECT id, title, purchasePrice FROM movies where id = " + id;
            
             try {
                 listModel.addElement((String)id);
-                Class.forName(dbClass);
-                Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
-
-                PreparedStatement gameStmt = con.prepareStatement(queryGames);
-                PreparedStatement movieStmt = con.prepareStatement(queryMovies);
+                Utility.connect();
+                Statement gameStmt = Utility.con.createStatement();
+                Statement movieStmt = Utility.con.createStatement();
                 
                 
-                ResultSet rsGame = gameStmt.executeQuery();
+                ResultSet rsGame = gameStmt.executeQuery(queryGames);
                 while (rsGame.next()) {
-                     
-                     listModel.addElement((String)rsGame.getString("title"));
-                     listModel.addElement(Integer.toString(rsGame.getInt("purchasePrice")));
-                     listModel.addElement(Integer.toString(rsGame.getInt("noOfCopies")));
+                     //title  and the price are displayed on the list pane
+                     listModel.addElement((String)rsGame.getString("title") + "   $"
+                             + Integer.toString(rsGame.getInt("purchasePrice")));
+
+                     System.out.println(Integer.toString(rsGame.getInt("noOfCopies")));                     
                      //Update total Cost
                      total += rsGame.getInt("purchasePrice");
                      totalCost.setText(Integer.toString(total));
@@ -230,25 +225,33 @@ public static void addItemsToList() {
                      scannedItemList.setSelectedIndex(gameCount);
                      scannedItemList.ensureIndexIsVisible(gameCount);
                      //add to list of games
-                     games[gameCount] = new Game(rsGame.getInt("id"), rsGame.getString("title"), rsGame.getInt("rentPrice"), rsGame.getInt("purchasePrice"));
+                     games[gameCount] = new Game(rsGame.getInt("id"), rsGame.getString("title"), rsGame.getInt("rentalPrice"), rsGame.getInt("purchasePrice"));
                      gameCount++;
                 }
 
-                ResultSet rsMovies = movieStmt.executeQuery();
+                ResultSet rsMovies = movieStmt.executeQuery(queryMovies);
                 while(rsMovies.next()){
-                     listModel.addElement((String)rsMovies.getString("title"));
-                     listModel.addElement(Integer.toString(rsMovies.getInt("purchasePrice")));
-                     listModel.addElement(Integer.toString(rsMovies.getInt("noOfCopies")));
-                     //Update total cost
-                     total += rsGame.getInt("purchasePrice");
+                     //title  and the price are displayed on the list pane
+                     listModel.addElement((String)rsMovies.getString("Title") + "   $"
+                             + Integer.toString(rsMovies.getInt("purchasePrice")));
+                       
+                     System.out.println(Integer.toString(rsMovies.getInt("noOfCopies")));
+                                          //Update total cost
+                     total += rsMovies.getInt("purchasePrice");
                      totalCost.setText(Integer.toString(total));
                       //Select the new item and make it visible.                     
                      scannedItemList.setSelectedIndex(vidCount);
                      scannedItemList.ensureIndexIsVisible(vidCount);
+                     //add to list of videos
+                     videos[vidCount] = new Video(rsMovies.getInt("id"), rsMovies.getString("Title"), rsMovies.getString("Actors").split(", "),
+                              rsMovies.getString("Director"), rsMovies.getString("Rating"), 
+                             rsMovies.getString("Runtime"), rsMovies.getString("Category"), 
+                             rsMovies.getString("Medium"), rsMovies.getInt("noOfCopies"),
+                             rsMovies.getInt("rentalPrice"), rsMovies.getInt("purchasePrice"));
                      vidCount++;
                 }       
 
-                con.close();
+                Utility.con.close();
             } //end try
             catch(ClassNotFoundException e) {
                 e.printStackTrace();

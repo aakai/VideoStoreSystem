@@ -3,17 +3,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 import java.sql.*;
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * AdminLoginSuccess.java
- *
- * Created on Nov 27, 2011, 6:38:32 AM
- */
 /**
  *
  * @author anearcan
@@ -29,26 +18,16 @@ public class AdminLoginSuccess extends javax.swing.JFrame{
     private final PurchasePayment purchasePay;
     private final RentItemMemberInfo rent;
     private final ReturnItem returnIt;
-    private final CancelReservation cancelReserve;
+    private CancelReservation cancelReserve;
     private final SuspendPrivileges suspend;
     private final RemoveItem remove_item;
     private final AddItem add_item;
     private final RenewMembershipPayment renew;
     private MemberAccount member;
-    String dbUrl = "jdbc:mysql://localhost:3306/sourceit_vss";
-     Connection con;
-     Statement stmt;
-     PreparedStatement pStmt;
-     
-    public void connectToDatabase() throws ClassNotFoundException, SQLException{
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection (dbUrl, "root","");
-        Statement stmt = con.createStatement();
-    }
+
     /** Creates new form AdminLoginSuccess */
     public AdminLoginSuccess() throws SQLException, ClassNotFoundException {
         initComponents();
-        cancelReserve = new CancelReservation(this.employee, null);
         search = new SearchResults(this.employee);
         createAcc = new CreateAccount(this.employee);
         updateAcc = new UpdateAccount(this.employee);
@@ -61,6 +40,7 @@ public class AdminLoginSuccess extends javax.swing.JFrame{
         suspend = new SuspendPrivileges(this.employee);
         add_item = new AddItem(this.employee);
         remove_item = new RemoveItem(this.employee);
+        Utility.connect();
 
     }
 
@@ -68,7 +48,6 @@ public class AdminLoginSuccess extends javax.swing.JFrame{
         initComponents();
         reserve = null;
         this.employee = employee;
-        cancelReserve = new CancelReservation(this.employee, null);
         search = new SearchResults(this.employee);
         createAcc = new CreateAccount(this.employee);
         updateAcc = new UpdateAccount(this.employee);
@@ -80,6 +59,8 @@ public class AdminLoginSuccess extends javax.swing.JFrame{
         suspend = new SuspendPrivileges(this.employee);
         add_item = new AddItem(this.employee);
         remove_item = new RemoveItem(this.employee);
+        Utility.connect();
+
     }
 
     /** This method is called from within the constructor to
@@ -262,7 +243,7 @@ private void purchaseItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
     this.setVisible(false);
     purchasePay.setVisible(true);
 }//GEN-LAST:event_purchaseItemActionPerformed
-
+/*
 private void editAccountInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editAccountInfoActionPerformed
 // TODO add your handling code here:
         String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
@@ -277,6 +258,18 @@ private void renewMembershipActionPerformed(java.awt.event.ActionEvent evt) {//G
     //use dialog box askin to scan card 1st.
     String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
                 JOptionPane.PLAIN_MESSAGE, null, null,null);
+    try {
+        ResultSet rs = Utility.stmt.executeQuery("SELECT * FROM members WHERE MemberID = " + Integer.parseInt(s));
+        while(rs.next()){
+            member.setFirstName(rs.getString("FirstName"));
+            member.setLastName(rs.getString("LastName"));
+            member.setEmail(rs.getString("email"));
+            member.setAddress(rs.getString("Address"));
+            member.setCurrentItems(rs.getString("currentItems").split(", "));
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+    }
 
     this.setVisible(false);
     renew.setVisible(true);
@@ -316,17 +309,10 @@ private void makeReservationActionPerformed(java.awt.event.ActionEvent evt) {//G
                 JOptionPane.PLAIN_MESSAGE, null, null,null);
     
     String queryMember = "SELECT MemberID, FirstName, LastName, email, PhoneNumber, reservations  FROM members WHERE id = " + Integer.parseInt(s);
-    try {
-            connectToDatabase();
-    } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (SQLException ex) {
-            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
-    }
-        String reservationString = null;
+    String reservationString = null;
     
     try {
-            ResultSet rs = stmt.executeQuery(queryMember);
+            ResultSet rs = Utility.stmt.executeQuery(queryMember);
 
             while (rs.next()) {
                 member = new MemberAccount(rs.getInt("MemberID"),rs.getString("FirstName"), rs.getString("LastName"), 
@@ -339,7 +325,7 @@ private void makeReservationActionPerformed(java.awt.event.ActionEvent evt) {//G
             }
             member.setReservations(reservations);
             
-            con.close();
+            Utility.con.close();
         } //end try
         
         catch(SQLException e) {e.printStackTrace();}
@@ -355,17 +341,11 @@ private void cancelReservationActionPerformed(java.awt.event.ActionEvent evt) {/
     String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Customized Dialog",
                     JOptionPane.PLAIN_MESSAGE, null, null,null);
     String reservationString = null;
-    try {
-        connectToDatabase();
-    } catch (ClassNotFoundException ex) {
-        Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (SQLException ex) {
-        Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
-    }
+
     String queryMember = "SELECT MemberID, FirstName, LastName, email, PhoneNumber, reservations  FROM members WHERE id = " + Integer.parseInt(s);
 
     try {
-            ResultSet rs = stmt.executeQuery(queryMember);
+            ResultSet rs = Utility.stmt.executeQuery(queryMember);
 
             while (rs.next()) {
                 member = new MemberAccount(rs.getInt("MemberID"),rs.getString("FirstName"), rs.getString("LastName"), 
@@ -379,12 +359,12 @@ private void cancelReservationActionPerformed(java.awt.event.ActionEvent evt) {/
             member.setReservations(reservations);
             
                 
-            con.close();
+            Utility.con.close();
         } //end try
         catch(SQLException e) {e.printStackTrace();}
 
+    cancelReserve = new CancelReservation(this.employee, member);
     this.setVisible(false);
-    cancelReserve.setMember(member);
     cancelReserve.setVisible(true);
 }//GEN-LAST:event_cancelReservationActionPerformed
 
@@ -420,12 +400,9 @@ private void removeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         remove_item.setVisible(true);
 
 }//GEN-LAST:event_removeItemActionPerformed
+*/
 
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
+  public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.

@@ -201,7 +201,7 @@ private void payRentalButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
         Logger.getLogger(PaymentPage.class.getName()).log(Level.SEVERE, null, ex);
     }
     new PrinterInterface().printReceipt(payment);
-    new CustomDate().returnToMainMenu(employee);
+    new Utility().returnToMainMenu(employee);
     this.setVisible(false);
 
 }//GEN-LAST:event_payRentalButtonActionPerformed

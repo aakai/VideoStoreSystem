@@ -9,10 +9,6 @@ class MembershipControl{
 	Employee employee; //Employee performing the membership related functionality
 	private MemberAccount member;
         private Date today = new Date();
-        private String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
-        private String dbClass = "com.mysql.jdbc.Driver";
-        private Connection con;
-        private Statement stmt;
         
         
 	MembershipControl(Employee user){
@@ -25,13 +21,6 @@ class MembershipControl{
                 member = m;
         }	
         
-	//Connect to database
-        public void connect() throws ClassNotFoundException, SQLException{
-                Class.forName(dbClass);
-                con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
-                stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
-        }
-
         
         //Renew Membership after suspension or after expiration. Expiry date is returned.
 	public MemberAccount renew(MemberAccount member, Date now) throws ClassNotFoundException, SQLException{
@@ -42,10 +31,10 @@ class MembershipControl{
 			System.out.println("This member has been suspended. Member's account may be renewed "
                                 + "when expiration date on account has been reached");                        
 		}else{
-                    member.setMembershipExpiryDate(new CustomDate().addDays(now, 365));
+                    member.setMembershipExpiryDate(new Utility().addDays(now, 365));
                     member.setStatus("Active");
-                    connect();
-                    ResultSet rs = stmt.executeQuery("SELECT * FROM  members WHERE memberID = " +Integer.toString(member.getMemberID()));
+                    Utility.connect();
+                    ResultSet rs = Utility.stmt.executeQuery("SELECT * FROM  members WHERE memberID = " +Integer.toString(member.getMemberID()));
                     while(rs.next()){
                          rs.updateString("Status", "Active");
                          rs.updateDate("ExpiryDate", (java.sql.Date)member.getMembershipExpiryDate());
@@ -69,31 +58,31 @@ class MembershipControl{
             member.setPhoneNumber(phoneNo);
             String fullAddress = member.getAddress()+", "+ member.getCity()+", "+ member.getProvince();
             try {
-                connect();
+                Utility.connect();
                 newMemberInformation = "('"+member.getEmail()+"', '"+ member.getFirstName()+ "', '"+member.getLastName()
                         +"', '" + fullAddress+ "', "+Integer.toString(member.getPhoneNumber())+")";
 
-                ResultSet checkExistence = stmt.executeQuery("SELECT email FROM members WHERE email = " + member.getEmail()); 
+                ResultSet checkExistence = Utility.stmt.executeQuery("SELECT email FROM members WHERE email = " + member.getEmail()); 
                 
                 if(checkExistence.next()){
                     System.out.println(checkExistence.getString("email")+ " already exists. This member already has an account");
                 }else{
                     //Member does not exist in our database, and is eligible to create new account
-                    int rs = stmt.executeUpdate("INSERT INTO members ('email', 'FirstName', 'LastName', 'Address', 'PhoneNumber')"
+                    int rs = Utility.stmt.executeUpdate("INSERT INTO members ('email', 'FirstName', 'LastName', 'Address', 'PhoneNumber')"
                             + " VALUES" + newMemberInformation, Statement.RETURN_GENERATED_KEYS);
-                    ResultSet results = stmt.getGeneratedKeys();
+                    ResultSet results = Utility.stmt.getGeneratedKeys();
                     if (results.next()) {
                         // Retrieve the auto generated key(s).
                             memberID = results.getInt(1);
                             results.updateString("Status", "Active");
-                            results.updateDate("ExpiryDate", (java.sql.Date)CustomDate.addDays(today, 365));
+                            results.updateDate("ExpiryDate", (java.sql.Date)Utility.addDays(today, 365));
                             results.updateRow();
                     }
                     member.setMemberID(memberID);
                     member.setStatus("Active");
-                    member.setMembershipExpiryDate(new CustomDate().addDays(today,365));
+                    member.setMembershipExpiryDate(new Utility().addDays(today,365));
                 }
-                con.close();
+                Utility.con.close();
             } //end try
             catch(ClassNotFoundException e) {
                 e.printStackTrace();
@@ -106,25 +95,26 @@ class MembershipControl{
 	
 	//Suspend privileges
 	public void suspend(MemberAccount member) throws ClassNotFoundException, SQLException{
-            	connect();
+            	Utility.connect();
                 member.setStatus("Suspended");
-                ResultSet rs = stmt.executeQuery("SELECT * FROM members WHERE memberID = "
+                ResultSet rs = Utility.stmt.executeQuery("SELECT * FROM members WHERE memberID = "
                         +Integer.toString(member.getMemberID()));
                 while(rs.next()){
                     rs.updateString("Status", "Suspended");
                 }
+                Utility.con.close();
         }
         
 	public void pay(Payment p) throws ClassNotFoundException, SQLException{
-		connect();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM members WHERE memberID = "
+		Utility.connect();
+                ResultSet rs = Utility.stmt.executeQuery("SELECT * FROM members WHERE memberID = "
                          + Integer.toString(p.getAccount().getMemberID()));
                 while(rs.next()){
                     rs.updateDouble("Balance", (rs.getDouble("Balance")- p.getAmount()));
                     member.setTotalCharge(rs.getDouble("Balance")- p.getAmount());
                     rs.updateRow();
                 } 
-	
+	                Utility.con.close();
 	}
 	
 	//add overdue charge to member account for item(s) that are yet to be returned past the return date 
@@ -134,14 +124,14 @@ class MembershipControl{
 		double overdueCharge = 30.00;
                 if(r.getDueDate().before(today)){
                     member.setTotalCharge(member.getTotalCharge() + overdueCharge);
-                    connect();
-                    ResultSet rs= stmt.executeQuery("SELECT * FROM members WHERE memberID = "+ Integer.toString(member.getMemberID()));
+                    Utility.connect();
+                    ResultSet rs= Utility.stmt.executeQuery("SELECT * FROM members WHERE memberID = "+ Integer.toString(member.getMemberID()));
                     while(rs.next()){
                         rs.updateDouble("Balance", member.getTotalCharge());
                         rs.updateRow();
                     }
                 }
-		
+	        Utility.con.close();	
 		return charge;
 	
 	}

@@ -3,16 +3,7 @@ import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 
-/*
- * LoginSuccessful.java
- *
- * Created on Nov 25, 2011, 9:30:29 AM
- */
 /**
  *
  * @author anearcan
@@ -28,21 +19,12 @@ public class LoginSuccessful extends javax.swing.JFrame {
     private final PurchasePayment purchasePay;
     private final RentItemMemberInfo rent;
     private final ReturnItem returnIt;
-    private final CancelReservation cancelReserve;
-    String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
-     Connection con;
-     Statement stmt;
-     PreparedStatement pStmt;
+    private CancelReservation cancelReserve;
      
-    public void connectToDatabase() throws ClassNotFoundException, SQLException{
-        Class.forName("com.mysql.jdbc.Driver");
-        Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
-        Statement stmt = con.createStatement();
-    }
+
     /** Creates new form LoginSuccessful */
-    public LoginSuccessful() {
+    public LoginSuccessful() throws ClassNotFoundException, SQLException {
         initComponents();
-        cancelReserve = new CancelReservation(this.employee, null);
         search = new SearchResults(this.employee);
         createAcc = new CreateAccount(this.employee);
         updateAcc = new UpdateAccount(this.employee);
@@ -51,13 +33,13 @@ public class LoginSuccessful extends javax.swing.JFrame {
         purchasePay= new PurchasePayment(this.employee);
         rent = new RentItemMemberInfo(this.employee, null);
         returnIt = new ReturnItem(this.employee);
+        Utility.connect();
 
     }
 
-    LoginSuccessful(Employee employee) {
+    LoginSuccessful(Employee employee) throws ClassNotFoundException, SQLException {
         initComponents();
         this.employee = employee;
-        cancelReserve = new CancelReservation(this.employee,null);
         search = new SearchResults(this.employee);
         createAcc = new CreateAccount(this.employee);
         updateAcc = new UpdateAccount(this.employee);
@@ -66,6 +48,7 @@ public class LoginSuccessful extends javax.swing.JFrame {
         purchasePay= new PurchasePayment(this.employee);
         rent = new RentItemMemberInfo(this.employee, null);
         returnIt = new ReturnItem(this.employee);
+        Utility.connect();
         
     }
 
@@ -248,17 +231,10 @@ private void makeReservationActionPerformed(java.awt.event.ActionEvent evt) {//G
                 JOptionPane.PLAIN_MESSAGE, null, null,null);
     
     String queryMember = "SELECT MemberID, FirstName, LastName, email, PhoneNumber, reservations  FROM members WHERE id = " + Integer.parseInt(s);
-    try {
-            connectToDatabase();
-    } catch (ClassNotFoundException ex) {
-            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
-    } catch (SQLException ex) {
-            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
-    }
     String reservationString = null;
     
     try {
-            ResultSet rs = stmt.executeQuery(queryMember);
+            ResultSet rs = Utility.stmt.executeQuery(queryMember);
 
             while (rs.next()) {
                 member = new MemberAccount(rs.getInt("MemberID"),rs.getString("FirstName"), rs.getString("LastName"), 
@@ -271,7 +247,7 @@ private void makeReservationActionPerformed(java.awt.event.ActionEvent evt) {//G
             }
             member.setReservations(reservations);
             
-            con.close();
+            Utility.con.close();
         } //end try
         
         catch(SQLException e) {e.printStackTrace();}
@@ -296,7 +272,7 @@ private void cancelReservationActionPerformed(java.awt.event.ActionEvent evt) {/
     String queryMember = "SELECT MemberID, FirstName, LastName, email, PhoneNumber, reservations  FROM members WHERE id = " + Integer.parseInt(s);
 
     try {
-            ResultSet rs = stmt.executeQuery(queryMember);
+            ResultSet rs = Utility.stmt.executeQuery(queryMember);
 
             while (rs.next()) {
                 member = new MemberAccount(rs.getInt("MemberID"),rs.getString("FirstName"), rs.getString("LastName"), 
@@ -309,8 +285,7 @@ private void cancelReservationActionPerformed(java.awt.event.ActionEvent evt) {/
             }
             member.setReservations(reservations);
             
-                
-            con.close();
+            Utility.con.close();
         } //end try
 
         catch(SQLException e) {
@@ -318,7 +293,7 @@ private void cancelReservationActionPerformed(java.awt.event.ActionEvent evt) {/
         }
 
     this.setVisible(false);
-    cancelReserve.setMember(member);
+    cancelReserve = new CancelReservation(employee, member);
     cancelReserve.setVisible(true);
 
 }//GEN-LAST:event_cancelReservationActionPerformed
@@ -361,7 +336,13 @@ private void createAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new LoginSuccessful().setVisible(true);
+                try {
+                    new LoginSuccessful().setVisible(true);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(LoginSuccessful.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(LoginSuccessful.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

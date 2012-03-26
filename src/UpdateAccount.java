@@ -1,3 +1,7 @@
+import javax.swing.*;
+import java.sql.*;
+        
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -14,21 +18,22 @@
  */
 public class UpdateAccount extends javax.swing.JFrame {
     private MemberAccount member;
+    private Employee employee;
+    
+    
     /** Creates new form UpdateAccount */
     public UpdateAccount() {
-        //this.member = member;        
         initComponents();
-/*        memberID.setText(member.getMemberID());
-        memberFirstName.setText(member.getFirstName());
-        memberLastName.setText(member.getLastName());
-        newAddress.setText(member.getAddress());
-        memberCity.setText(member.getCity());
-        email.setText(member.getEmail());
-        phoneNumber.setText(member.getPhoneNumber());*/
+         String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
+                JOptionPane.PLAIN_MESSAGE, null, null,null);
+         
     }
 
     UpdateAccount(Employee employee) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        initComponents();
+        String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
+                JOptionPane.PLAIN_MESSAGE, null, null,null);
+         
     }
 
     /** This method is called from within the constructor to
@@ -77,7 +82,7 @@ public class UpdateAccount extends javax.swing.JFrame {
 
         jLabel5.setText("E-mail:");
 
-        memberProvince.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        memberProvince.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "ON", "QC", "MB", "NS", "NB", "PE", "BC", "SK. NL", "AB" }));
 
         updateButton.setText("Update");
         updateButton.addActionListener(new java.awt.event.ActionListener() {
@@ -90,8 +95,8 @@ public class UpdateAccount extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(40, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(updateButton)
                     .addGroup(layout.createSequentialGroup()
@@ -130,12 +135,12 @@ public class UpdateAccount extends javax.swing.JFrame {
                                 .addComponent(memberLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(streetAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(66, 66, 66)
+                .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel7)
                     .addComponent(memberID, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -155,12 +160,14 @@ public class UpdateAccount extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel3)
                             .addComponent(newAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(7, 7, 7)
-                                .addComponent(jLabel4))
-                            .addComponent(memberCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(7, 7, 7)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(7, 7, 7))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                .addComponent(memberCity, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(8, 8, 8)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
                             .addComponent(memberProvince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -175,7 +182,7 @@ public class UpdateAccount extends javax.swing.JFrame {
                     .addComponent(phoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(updateButton)
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
         pack();

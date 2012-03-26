@@ -23,14 +23,15 @@ public class MakeReservation extends javax.swing.JFrame {
     private MemberAccount member;
     private Item item;
     private ReservationControl rControl;
-    private Date today;
-    private Date pickUp;
+    private java.util.Date today;
+    private java.util.Date pickUp;
     private Random rID;
+    
     /** Creates new form MakeReservation */
     public MakeReservation() {
         initComponents();
         employee = new Employee();
-        today = new Date();
+        today = new java.util.Date();
         rID = new Random();
     }
 
@@ -38,16 +39,15 @@ public class MakeReservation extends javax.swing.JFrame {
         initComponents();
         this.employee = employee;
         today = new java.util.Date();
-            rID = new Random();
+        rID = new Random();
     }
 
     MakeReservation(Employee employee, MemberAccount member) {
         initComponents();
-        
         this.employee = employee;
         this.member = member;
         memberId.setText(Integer.toString(member.getMemberID()));
-            rID = new Random();    
+        rID = new Random();    
     }
     
     

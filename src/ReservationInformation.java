@@ -49,13 +49,12 @@ public class ReservationInformation extends javax.swing.JFrame {
         memberLastname.setText(member.getLastName());
         memberEmail.setText(member.getEmail());
         phoneNumber.setText(Integer.toString(member.getPhone()));    
-        String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
         String queryRes = "SELECT reservationID, itemNo, itemTitle, pickUpDate FROM reservations WHERE reservationID = "+ rID;
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
-            PreparedStatement stmtRes = con.prepareStatement(queryRes);
+            new Utility().connect();
+
+            PreparedStatement stmtRes = Utility.con.prepareStatement(queryRes);
             rsReservation = stmtRes.executeQuery();
             
             while (rsReservation.next()) {
@@ -238,18 +237,17 @@ private void printReservationActionPerformed(java.awt.event.ActionEvent evt) {//
 // TODO add your handling code here:
     printer.printReservationInfo(reservationInfo, member);
     if(employee.IsAdmin() == true){
-            try {
-                new AdminLoginSuccess(employee).setVisible(true);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(ReservationInformation.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(ReservationInformation.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        try {
+            new AdminLoginSuccess(employee).setVisible(true);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ReservationInformation.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ReservationInformation.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }else{
         new LoginSuccessful(employee).setVisible(true);
     }
     this.setVisible(false);
-
 }//GEN-LAST:event_printReservationActionPerformed
 
     /**

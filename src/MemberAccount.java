@@ -27,8 +27,8 @@ class MemberAccount {
     private String city;
     private int phoneNumber;
     private String email;
-    private Item currentItems;
-    private Item pastItems;
+    private Item[] currentItems;
+    private Item[] pastItems;
     private Reservation[] reservations = new Reservation[10];
     private int reserveCount = 0;
     private String status;//may be {suspended, expired, active}
@@ -192,19 +192,19 @@ class MemberAccount {
 		return phoneNumber;
 	}
 
-	public void setCurrentItems(Item currentItems) {
+	public void setCurrentItems(Item[] currentItems) {
 		this.currentItems = currentItems;
 	}
 
-	public Item getCurrentItems() {
+	public Item [] getCurrentItems() {
 		return currentItems;
 	}
 
-	public void setPastItems(Item pastItems) {
+	public void setPastItems(Item [] pastItems) {
 		this.pastItems = pastItems;
 	}
 
-	public Item getPastItems() {
+	public Item [] getPastItems() {
 		return pastItems;
         }
         
