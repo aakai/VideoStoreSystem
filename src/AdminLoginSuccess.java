@@ -9,58 +9,62 @@ import java.sql.*;
  */
 
 public class AdminLoginSuccess extends javax.swing.JFrame{
-    private Employee employee = null;
+    private Employee employee;
+    private PurchasePayment purchasePay;
+    private UpdateAccount updateAcc;    
+    private final RenewMembershipPayment renew;
+    private MemberAccount member;
+    private RentItemMemberInfo rent;
     private final SearchResults search;
+    private final ReturnItem returnIt;
+
+/*
     private final CreateAccount createAcc;
-    private final UpdateAccount updateAcc;
     private final MakeReservation reserve;
     private final PaymentPage payment;
-    private final PurchasePayment purchasePay;
-    private final RentItemMemberInfo rent;
-    private final ReturnItem returnIt;
     private CancelReservation cancelReserve;
     private final SuspendPrivileges suspend;
     private final RemoveItem remove_item;
     private final AddItem add_item;
-    private final RenewMembershipPayment renew;
-    private MemberAccount member;
-
+*/
     /** Creates new form AdminLoginSuccess */
+    
     public AdminLoginSuccess() throws SQLException, ClassNotFoundException {
         initComponents();
-        search = new SearchResults(this.employee);
-        createAcc = new CreateAccount(this.employee);
-        updateAcc = new UpdateAccount(this.employee);
-        reserve = new MakeReservation(this.employee);
-        payment = new PaymentPage(this.employee);
+        employee = new Employee(33, "ottawa canadaw 28 ", 613878179, "aeakai@yahoo.com");
         purchasePay= new PurchasePayment(this.employee);
         renew = new RenewMembershipPayment(this.employee);
-        rent = new RentItemMemberInfo(this.employee, null);
+        search = new SearchResults(this.employee);
         returnIt = new ReturnItem(this.employee);
+  
+        /*
+        createAcc = new CreateAccount(this.employee);
+        reserve = new MakeReservation(this.employee);
+        payment = new PaymentPage(this.employee);
         suspend = new SuspendPrivileges(this.employee);
         add_item = new AddItem(this.employee);
         remove_item = new RemoveItem(this.employee);
-        Utility.connect();
-
+         */
+        new Utility().connect();
     }
 
     AdminLoginSuccess(Employee employee) throws ClassNotFoundException, SQLException {
         initComponents();
-        reserve = null;
+       // reserve = null;
         this.employee = employee;
-        search = new SearchResults(this.employee);
-        createAcc = new CreateAccount(this.employee);
-        updateAcc = new UpdateAccount(this.employee);
-        payment = new PaymentPage(this.employee);
         purchasePay= new PurchasePayment(this.employee);
         renew = new RenewMembershipPayment(this.employee);
-        rent = new RentItemMemberInfo(this.employee, null);
+        search = new SearchResults(this.employee);
         returnIt = new ReturnItem(this.employee);
+
+        /*
+        createAcc = new CreateAccount(this.employee);
+        payment = new PaymentPage(this.employee);
         suspend = new SuspendPrivileges(this.employee);
         add_item = new AddItem(this.employee);
         remove_item = new RemoveItem(this.employee);
-        Utility.connect();
-
+        */
+        new Utility().connect();
     }
 
     /** This method is called from within the constructor to
@@ -241,47 +245,60 @@ public class AdminLoginSuccess extends javax.swing.JFrame{
 private void purchaseItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseItemActionPerformed
 // TODO add your handling code here:
     this.setVisible(false);
+        try {
+            purchasePay.main(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
     purchasePay.setVisible(true);
 }//GEN-LAST:event_purchaseItemActionPerformed
-/*
-private void editAccountInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editAccountInfoActionPerformed
-// TODO add your handling code here:
-        String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
-                JOptionPane.PLAIN_MESSAGE, null, null,null);
 
+private void editAccountInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editAccountInfoActionPerformed
+        try {
+            // TODO add your handling code here:
+                updateAcc = new UpdateAccount(this.employee);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
     this.setVisible(false);
     updateAcc.setVisible(true);
 }//GEN-LAST:event_editAccountInfoActionPerformed
 
 private void renewMembershipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_renewMembershipActionPerformed
-// TODO add your handling code here:
     //use dialog box askin to scan card 1st.
     String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
                 JOptionPane.PLAIN_MESSAGE, null, null,null);
     try {
+        member.setMemberID(Integer.parseInt(s));
         ResultSet rs = Utility.stmt.executeQuery("SELECT * FROM members WHERE MemberID = " + Integer.parseInt(s));
         while(rs.next()){
             member.setFirstName(rs.getString("FirstName"));
             member.setLastName(rs.getString("LastName"));
             member.setEmail(rs.getString("email"));
             member.setAddress(rs.getString("Address"));
-            member.setCurrentItems(rs.getString("currentItems").split(", "));
+            member.setStatus(rs.getString("Status"));
+            member.setTotalCharge(rs.getFloat("accountBalance"));
+            
         }
     } catch (SQLException ex) {
         Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
     }
-
+     renew.setMember(member);
     this.setVisible(false);
     renew.setVisible(true);
 
 }//GEN-LAST:event_renewMembershipActionPerformed
 
 private void rentItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rentItemActionPerformed
-// TODO add your handling code here:
-    String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
-                JOptionPane.PLAIN_MESSAGE, null, null,null);
-
+        try {
+            rent = new RentItemMemberInfo(this.employee);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
     this.setVisible(false);
+    rent.main(null);
     rent.setVisible(true);
 }//GEN-LAST:event_rentItemActionPerformed
 
@@ -301,7 +318,7 @@ private void returnItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     returnIt.setVisible(true);
 
 }//GEN-LAST:event_returnItemActionPerformed
-
+/*
 private void makeReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_makeReservationActionPerformed
 // TODO add your handling code here:
     Reservation [] reservations = new Reservation[10];

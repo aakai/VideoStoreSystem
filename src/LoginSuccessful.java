@@ -13,11 +13,11 @@ public class LoginSuccessful extends javax.swing.JFrame {
     private MemberAccount member;
     private final SearchResults search;
     private final CreateAccount createAcc;
-    private final UpdateAccount updateAcc;
+    private UpdateAccount updateAcc;
     private final MakeReservation reserve;
     private final PaymentPage payment;
     private final PurchasePayment purchasePay;
-    private final RentItemMemberInfo rent;
+    private RentItemMemberInfo rent;
     private final ReturnItem returnIt;
     private CancelReservation cancelReserve;
      
@@ -27,13 +27,11 @@ public class LoginSuccessful extends javax.swing.JFrame {
         initComponents();
         search = new SearchResults(this.employee);
         createAcc = new CreateAccount(this.employee);
-        updateAcc = new UpdateAccount(this.employee);
         reserve = new MakeReservation(this.employee);
         payment = new PaymentPage(this.employee);
         purchasePay= new PurchasePayment(this.employee);
-        rent = new RentItemMemberInfo(this.employee, null);
         returnIt = new ReturnItem(this.employee);
-        Utility.connect();
+        new Utility().connect();
 
     }
 
@@ -42,13 +40,11 @@ public class LoginSuccessful extends javax.swing.JFrame {
         this.employee = employee;
         search = new SearchResults(this.employee);
         createAcc = new CreateAccount(this.employee);
-        updateAcc = new UpdateAccount(this.employee);
         reserve = new MakeReservation(this.employee);
         payment = new PaymentPage(this.employee);
         purchasePay= new PurchasePayment(this.employee);
-        rent = new RentItemMemberInfo(this.employee, null);
         returnIt = new ReturnItem(this.employee);
-        Utility.connect();
+        new Utility().connect();
         
     }
 
@@ -181,14 +177,25 @@ public class LoginSuccessful extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void purchaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseActionPerformed
-// TODO add your handling code here:
     this.setVisible(false);
+        try {
+            purchasePay.main(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
     purchasePay.setVisible(true);
 
 }//GEN-LAST:event_purchaseActionPerformed
 
 private void editAccountInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editAccountInfoActionPerformed
-// TODO add your handling code here:
+ try {
+            // TODO add your handling code here:
+                updateAcc = new UpdateAccount(this.employee);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
     this.setVisible(false);
     updateAcc.setVisible(true);
 
@@ -202,19 +209,14 @@ private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 }//GEN-LAST:event_searchButtonActionPerformed
 
 private void rentItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rentItemActionPerformed
-// TODO add your handling code here:
-    String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Customized Dialog",
-                    JOptionPane.PLAIN_MESSAGE, null, null,null);
-
-    //If a string was returned, say so.
-    if ((s != null) && (s.length() > 0)) {
-        //check validity
-        return;
-    }
-
+        try {
+            rent = new RentItemMemberInfo(this.employee);
+        } catch (SQLException ex) {
+            Logger.getLogger(LoginSuccessful.class.getName()).log(Level.SEVERE, null, ex);
+        }
     this.setVisible(false);
+    rent.main(null);
     rent.setVisible(true);
-
 }//GEN-LAST:event_rentItemActionPerformed
 
 private void returnItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnItemActionPerformed

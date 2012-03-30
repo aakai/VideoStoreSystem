@@ -116,6 +116,19 @@ class MembershipControl{
                 } 
 	                Utility.con.close();
 	}
+        
+	public void pay(Double amount) throws ClassNotFoundException, SQLException{
+		Utility.connect();
+                ResultSet rs = Utility.stmt.executeQuery("SELECT * FROM members WHERE memberID = "
+                         + Integer.toString(member.getMemberID()));
+                while(rs.next()){
+                    rs.updateDouble("accountBalance", (rs.getDouble("accountBalance")- amount));
+                    member.setTotalCharge(rs.getDouble("accountBalance")- amount);
+                    rs.updateRow();
+                } 
+	        Utility.con.close();
+	}
+
 	
 	//add overdue charge to member account for item(s) that are yet to be returned past the return date 
 	public double addOverDue(MemberAccount member, Rental r) throws ClassNotFoundException, SQLException{

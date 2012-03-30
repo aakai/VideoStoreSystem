@@ -8,26 +8,19 @@ import javax.sql.*;
 class ItemControl{
     private Game game;
     private Video video;    
-    String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
-    String dbClass = "com.mysql.jdbc.Driver";
-    Connection con;
-    Statement stmt;
-    public ItemControl(){
+    public Utility utility;
 
-    }
-    public void connect() throws ClassNotFoundException, SQLException{
-        Class.forName(dbClass);
-        con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
-        stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
     
+    public ItemControl() throws SQLException{
+        utility = new Utility();
     }
-
+   
     public void purchaseVid(Video video){
 
            try {
-             connect();
+             utility.connect();
              
-            ResultSet rs = stmt.executeQuery("SELECT noOfCopies FROM movies WHERE id = "+ Integer.toString(video.getProductID()));
+            ResultSet rs = utility.stmt.executeQuery("SELECT * FROM movies WHERE id = "+ Integer.toString(video.getProductID()));
             
             while(rs.next()) {
                 // Retrieve the auto generated key(s).
@@ -38,7 +31,7 @@ class ItemControl{
                     video.setNoOfCopies(rs.getInt("noOfCopies"));
             }
             
-            con.close();
+            utility.con.close();
         } //end try
 
         catch(ClassNotFoundException e) {
@@ -52,9 +45,9 @@ class ItemControl{
 
     public void purchaseGame(Game game){
            try {
-             connect();
+             utility.connect();
              
-            ResultSet rs = stmt.executeQuery("SELECT noOfCopies FROM games WHERE id = "+ Integer.toString(game.getProductID()));
+            ResultSet rs = utility.stmt.executeQuery("SELECT * FROM games WHERE id = "+ Integer.toString(game.getProductID()));
             
             while(rs.next()) {
                 // Retrieve the auto generated key(s).
@@ -65,7 +58,7 @@ class ItemControl{
                     game.setNoOfCopies(rs.getInt("noOfCopies"));
             }
             
-            con.close();
+            utility.con.close();
         } //end try
 
         catch(ClassNotFoundException e) {
@@ -79,9 +72,9 @@ class ItemControl{
 
     public void returnVideo(Video video, MemberAccount member){
              try {
-             connect();
+             utility.connect();
              
-            ResultSet rs = stmt.executeQuery("SELECT noOfCopies FROM movies WHERE id = "+ Integer.toString(video.getProductID()));
+            ResultSet rs = utility.stmt.executeQuery("SELECT * FROM movies WHERE id = "+ Integer.toString(video.getProductID()));
             
             while(rs.next()) {
                 // Retrieve the auto generated key(s).
@@ -92,14 +85,14 @@ class ItemControl{
                     video.setNoOfCopies(rs.getInt("noOfCopies"));
             }
     
-             ResultSet results = stmt.executeQuery("SELECT pastItems FROM members WHERE id = "+ Integer.toString(member.getMemberID()));
+             ResultSet results = utility.stmt.executeQuery("SELECT * FROM members WHERE id = "+ Integer.toString(member.getMemberID()));
               while(results.next()){
                   System.out.println(results.getString("pastItems"));
                   results.updateString("pastItems", results.getString("pastItems")+ ", "+ video.getTitle());
                   results.updateRow();
               }        
 
-            con.close();
+            utility.con.close();
         } //end try
 
         catch(ClassNotFoundException e) {
@@ -113,9 +106,9 @@ class ItemControl{
 
     public void returnGame(Game game, MemberAccount member){
              try {
-                 connect();
+                 utility.connect();
 
-                ResultSet rs = stmt.executeQuery("SELECT noOfCopies FROM games WHERE id = "+ Integer.toString(game.getProductID()));
+                ResultSet rs = utility.stmt.executeQuery("SELECT * FROM games WHERE id = "+ Integer.toString(game.getProductID()));
 
                 while(rs.next()) {
                     // Retrieve the auto generated key(s).
@@ -125,7 +118,7 @@ class ItemControl{
                         System.out.println("#of copies = "+ Integer.toString(rs.getInt("noOfCopies")));
                         game.setNoOfCopies(rs.getInt("noOfCopies"));
              }
-             ResultSet results = stmt.executeQuery("SELECT pastItems FROM members WHERE id = "+ Integer.toString(member.getMemberID()));
+             ResultSet results = utility.stmt.executeQuery("SELECT * FROM members WHERE id = "+ Integer.toString(member.getMemberID()));
               while(results.next()){
                   System.out.println(results.getString("pastItems"));
                   results.updateString("pastItems", results.getString("pastItems")+ ", "+ game.getTitle());
@@ -133,7 +126,7 @@ class ItemControl{
               }        
 
                 
-            con.close();
+            utility.con.close();
         } //end try
 
         catch(ClassNotFoundException e) {
@@ -152,22 +145,22 @@ class ItemControl{
        String insertString = null;
        int productID = 0;
        try {
-        connect();
+        utility.connect();
         insertString = "('"+video.getTitle()+"', '"+video.getActors()+"', '"+video.getDirector()+"', '"+video.getRating()
                 + "', '"+video.getRunTime()+"', '"+video.getCategory()
                 +"', '" + video.getMedium()+ "', "+video.getNoOfCopies()+ ", "
                 +video.getRentalPrice()+","+video.getPurchasePrice()+")";
 
-        int rs = stmt.executeUpdate("INSERT INTO movies ('Title', 'Actors', 'Director', 'Rating', 'Runtime',"
+        int rs = utility.stmt.executeUpdate("INSERT INTO movies ('Title', 'Actors', 'Director', 'Rating', 'Runtime',"
                 + " 'Category', 'Medium', 'noOfCopies', 'rentalPrice', 'purchasePrice')"
                 + " VALUES" + insertString, Statement.RETURN_GENERATED_KEYS);
-        ResultSet results = stmt.getGeneratedKeys();
+        ResultSet results = utility.stmt.getGeneratedKeys();
         if ( results.next() ) {
             // Retrieve the auto generated key(s).
                 productID = results.getInt(1);
         }
         video.setProductID(productID);
-        con.close();
+        utility.con.close();
     } //end try
 
     catch(ClassNotFoundException e) {
@@ -188,22 +181,22 @@ class ItemControl{
        int productID = 0;
         try {
 
-            connect();
+            utility.connect();
             newGameInformation = "('"+game.getTitle()+"', '"+ game.getRating()+ "', '"+game.getCategory()
                     +"', '" + game.getDeveloper()+"', '"+ game.getPublisher()+ "', '"+Integer.toString(game.getProductID())
                     +"', "+Integer.toString(game.getNoOfCopies())+", "+Integer.toString(game.getRentalPrice())+", "
                     +Integer.toString(game.getPurchasePrice())+")";
 
-            int rs = stmt.executeUpdate("INSERT INTO games ('title', 'rating', 'category', 'developer', 'publisher', 'system',"
+            int rs = utility.stmt.executeUpdate("INSERT INTO games ('title', 'rating', 'category', 'developer', 'publisher', 'system',"
                     + "'noOfCopies','rentalPrice','purchasePrice')"
                     + " VALUES" + newGameInformation, Statement.RETURN_GENERATED_KEYS);
-            ResultSet results = stmt.getGeneratedKeys();
+            ResultSet results = utility.stmt.getGeneratedKeys();
             if (results.next()) {
                 // Retrieve the auto generated key(s).
                     productID = results.getInt(1);
             }
             game.setProductID(productID);
-            con.close();
+            utility.con.close();
         } //end try
 
         catch(ClassNotFoundException e) {
@@ -221,8 +214,8 @@ class ItemControl{
 
 
          try {
-              connect();
-              int rs = stmt.executeUpdate("DELETE FROM movies WHERE id = " + Integer.toString(productID));
+              utility.connect();
+              int rs = utility.stmt.executeUpdate("DELETE FROM movies WHERE id = " + Integer.toString(productID));
 
               if (rs == 1 ) {
                   // Retrieve the auto generated key(s).
@@ -230,7 +223,7 @@ class ItemControl{
               }else{
                   System.out.println("ERROR with video removal from database");
               }
-              con.close();
+              utility.con.close();
       } //end try
         catch(ClassNotFoundException e) {
           e.printStackTrace();
@@ -244,9 +237,9 @@ class ItemControl{
     public void removeGame(int productID){
       
            try { 
-               connect();
+               utility.connect();
                
-              int rs = stmt.executeUpdate("DELETE FROM games WHERE id = " +  productID);
+              int rs = utility.stmt.executeUpdate("DELETE FROM games WHERE id = " +  productID);
               if (rs == 1 ) {
                   // Retrieve the auto generated key(s).
                   System.out.println("Game Deleted!");
@@ -254,7 +247,7 @@ class ItemControl{
                   System.out.println("ERROR with game removal from database");
               }
 
-               con.close();
+               utility.con.close();
            } //end try
 
            catch(ClassNotFoundException e) {

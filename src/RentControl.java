@@ -12,32 +12,26 @@ import java.util.Date;
 public class RentControl{
 	private Date currentDate;
 	private Date returnDate;//Date that the user should return item
-        String dbUrl = "jdbc:mysql://localhost:3306/sourceit_vss";
-        String dbClass = "com.mysql.jdbc.Driver";
-	Statement stmt;
-        Connection con;
-//When system is used in store by an employee
-        
+
+        Statement stmt;
     
-        public RentControl(Date current){
-		this.currentDate = currentDate;
-                returnDate = new Date();
+        public RentControl(Date current) throws SQLException{
+		this.currentDate = current;
+                returnDate = new Utility().addDays(current, 3);
 	}
         
         public void connect() throws ClassNotFoundException, SQLException{
-                Class.forName(dbClass);
-                con = DriverManager.getConnection (dbUrl, "root","");
-                stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+             new Utility().connect();
+            stmt = new Utility().con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
 
-            }
+        }
 
 	
-	public Rental rent(MemberAccount member, Employee employee, Item copy, int charge, Date rentalDate, Date returnDate){
-		//Notify the system that one item copy is no longer in stock and the no of copies in stock is one less.
-		Rental r;
-		
+	public Rental rent(MemberAccount member, Employee employee, Item copy, int charge, Date rentalDate, 
+                Date returnDate) throws SQLException{
+		//Notify the system that one item copy is no longer in stock and the no of copies in stock is one less
 		//add Item to Member's list of items he/she is currently in possesion of.
-		r = new Rental(0, copy,  employee, member, charge, rentalDate, returnDate);
+		Rental r = new Rental(0, copy,  employee, member, charge, rentalDate, returnDate);
 	 	
 	        String newRentalInformation = null;
 	          try {
@@ -76,17 +70,8 @@ public class RentControl{
                           System.out.println(videoQuery.getInt("noOfCopies"));
                           videoQuery.updateInt("noOfCopies", videoQuery.getInt("noOfCopies") - 1);
                           videoQuery.updateRow();
-                      }                  
-                      /*
-                      ResultSet payment = stmt.executeQuery("SELECT Balance FROM member WHERE memberID = "
-                              + Integer.toString(member.getMemberID()));
-                      
-                      while(payment.next()){
-                          payment.updateDouble("Balance", (payment.getDouble("Balance") +  r.getCharge()));
-                          member.setTotalCharge(payment.getDouble("Balance") +  r.getCharge());
-                          payment.updateRow();
-                      }*/
-                      con.close();
+                      }   
+                      new Utility().con.close();
 	          } //end try
 
 	          catch(ClassNotFoundException e) {
@@ -98,6 +83,6 @@ public class RentControl{
 	          }
                   returnDate = new Utility().addDays(currentDate, 3);
                   r.setReturnDate(returnDate);
-          return r;
+                  return r;
 	}
 }

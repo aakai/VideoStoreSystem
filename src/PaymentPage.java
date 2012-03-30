@@ -4,17 +4,11 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import java.util.Date;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-/*
- * Payment.java
- * Created on Nov 25, 2011, 10:01:21 PM
- */
 /**
  * @author anearcan
+ * This is for payment for renting items
  */
+
 public class PaymentPage extends javax.swing.JFrame {
     private static DefaultListModel listModel = new DefaultListModel();
     private Payment payment;
@@ -53,6 +47,7 @@ public class PaymentPage extends javax.swing.JFrame {
         for(int i = 0; i<items.length; i++){
             balance+=items[i].getRentalPrice();
         }
+        totalRentalCost.setText(Double.toString(balance));
         
     }
 
@@ -201,7 +196,13 @@ private void payRentalButtonActionPerformed(java.awt.event.ActionEvent evt) {//G
         Logger.getLogger(PaymentPage.class.getName()).log(Level.SEVERE, null, ex);
     }
     new PrinterInterface().printReceipt(payment);
-    new Utility().returnToMainMenu(employee);
+        try {
+            new Utility().returnToMainMenu(employee);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PaymentPage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(PaymentPage.class.getName()).log(Level.SEVERE, null, ex);
+        }
     this.setVisible(false);
 
 }//GEN-LAST:event_payRentalButtonActionPerformed

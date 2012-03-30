@@ -19,11 +19,11 @@ public class Utility {
     static String  dbUrl = "jdbc:mysql://localhost:3306/sourceit_vss";
     static Statement stmt;
     static PreparedStatement pStmt;
-    
+    public static final int numberOfTransactions = 50;// This is the max number of items someone can purchase or rent at a time
     
     public Utility() throws SQLException{
-           con = DriverManager.getConnection (dbUrl, "root","");
-
+           con = DriverManager.getConnection (dbUrl, "root","");    
+           stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
     }
     
     
@@ -55,7 +55,7 @@ public class Utility {
     public static void connect() throws ClassNotFoundException, SQLException{
                 Class.forName("com.mysql.jdbc.Driver");
                 con = DriverManager.getConnection (dbUrl, "root","");
-                //stmt = con.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_UPDATABLE);
+                
         }
 
 }

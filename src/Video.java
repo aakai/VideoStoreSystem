@@ -112,12 +112,12 @@ class Video extends Item{
 	}
 
 	public void setCategory(String category) {
-		Category = category;
-	}
+            super.setGenre(category);
+        }
 
 
 	public String getCategory() {
-		return Category;
+		return super.getGenre();
 	}
 
 

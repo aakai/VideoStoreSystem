@@ -254,7 +254,7 @@ private void searchGenreCheckActionPerformed(java.awt.event.ActionEvent evt) {//
 // TODO add your handling code here:
     genreKey = true;
     if((String)itemType.getSelectedItem() == "Video"){
-        criteria.add("genre");
+        criteria.add("Category");
     }else{
         criteria.add("category");
     }
@@ -326,30 +326,39 @@ private void developerCheckActionPerformed(java.awt.event.ActionEvent evt) {//GE
 
 private void selectButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectButtonActionPerformed
     ResultSet rs;
+    Video selectedVideo = new Video();
+    
+ 
     try {
             Class.forName("com.mysql.jdbc.Driver");
             Connection con = DriverManager.getConnection (dBurl, "root", "");
-            Statement stmt = con.createStatement();
-           
-            String selectedTitle = (String)searchResults.getSelectedValue();
+            
+            String selectedTitle = listModel.getElementAt(searchResults.getSelectedIndex()+ 1).toString();
             System.out.println(selectedTitle + "\n");
 
             String type = (String)itemType.getSelectedItem();
-            Video selectedVideo = null;
             if(type == "Video"){
-                rs = stmt.executeQuery("SELECT * FROM movies WHERE title = " + selectedTitle);
+                rs = new Utility().stmt.executeQuery("SELECT * FROM movies WHERE Title = '" + selectedTitle+ "'");
                 while(rs.next()){
-                    selectedVideo = new Video(rs.getInt("id"), selectedTitle, rs.getString("Actors").split(", "),rs.getString("director")
-                            ,rs.getString("Rating"),rs.getString("Runtime"), rs.getString("genre"), rs.getString("Medium"), rs.getInt("noOfCopies")
-                            ,  rs.getInt("rentalPrice"), rs.getInt("purchasePrice"));
-                    
+                 
+                   selectedVideo.setTitle(selectedTitle);
+                   selectedVideo.setProductID(rs.getInt("id"));
+                   selectedVideo.setActor(rs.getString("Actors").split(", "));
+                   selectedVideo.setGenre(rs.getString("Category"));
+                   selectedVideo.setDirector(rs.getString("Director"));
+                   selectedVideo.setFormat(rs.getString("Medium"));
+                   selectedVideo.setRating(rs.getString("Rating"));
+                   selectedVideo.setRentalPrice(rs.getInt("rentalPrice"));
+                   selectedVideo.setPurchasePrice(rs.getInt("purchasePrice"));
+                   selectedVideo.setRunTime(rs.getString("Runtime"));
+                   selectedVideo.setNoOfCopies(rs.getInt("noOfCopies"));
                     
                 }
                 new VideoInfo(employee, selectedVideo).setVisible(true);
                 this.setVisible(false);
              }else{
                 Game selectedGame = null;
-                rs = stmt.executeQuery("SELECT * FROM games WHERE title = " + selectedTitle);
+                rs = new Utility().stmt.executeQuery("SELECT * FROM games WHERE title = '" + selectedTitle +"'");
                 while(rs.next()){
                     selectedGame = new Game(rs.getInt("id"), selectedTitle, rs.getInt("rentalPrice"), rs.getInt("purchasePrice"), "...",
                             rs.getString("Rating"),new ArrayList(Arrays.asList(rs.getString("system").split(", "))), rs.getString("category"), 

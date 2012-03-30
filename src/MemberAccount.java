@@ -192,7 +192,7 @@ class MemberAccount {
 		return phoneNumber;
 	}
 
-	public void setCurrentItems(Item[] currentItems) {
+	public void setCurrentItems(Item [] currentItems) {
 		this.currentItems = currentItems;
 	}
 
@@ -213,11 +213,13 @@ class MemberAccount {
         }
 
         public void setStatus(String string) {
-            if((string == "Active") ||(string == "Expired")||(string =="Suspended")){
+            if((string.equalsIgnoreCase("Active"))||(string.equalsIgnoreCase("Expired"))||
+                    (string.equalsIgnoreCase("Suspended"))){
                 status = string;
             }else{
-                System.err.println("Status entered is invalid. Check entry.");
+                System.err.println("Status entered is invalid. Entry ==>" + string);
             }
         }
 
+ 
 }

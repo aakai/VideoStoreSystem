@@ -14,7 +14,12 @@ public class Rental {
 	private Date ReturnDate;
 	
 	
-	
+        public Rental(){
+            RentalId = 0;
+            RentalDate = new java.util.Date();
+            ReturnDate = Utility.addDays(RentalDate, 3);
+                    
+        }
 	
 	public Rental(int rentalId, Item item, Employee employee, MemberAccount member, int charge, Date rentalDate,
 			Date returnDate) {

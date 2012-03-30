@@ -1,3 +1,5 @@
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import java.sql.*;
         
@@ -19,20 +21,52 @@ import java.sql.*;
 public class UpdateAccount extends javax.swing.JFrame {
     private MemberAccount member;
     private Employee employee;
-    
+    private ResultSet rs;
     
     /** Creates new form UpdateAccount */
-    public UpdateAccount() {
-        initComponents();
-         String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
-                JOptionPane.PLAIN_MESSAGE, null, null,null);
-         
-    }
-
-    UpdateAccount(Employee employee) {
+    public UpdateAccount() throws ClassNotFoundException, SQLException {
         initComponents();
         String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
                 JOptionPane.PLAIN_MESSAGE, null, null,null);
+        memberID.setText(s);
+        Utility.connect();  
+        Statement stmt = Utility.con.createStatement();
+         
+        rs = stmt.executeQuery("SELECT * FROM members WHERE MemberID = " + s);
+         
+         while(rs.next()){
+             memberFirstName.setText(rs.getString("FirstName"));
+             memberLastName.setText(rs.getString("LastName"));
+             newAddress.setText(rs.getString("Address"));
+             email.setText(rs.getString("email"));
+             phoneNumber.setText(Integer.toString(rs.getInt("PhoneNumber")));
+             
+         }
+         member = new MemberAccount(Integer.parseInt(s), memberFirstName.getText(), memberLastName.getText(),
+                 email.getText(), Integer.parseInt(phoneNumber.getText()));
+    }
+
+    UpdateAccount(Employee employee) throws ClassNotFoundException, SQLException {
+        initComponents();
+        this.employee = employee;
+        String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
+                JOptionPane.PLAIN_MESSAGE, null, null,null);
+        memberID.setText(s);
+        
+        Utility.connect();  
+        Statement stmt = Utility.con.createStatement();
+         
+        rs = stmt.executeQuery("SELECT * FROM members WHERE MemberID = " + s);
+         
+         while(rs.next()){
+             memberFirstName.setText(rs.getString("FirstName"));
+             memberLastName.setText(rs.getString("LastName"));
+             newAddress.setText(rs.getString("Address"));
+             email.setText(rs.getString("email"));
+             phoneNumber.setText(Integer.toString(rs.getInt("PhoneNumber")));             
+         }
+         member = new MemberAccount(Integer.parseInt(s), memberFirstName.getText(), memberLastName.getText(),
+                 email.getText(), Integer.parseInt(phoneNumber.getText()));
          
     }
 
@@ -96,7 +130,7 @@ public class UpdateAccount extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(40, Short.MAX_VALUE)
+                .addContainerGap(78, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(updateButton)
                     .addGroup(layout.createSequentialGroup()
@@ -161,28 +195,26 @@ public class UpdateAccount extends javax.swing.JFrame {
                             .addComponent(jLabel3)
                             .addComponent(newAddress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(7, 7, 7)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(7, 7, 7))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                .addComponent(memberCity, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(8, 8, 8)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel6)
-                            .addComponent(memberProvince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel4)
+                            .addComponent(memberCity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(1, 1, 1))
                     .addComponent(streetAddress, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(memberProvince, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(phoneNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(updateButton)
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addContainerGap(94, Short.MAX_VALUE))
         );
 
         pack();
@@ -190,15 +222,39 @@ public class UpdateAccount extends javax.swing.JFrame {
 
 private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateButtonActionPerformed
 // TODO add your handling code here:
-  /*   member.setFirstName(memberFirstName.getText());
+  
+     member.setFirstName(memberFirstName.getText());
      member.setLastName(memberLastName.getText());
      member.setAddress(newAddress.getText());
      member.setCity(memberCity.getText());
-     member.setProvince(memberProvince.getSelectedItem());
+     member.setProvince((String)memberProvince.getSelectedItem());
      member.setEmail(email.getText());
-     member.setPhoneNumber(phoneNumber.getText());
-     //insert code to update database.
-     */
+     member.setPhoneNumber(Integer.parseInt(phoneNumber.getText()));
+        try {
+            //insert code to update database.
+            while(rs.next()){
+              rs.updateString("FirstName", memberFirstName.getText());
+              rs.updateString("LastName", memberLastName.getText());
+              rs.updateString("email", email.getText());
+              rs.updateString("Address",newAddress.getText());
+              rs.updateInt("PhoneNumber",Integer.parseInt(phoneNumber.getText()));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UpdateAccount.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            Utility.con.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(UpdateAccount.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            Utility.returnToMainMenu(employee);
+            this.setVisible(false);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(UpdateAccount.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(UpdateAccount.class.getName()).log(Level.SEVERE, null, ex);
+        }
 }//GEN-LAST:event_updateButtonActionPerformed
 
     /**

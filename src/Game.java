@@ -17,12 +17,7 @@ class Game extends Item{
 	private String developer;
 	private String publisher;
 	private ArrayList<String> system; // "PS3"/"Xbox360"/"Wii"
-        
-    public Game() {
- 
-    }
-
-    
+            
     public Game(int id, String title, String genre, Date releaseDate) {
 		this.setProductID(id);
 		this.setTitle(title);

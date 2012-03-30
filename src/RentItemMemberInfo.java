@@ -1,18 +1,10 @@
 import java.util.Date;
 import java.sql.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * RentItemMemberInfo.java
- *
- * Created on Jan 23, 2012, 6:26:12 PM
- */
 /**
  *
  * @author anearcan
@@ -25,69 +17,75 @@ public class RentItemMemberInfo extends javax.swing.JFrame {
     private static int count = 0;
     static DefaultListModel listModel = new DefaultListModel();
     private Date today = new java.util.Date();
-    private RentControl control = new RentControl(today);
-    private Rental r;
-    
+    private RentControl control;
+    private Rental rental = new Rental();
+    private static JFrame frame = new JFrame(); 
+ 
     /* Creates new form RentItemMemberInfo */
-    public RentItemMemberInfo() {
+    public RentItemMemberInfo() throws SQLException {
         initComponents();
-        employee = null;
-        member = null;
+        control = new RentControl(today);
+        employee = new Employee(33, "ottawa canadaw 28 ", 613878179, "aeakai@yahoo.com");
         rentedItemList = new JList(listModel);
     }
 
-    public RentItemMemberInfo(Employee employee, Item item) {
+    public RentItemMemberInfo(Employee employee) throws SQLException {
         initComponents();
+        control = new RentControl(today);
         this.employee = employee;
-        this.member = member;
-        rentedItemList = new JList(listModel);
+        rentedItemList = new JList(listModel);    
     }
+    
+    
+    public RentItemMemberInfo(Employee employee, Item item) throws SQLException {
+        initComponents();
+        control = new RentControl(today);
+        this.employee = employee;
+        rentedItemList = new JList(listModel);
+   
+        // Add item to list immediately
+        listModel.addElement(item.getTitle());
+        items[count] = item;
+        scannedItemsTitle[count] = item.getTitle();
+        count++;
+   }
 
     //Scans item and add item to list of scanned items.
     public static void addItemsToList(){
         String id = null;
-        JFrame frame = new JFrame(); 
         
         do{
             id = (String)JOptionPane.showInputDialog(frame, "Scan Item(enter 0 to stop)","Rent",JOptionPane.PLAIN_MESSAGE);                
             
-            String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
-            String dbClass = "com.mysql.jdbc.Driver";
             String queryGames = "SELECT id, title, rentalPrice FROM games where id = "+ id;
             String queryMovies = "SELECT id, title, rentalPrice FROM movies where id = " + id;
            
             try {
-                Class.forName(dbClass);
-                Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
-
-                PreparedStatement gameStmt = con.prepareStatement(queryGames);
-                PreparedStatement movieStmt = con.prepareStatement(queryMovies);
+                Utility.connect();
+                PreparedStatement gameStmt = Utility.con.prepareStatement(queryGames);
+                PreparedStatement movieStmt = Utility.con.prepareStatement(queryMovies);
                 
                 
                 ResultSet rsGame = gameStmt.executeQuery();
                 while (rsGame.next() && count < scannedItemsTitle.length) {
                     
-                     listModel.addElement(rsGame.getString("title"));
-                     listModel.addElement(rsGame.getInt("rentalPrice"));
-                     listModel.addElement(rsGame.getInt("noOfCopies"));
+                     listModel.addElement(rsGame.getString("title") + "  $"+ rsGame.getInt("rentalPrice"));
                      //Select the new item and make it visible.
                     rentedItemList.setSelectedIndex(count);
                     rentedItemList.ensureIndexIsVisible(count);
-                } //end while
+ 
+                }
 
                 ResultSet rsMovies = movieStmt.executeQuery();
                 while(rsMovies.next()&& count < scannedItemsTitle.length){
-                     listModel.addElement(rsMovies.getString("title"));
-                     listModel.addElement(rsMovies.getInt("rentalPrice"));
-                     listModel.addElement(rsMovies.getInt("noOfCopies"));
-                     rentedItemList.setSelectedIndex(count);
-                     rentedItemList.ensureIndexIsVisible(count);                     
+                     listModel.addElement(rsMovies.getString("Title") + " $" + rsMovies.getInt("rentalPrice"));
+                     //Select the new item and make it visible.                     
+                    rentedItemList.setSelectedIndex(count);
+                    rentedItemList.ensureIndexIsVisible(count);
                 }
-                rentedItemList.setSelectedIndex(count);
-                rentedItemList.ensureIndexIsVisible(count);
                 count++;
                 
-                con.close();
+                Utility.con.close();
             } //end try
 
             catch(ClassNotFoundException e) {
@@ -97,7 +95,7 @@ public class RentItemMemberInfo extends javax.swing.JFrame {
             catch(SQLException e) {
                 e.printStackTrace();
             }
-        }while(id!="0");
+        }while(!id.equalsIgnoreCase("0"));
     }
 
     /** This method is called from within the constructor to
@@ -175,10 +173,13 @@ public class RentItemMemberInfo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void rentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rentButtonActionPerformed
-// TODO add your handling code here:
       for(int i = 0; i< count; i++){
-         r =  control.rent(member, employee, items[i], items[i].getRentalPrice(), today, 
-                 Utility.addDays(today, 3));
+            try {
+                rental =  control.rent(member, employee, items[i], items[i].getRentalPrice(), today, 
+                       new Utility().addDays(today, 3));
+            } catch (SQLException ex) {
+                Logger.getLogger(RentItemMemberInfo.class.getName()).log(Level.SEVERE, null, ex);
+            }
       }
       new PaymentPage(employee, member, items).setVisible(true);
       this.setVisible(false);
@@ -187,7 +188,7 @@ private void rentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -214,17 +215,38 @@ private void rentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
 
+            @Override
             public void run() {
-                new RentItemMemberInfo().setVisible(true);            
+                try {
+                    new RentItemMemberInfo().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(RentItemMemberInfo.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
-        RentItemMemberInfo.addItemsToList();
+        String s = (String)JOptionPane.showInputDialog(frame,"Scan Membership Card\n","Confirm Membership",
+                JOptionPane.PLAIN_MESSAGE, null, null,null);
+   
+        try {
+            memberID.setText(s);
+            ResultSet rs = new Utility().stmt.executeQuery("SELECT * FROM members WHERE MemberID = " + Integer.parseInt(s));
+            while(rs.next()){
+                member = new MemberAccount(Integer.parseInt(s), rs.getString("FirstName"), rs.getString("LastName"),
+                                rs.getString("email"), (int)rs.getLong("PhoneNumber"));
+                member.setAddress(rs.getString("Address"));
+                member.setStatus(rs.getString("Status"));
+                member.setTotalCharge(rs.getFloat("accountBalance"));            
+            }
+       } catch (SQLException ex) {
+            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+       }
+       addItemsToList();
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private static javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel memberID;
+    private static javax.swing.JLabel memberID;
     private javax.swing.JButton rentButton;
     private static javax.swing.JList rentedItemList;
     // End of variables declaration//GEN-END:variables

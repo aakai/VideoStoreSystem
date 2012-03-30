@@ -107,20 +107,16 @@ private void employeePasswordFieldActionPerformed(java.awt.event.ActionEvent evt
 
 private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginButtonActionPerformed
 // TODO add your handling code here:
-        String dbtime, username = null;
         String password = null;
-        String dbUrl = "jdbc:mysql://localhost:3306/sourceit_vss";
-        String dbClass = "com.mysql.jdbc.Driver";
         String admin = null; 
         String queryID = "SELECT email FROM employee " + "WHERE id = '" + employeeIdField.getText() + "'";
       
          try {
-            Class.forName(dbClass);
-            Connection con = DriverManager.getConnection (dbUrl, "root","");
-            Statement stmt = con.createStatement();
+            Utility.connect();
+            Statement stmt = Utility.con.createStatement();
             ResultSet rsID = stmt.executeQuery(queryID);
-            System.out.println(employeePasswordField.getPassword());
-            while (rsID.next()) {
+      
+            if (rsID.next()) {
                 password = rsID.getString("email");
                 System.out.println(password);
                
@@ -145,7 +141,7 @@ private void loginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
                 }
             } //end while
   
-            con.close();
+            Utility.con.close();
         } //end try
 
         catch(ClassNotFoundException e) {

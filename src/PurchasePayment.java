@@ -9,19 +9,21 @@ import javax.swing.*;
  */
 public class PurchasePayment extends javax.swing.JFrame {
     private static Employee employee;
-    private static Game[] games;
-    private static Video[] videos;
+    private static Game[] games = new Game[Utility.numberOfTransactions];
+    private static Video[] videos = new Video [Utility.numberOfTransactions];
     private static ItemControl control;
     private static DefaultListModel listModel = new DefaultListModel();
     private static int gameCount = 0;
     private static int vidCount= 0;
     private static int total = 0;
     private Payment purchasePayment = null;
+    static String id = " ";
     /** Creates new form PurchasePayment */
 
-    public PurchasePayment() {
+    public PurchasePayment() throws SQLException {
       
         initComponents();
+        control = new ItemControl();
         scannedItemList = new JList(listModel); 
         totalCost.setText(Integer.toString(total));
     }
@@ -31,6 +33,7 @@ public class PurchasePayment extends javax.swing.JFrame {
         this.employee = employee;
         scannedItemList = new JList(listModel);
         totalCost.setText(Integer.toString(total));
+
     }
 
     
@@ -159,15 +162,15 @@ private void paymentMethodcomboBoxActionPerformed(java.awt.event.ActionEvent evt
 private void purchasePayButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchasePayButtonActionPerformed
 
     //Purchase function called for each game in the list
-        for(int i= 0; i< gameCount; i++){
+        for(int i= 0; i < gameCount; i++){
             control.purchaseGame(games[i]);
         }
     //Purchase function called for each game in the list        
-        for(int i = 0; i<vidCount;i++){
+        for(int i = 0; i < vidCount;i++){
             control.purchaseVid(videos[i]);
         }
         
-        if((String)paymentMethodcomboBox.getSelectedItem() == "Cash"){
+        if(((String)paymentMethodcomboBox.getSelectedItem()).equalsIgnoreCase("Cash")){
             purchasePayment = new CashPayment(Double.parseDouble(totalCost.getText()));
         }else{
             purchasePayment = new CreditCardPayment(Double.parseDouble(totalCost.getText()));
@@ -196,13 +199,13 @@ private void purchasePayButtonActionPerformed(java.awt.event.ActionEvent evt) {/
 }//GEN-LAST:event_purchasePayButtonActionPerformed
     //Scans item and add item to list of scanned items.
 public static void addItemsToList() {
-        String id = "-1";
+        
         JFrame frame = new JFrame(); 
-        do{
-            id = (String)JOptionPane.showInputDialog(frame, "Scan Item(enter 0 to stop)","Rent",JOptionPane.PLAIN_MESSAGE);                
+        while(!id.equalsIgnoreCase("0")){
+            id = (String)JOptionPane.showInputDialog(frame, "Scan Item(enter 0 to stop)","Buy",JOptionPane.PLAIN_MESSAGE);                
             
-            String queryGames = "SELECT id, title, purchasePrice FROM games where id = "+ id;
-            String queryMovies = "SELECT id, title, purchasePrice FROM movies where id = " + id;
+            String queryGames = "SELECT * FROM games where id = "+ id;
+            String queryMovies = "SELECT * FROM movies where id = " + id;
            
             try {
                 listModel.addElement((String)id);
@@ -217,7 +220,6 @@ public static void addItemsToList() {
                      listModel.addElement((String)rsGame.getString("title") + "   $"
                              + Integer.toString(rsGame.getInt("purchasePrice")));
 
-                     System.out.println(Integer.toString(rsGame.getInt("noOfCopies")));                     
                      //Update total Cost
                      total += rsGame.getInt("purchasePrice");
                      totalCost.setText(Integer.toString(total));
@@ -225,7 +227,8 @@ public static void addItemsToList() {
                      scannedItemList.setSelectedIndex(gameCount);
                      scannedItemList.ensureIndexIsVisible(gameCount);
                      //add to list of games
-                     games[gameCount] = new Game(rsGame.getInt("id"), rsGame.getString("title"), rsGame.getInt("rentalPrice"), rsGame.getInt("purchasePrice"));
+                     games[gameCount] = new Game(rsGame.getInt("id"), rsGame.getString("title"),
+                             rsGame.getInt("rentalPrice"), rsGame.getInt("purchasePrice"));       
                      gameCount++;
                 }
 
@@ -234,8 +237,6 @@ public static void addItemsToList() {
                      //title  and the price are displayed on the list pane
                      listModel.addElement((String)rsMovies.getString("Title") + "   $"
                              + Integer.toString(rsMovies.getInt("purchasePrice")));
-                       
-                     System.out.println(Integer.toString(rsMovies.getInt("noOfCopies")));
                                           //Update total cost
                      total += rsMovies.getInt("purchasePrice");
                      totalCost.setText(Integer.toString(total));
@@ -260,7 +261,7 @@ public static void addItemsToList() {
             catch(SQLException e) {
                 e.printStackTrace();
             }
-        }while(id != "0");
+        }
     }
 
     /**
@@ -294,7 +295,11 @@ public static void addItemsToList() {
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new PurchasePayment().setVisible(true);
+                try {
+                    new PurchasePayment().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(PurchasePayment.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         PurchasePayment.addItemsToList();
