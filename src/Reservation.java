@@ -13,6 +13,7 @@ import java.util.Date;
  */
 class Reservation {
 
+    private String itemType;
     private int reservationId;
     private Date pickUpDate; // pick the item that you reserved
     private Date reservationDate; // date reservation was made
@@ -42,6 +43,7 @@ class Reservation {
                 this.item = item;
                 this.item.getWaitingList().add(member);
     }
+    
     public void setPickUpDate(Date pickUpDate) {
             this.pickUpDate = pickUpDate;
     }
@@ -91,6 +93,13 @@ class Reservation {
 
     public MemberAccount getEarliestMember() {
             return earliestMember;
+    }
+
+    String getType() {
+        return itemType;
+    }
+    void setType(String s) {
+        itemType = s;
     }
 
 }

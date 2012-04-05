@@ -20,7 +20,7 @@ import java.util.logging.Logger;
 public class GameInfo extends javax.swing.JFrame {
     private Employee employee;
     private Game newGame;
-    private String consoleString = ""; 
+    private String consoleString = " "; 
     
             
     /** Creates new form GameInfo */
@@ -49,7 +49,7 @@ public class GameInfo extends javax.swing.JFrame {
         noInStock.setText(Integer.toString(newGame.getNoOfCopies()));
         for(String c : newGame.getConsole()){
             
-            consoleString += c + ";";
+            consoleString +=( c + ";");
         }
         console.setText(consoleString);
     }
@@ -278,13 +278,25 @@ public class GameInfo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 private void doneButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_doneButtonActionPerformed
-    new Utility().returnToMainMenu(employee);
+        try {
+            new Utility().returnToMainMenu(employee);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(GameInfo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(GameInfo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     this.setVisible(false);}//GEN-LAST:event_doneButtonActionPerformed
 
 private void printButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButtonActionPerformed
 // TODO add your handling code here:
     new PrinterInterface().printGameInfo(newGame);
-    new Utility().returnToMainMenu(employee);
+        try {
+            new Utility().returnToMainMenu(employee);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(GameInfo.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(GameInfo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     this.setVisible(false);
 }//GEN-LAST:event_printButtonActionPerformed
 
@@ -295,8 +307,12 @@ private void purchaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GE
 }//GEN-LAST:event_purchaseButtonActionPerformed
 
 private void rentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rentButtonActionPerformed
-// TODO add your handling code here:
-    new RentItemMemberInfo(employee, newGame).setVisible(true);
+        try {
+            // TODO add your handling code here:
+                new RentItemMemberInfo(employee, newGame).setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(GameInfo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     this.setVisible(false);
 }//GEN-LAST:event_rentButtonActionPerformed
 

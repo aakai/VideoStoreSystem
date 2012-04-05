@@ -22,11 +22,15 @@ public class RemoveGame extends javax.swing.JFrame {
     private static JFrame frame;
     /** Creates new form RemoveGame */
     public RemoveGame() {
+        employee = new Employee();
+         frame = new JFrame();
         initComponents();
     }
     
-    public RemoveGame(String title){
-       frame = new JFrame(title);
+    public RemoveGame(Employee employee){
+       frame = new JFrame();
+       this.employee= employee;
+        initComponents();
     }
 
     /** This method is called from within the constructor to

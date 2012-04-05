@@ -81,4 +81,8 @@ public class Rental {
 	public Date getReturnDate() {
 		return ReturnDate;
 	}
+        public String toString(){
+            return "Employee Name: "+employee.getFirstName() +"performed rental for "+ member.getFirstName();
+        }
 }
+

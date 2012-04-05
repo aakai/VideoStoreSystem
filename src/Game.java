@@ -18,7 +18,13 @@ class Game extends Item{
 	private String publisher;
 	private ArrayList<String> system; // "PS3"/"Xbox360"/"Wii"
             
-    public Game(int id, String title, String genre, Date releaseDate) {
+     
+     public Game(){
+         this.setProductID(0);
+         this.setTitle("");
+     }   
+        
+     public Game(int id, String title, String genre, Date releaseDate) {
 		this.setProductID(id);
 		this.setTitle(title);
 		this.setGenre(genre);
@@ -33,15 +39,6 @@ class Game extends Item{
                 super.setPurchasePrice(purchasePrice);
     }
 	
-    Game(String title, int rentPrice, int purchasePrice, String description, String console, String genre) {
- 
-    }
-
-    public Game(String title, int rentPrice, int purchasePrice, String description, ArrayList<String> console, String genre,
-            String developer, String publisher) {
-    
-    }
-    
     public Game(String title,int rentPrice, int purchasePrice, String description, String rating, ArrayList<String> console, String genre,
             String developer, String publisher) {
             super(title, rentPrice, purchasePrice);
@@ -63,52 +60,52 @@ class Game extends Item{
 
 
     String getDeveloper() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return developer;
     }
 
     String getPublisher() {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return publisher;
     }
     
-        public ArrayList<String> getConsole() {
-		return system;
-	}
-	
-	public void setConsole(ArrayList<String> system) {
-		this.system = system;
-	}
+    public ArrayList<String> getConsole() {
+            return system;
+    }
+
+    public void setConsole(ArrayList<String> system) {
+            this.system = system;
+    }
 
 
 	// toString
-	public String toString() {
-		return super.toString() + ",Platform: " + this.system;
-	}
+    public String toString() {
+            return super.toString() + ",Platform: " + this.system;
+    }
 
 
-	public void setRating(String rating) {
-		this.rating = rating;
-	}
+    public void setRating(String rating) {
+            this.rating = rating;
+    }
 
 
-	public void setCategory(String category) {
-		this.category = category;
-	}
+    public void setCategory(String category) {
+            this.category = category;
+    }
 
 
-	public String getCategory() {
-		return category;
-	}
+    public String getCategory() {
+            return category;
+    }
 
 
-	public void setDeveloper(String developer) {
-		this.developer = developer;
-	}
+    public void setDeveloper(String developer) {
+            this.developer = developer;
+    }
 
 
 
-	public void setPublisher(String publisher) {
-		this.publisher = publisher;
-	}
+    public void setPublisher(String publisher) {
+            this.publisher = publisher;
+    }
 
 
 }

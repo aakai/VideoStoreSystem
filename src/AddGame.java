@@ -1,6 +1,8 @@
 
 import java.sql.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /*
  * To change this template, choose Tools | Templates
@@ -24,13 +26,14 @@ public class AddGame extends javax.swing.JFrame {
     
     /** Creates new form AddGame */
     
-    public AddGame() {
+    public AddGame() throws SQLException {
         gameControl = new ItemControl();
         newGame = new Game();
         console = new ArrayList();
+        employee = new Employee();
         initComponents();
     }
-    public AddGame(Employee employee) {
+    public AddGame(Employee employee) throws SQLException {
         gameControl = new ItemControl();
         newGame = new Game();
         console = new ArrayList();
@@ -47,7 +50,6 @@ public class AddGame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        query1 = java.beans.Beans.isDesignTime() ? null : ((javax.persistence.EntityManager)null).createQuery("");
         jLabel1 = new javax.swing.JLabel();
         xbox = new javax.swing.JCheckBox();
         pc = new javax.swing.JCheckBox();
@@ -391,7 +393,11 @@ private void developerFieldActionPerformed(java.awt.event.ActionEvent evt) {//GE
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new AddGame().setVisible(true);
+                try {
+                    new AddGame().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AddGame.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -420,7 +426,6 @@ private void developerFieldActionPerformed(java.awt.event.ActionEvent evt) {//GE
     private javax.swing.JCheckBox ps3;
     private javax.swing.JTextField publisherField;
     private javax.swing.JTextField purchasePrice;
-    private javax.persistence.Query query1;
     private javax.swing.JComboBox ratingOptions;
     private javax.swing.JTextField rentPrice;
     private javax.swing.JTextField title;

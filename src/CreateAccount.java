@@ -1,16 +1,8 @@
 
+import java.math.BigDecimal;
 import java.sql.*;
-
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * CreateAccount.java
- *
- * Created on Nov 27, 2011, 9:34:32 PM
- */
+import java.util.*;
+import javax.swing.*;
 /**
  *
  * @author anearcan
@@ -164,10 +156,9 @@ private void enterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-F
 // TODO add your handling code here:
 
     newMember = control.createAccount( firstName.getText(),lastName.getText(),streetAddress.getText(),
-            addressCity.getText(),addressProvince.getText(),email.getText(), Integer.parseInt(phoneNo.getText()));
-       
-
-    new MemberInfo(newMember).setVisible(true);
+            addressCity.getText(),addressProvince.getText(),email.getText(), Long.valueOf(phoneNo.getText()));
+    
+    new MemberInfo(newMember, employee).setVisible(true);
     this.setVisible(false);
 
 }//GEN-LAST:event_enterButtonActionPerformed

@@ -105,28 +105,47 @@ class ItemControl{
   }
 
     public void returnGame(Game game, MemberAccount member){
-             try {
-                 utility.connect();
+                String currentItems[] = new String[50];
+                String currentItemsString = null;
+                try {
+                    utility.connect();
 
-                ResultSet rs = utility.stmt.executeQuery("SELECT * FROM games WHERE id = "+ Integer.toString(game.getProductID()));
+                    ResultSet rs = utility.stmt.executeQuery("SELECT * FROM games WHERE id = "+ Integer.toString(game.getProductID()));
 
-                while(rs.next()) {
-                    // Retrieve the auto generated key(s).
-                        System.out.println("#of copies = "+ Integer.toString(rs.getInt("noOfCopies")));
-                        rs.updateInt("noOfCopies", (rs.getInt("noOfCopies")- 1));
-                        rs.updateRow();
-                        System.out.println("#of copies = "+ Integer.toString(rs.getInt("noOfCopies")));
-                        game.setNoOfCopies(rs.getInt("noOfCopies"));
-             }
-             ResultSet results = utility.stmt.executeQuery("SELECT * FROM members WHERE id = "+ Integer.toString(member.getMemberID()));
-              while(results.next()){
-                  System.out.println(results.getString("pastItems"));
-                  results.updateString("pastItems", results.getString("pastItems")+ ", "+ game.getTitle());
-                  results.updateRow();
-              }        
+                    while(rs.next()) {
+                        // Retrieve the auto generated key(s).
+                            System.out.println("#of copies = "+ Integer.toString(rs.getInt("noOfCopies")));
+                            rs.updateInt("noOfCopies", (rs.getInt("noOfCopies")- 1));
+                            rs.updateRow();
+                            System.out.println("#of copies = "+ Integer.toString(rs.getInt("noOfCopies")));
+                            game.setNoOfCopies(rs.getInt("noOfCopies"));
+                            game.setDateReturned(new java.util.Date());
 
-                
-            utility.con.close();
+                 }
+                 ResultSet results = utility.stmt.executeQuery("SELECT * FROM members WHERE id = "+ Integer.toString(member.getMemberID()));
+                 while(results.next()){
+                      System.out.println(results.getString("pastItems"));
+                      results.updateString("pastItems", results.getString("pastItems")+ ", "+ game.getTitle());
+                      results.updateRow();
+                      System.out.println(results.getString("currentItems"));
+                      currentItems = results.getString("currentItems").split(", ");
+                      for(int i=0; i<currentItems.length;i++){
+                         if(currentItems[i].equals(game.getTitle())){
+                             currentItems[i] = "";
+                             for(int j=i;j<currentItems.length;j++){
+                                 currentItems[j] = currentItems[i+1];
+                             }
+                         }
+                      }
+                      for(int i= 0; i<currentItems.length;i++){
+                          currentItemsString +=currentItems[i];
+                      }
+                      results.updateString("currentItems", currentItemsString);
+                      results.updateRow();
+                  }        
+
+
+                utility.con.close();
         } //end try
 
         catch(ClassNotFoundException e) {

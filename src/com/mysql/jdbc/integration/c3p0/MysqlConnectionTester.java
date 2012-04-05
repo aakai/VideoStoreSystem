@@ -24,9 +24,7 @@
 package com.mysql.jdbc.integration.c3p0;
 
 import java.lang.reflect.Method;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 import com.mchange.v2.c3p0.C3P0ProxyConnection;
 import com.mchange.v2.c3p0.QueryConnectionTester;

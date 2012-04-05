@@ -4,16 +4,6 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * RenewMembershipPayment.java
- *
- * Created on Nov 27, 2011, 10:37:12 PM
- */
 /**
  *
  * @author anearcan
@@ -53,7 +43,7 @@ public class RenewMembershipPayment extends javax.swing.JFrame {
         emailAddress.setText(member.getEmail());
         addressCity.setText("Ottawa");
         addressProvince.setText("ON");
-        phoneNo.setText(Integer.toString(member.getPhone()));
+        phoneNo.setText(Long.toString(member.getPhone()));
         control = new MembershipControl(employee, member);
     }
 

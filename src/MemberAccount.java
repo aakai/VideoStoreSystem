@@ -25,7 +25,7 @@ class MemberAccount {
     private String province;
     private String PostalCode;
     private String city;
-    private int phoneNumber;
+    private long phoneNumber;
     private String email;
     private Item[] currentItems;
     private Item[] pastItems;
@@ -45,7 +45,7 @@ class MemberAccount {
      * @param PostalCode 
      *******************/
     public MemberAccount(String name, int id, String familyName, String address, int zipCode,
-            String City, int phone, String email, String PostalCode) {
+            String City, long phone, String email, String PostalCode) {
     	this.setMemberID(id);
         this.setLastName(familyName);
         this.setAddress(address);
@@ -57,7 +57,7 @@ class MemberAccount {
         this.totalCharge = 0;
     }
 
-    MemberAccount(int id, String firstName, String familyName, String email, int phone) {
+    MemberAccount(int id, String firstName, String familyName, String email, long phone) {
         this.memberID = id;
         this.FirstName = firstName;
         LastName = familyName;
@@ -66,6 +66,9 @@ class MemberAccount {
         
     }
  
+    MemberAccount(){
+        
+    }
     
     /*******************
      * Get/set Methods
@@ -82,8 +85,11 @@ class MemberAccount {
 
     // toString()
         public String toString() {
-            String str = "AccountMember Name: " + this.name;
+            String str = "AccountMember Name: " + this.FirstName + " "+ this.LastName;
             str += "\nTotal Charge: " + this.totalCharge;
+            str += "\nMember ID" + this.memberID;
+            str += "\n Address" + this.address + ", "+this.city +", "+this.province+  ". "+ this.PostalCode;
+            str+= "\nPhone Number"+Long.toString(this.phoneNumber);
 
 
             return str;
@@ -122,11 +128,11 @@ class MemberAccount {
         }
 
         
-	public int getPhone() {
+	public long getPhone() {
 		return phoneNumber;
 	}
 
-	public void setPhone(int phone) {
+	public void setPhone(long phone) {
 		this.phoneNumber = phone;
 	}
 
@@ -184,11 +190,11 @@ class MemberAccount {
 		return reservations;
 	}
         
-	public void setPhoneNumber(int phoneNumber) {
+	public void setPhoneNumber(long phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public int getPhoneNumber() {
+	public long getPhoneNumber() {
 		return phoneNumber;
 	}
 

@@ -272,7 +272,8 @@ public class VideoInfo extends javax.swing.JFrame {
 private void rentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rentButtonActionPerformed
         try {
             // TODO add your handling code here:
-                new RentItemMemberInfo(employee, newVideo).setVisible(true);
+                //new RentItemMemberInfo(employee, newVideo).setVisible(true);
+                new RentItemMemberInfo(employee, newVideo).main(new String[2]);
         } catch (SQLException ex) {
             Logger.getLogger(VideoInfo.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -280,7 +281,12 @@ private void rentButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
 }//GEN-LAST:event_rentButtonActionPerformed
 
 private void purchaseButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseButtonActionPerformed
-    new PurchasePayment(employee, newVideo).setVisible(true);
+        try {
+            //new PurchasePayment(employee, newVideo).setVisible(true);
+            new PurchasePayment(employee, newVideo).main(new String[2]);
+        } catch (SQLException ex) {
+            Logger.getLogger(VideoInfo.class.getName()).log(Level.SEVERE, null, ex);
+        }
     this.setVisible(false);
 }//GEN-LAST:event_purchaseButtonActionPerformed
 

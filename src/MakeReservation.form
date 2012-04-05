@@ -121,7 +121,7 @@
     <Component class="javax.swing.JLabel" name="memberId">
       <Properties>
         <Property name="displayedMnemonic" type="int" value="77"/>
-        <Property name="text" type="java.lang.String" value="&lt;id&gt;"/>
+        <Property name="text" type="java.lang.String" value="2"/>
       </Properties>
     </Component>
   </SubComponents>

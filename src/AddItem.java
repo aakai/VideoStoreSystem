@@ -1,3 +1,8 @@
+
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
@@ -17,18 +22,18 @@ public class AddItem extends javax.swing.JFrame {
     private AddVideo addVideo;
     private AddGame addGame;
     /** Creates new form AddItem */
-    public AddItem() {
-        addVideo = new AddVideo();
-        addGame = new AddGame();
-        initComponents();
+    public AddItem() throws SQLException {
         employee = new Employee();
-    }
+        addVideo = new AddVideo(employee);
+        addGame = new AddGame(employee);
+        initComponents();
+   }
 
-    AddItem(Employee employee) {
+    AddItem(Employee employee) throws SQLException {
+        this.employee = employee;
         addVideo = new AddVideo(employee);
         addGame = new AddGame(employee);
         initComponents();    
-        this.employee = employee;
     }
 
     /** This method is called from within the constructor to
@@ -129,7 +134,11 @@ private void addGameButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new AddItem().setVisible(true);
+                try {
+                    new AddItem().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AddItem.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

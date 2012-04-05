@@ -12,21 +12,19 @@ public class AdminLoginSuccess extends javax.swing.JFrame{
     private Employee employee;
     private PurchasePayment purchasePay;
     private UpdateAccount updateAcc;    
-    private final RenewMembershipPayment renew;
+    private RenewMembershipPayment renew;
     private MemberAccount member;
     private RentItemMemberInfo rent;
-    private final SearchResults search;
-    private final ReturnItem returnIt;
-
-/*
-    private final CreateAccount createAcc;
-    private final MakeReservation reserve;
-    private final PaymentPage payment;
+    private SearchResults search;
+    private ReturnItem returnIt;
     private CancelReservation cancelReserve;
-    private final SuspendPrivileges suspend;
-    private final RemoveItem remove_item;
-    private final AddItem add_item;
-*/
+    private CreateAccount createAcc;
+    private MakeReservation reserve;
+    private PaymentPage payment;
+    private SuspendPrivileges suspend;
+    private RemoveItem remove_item;
+    private AddItem add_item;
+
     /** Creates new form AdminLoginSuccess */
     
     public AdminLoginSuccess() throws SQLException, ClassNotFoundException {
@@ -36,34 +34,25 @@ public class AdminLoginSuccess extends javax.swing.JFrame{
         renew = new RenewMembershipPayment(this.employee);
         search = new SearchResults(this.employee);
         returnIt = new ReturnItem(this.employee);
-  
-        /*
-        createAcc = new CreateAccount(this.employee);
         reserve = new MakeReservation(this.employee);
         payment = new PaymentPage(this.employee);
-        suspend = new SuspendPrivileges(this.employee);
         add_item = new AddItem(this.employee);
         remove_item = new RemoveItem(this.employee);
-         */
         new Utility().connect();
     }
 
     AdminLoginSuccess(Employee employee) throws ClassNotFoundException, SQLException {
-        initComponents();
-       // reserve = null;
+        initComponents();   
         this.employee = employee;
         purchasePay= new PurchasePayment(this.employee);
         renew = new RenewMembershipPayment(this.employee);
         search = new SearchResults(this.employee);
         returnIt = new ReturnItem(this.employee);
-
-        /*
-        createAcc = new CreateAccount(this.employee);
+        reserve = new MakeReservation(this.employee);
         payment = new PaymentPage(this.employee);
-        suspend = new SuspendPrivileges(this.employee);
         add_item = new AddItem(this.employee);
         remove_item = new RemoveItem(this.employee);
-        */
+        
         new Utility().connect();
     }
 
@@ -90,7 +79,7 @@ public class AdminLoginSuccess extends javax.swing.JFrame{
         searchButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Successful Login[admin]");
+        setTitle("Main Menu[admin]");
 
         createAccount.setText("Create Account");
         createAccount.addActionListener(new java.awt.event.ActionListener() {
@@ -245,12 +234,11 @@ public class AdminLoginSuccess extends javax.swing.JFrame{
 private void purchaseItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_purchaseItemActionPerformed
 // TODO add your handling code here:
     this.setVisible(false);
-        try {
-            purchasePay.main(null);
-        } catch (SQLException ex) {
-            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    purchasePay.setVisible(true);
+    try {
+        purchasePay.main(new String[2]);
+    } catch (SQLException ex) {
+        Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+    }
 }//GEN-LAST:event_purchaseItemActionPerformed
 
 private void editAccountInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editAccountInfoActionPerformed
@@ -298,8 +286,8 @@ private void rentItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
             Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
         }
     this.setVisible(false);
-    rent.main(null);
-    rent.setVisible(true);
+    rent.main(new String[2]);
+//    rent.setVisible(true);
 }//GEN-LAST:event_rentItemActionPerformed
 
 private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
@@ -310,47 +298,52 @@ private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
 }//GEN-LAST:event_searchButtonActionPerformed
 
 private void returnItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnItemActionPerformed
-// TODO add your handling code here:
-    String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
-                JOptionPane.PLAIN_MESSAGE, null, null,null);
 
     this.setVisible(false);
-    returnIt.setVisible(true);
+    returnIt.main(new String[2]);
+  //  returnIt.setVisible(true);
 
 }//GEN-LAST:event_returnItemActionPerformed
-/*
+
 private void makeReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_makeReservationActionPerformed
-// TODO add your handling code here:
-    Reservation [] reservations = new Reservation[10];
+    Reservation [] reservations = new Reservation[10];//maximum number of reservations a  member can make at a time = 10
     String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
                 JOptionPane.PLAIN_MESSAGE, null, null,null);
     
-    String queryMember = "SELECT MemberID, FirstName, LastName, email, PhoneNumber, reservations  FROM members WHERE id = " + Integer.parseInt(s);
+    String queryMember = "SELECT * FROM members WHERE MemberID = " + Integer.parseInt(s);
     String reservationString = null;
     
     try {
-            ResultSet rs = Utility.stmt.executeQuery(queryMember);
+            ResultSet rs = new Utility().stmt.executeQuery(queryMember);
 
             while (rs.next()) {
                 member = new MemberAccount(rs.getInt("MemberID"),rs.getString("FirstName"), rs.getString("LastName"), 
-                        rs.getString("email"),rs.getInt("PhoneNumber"));
+                        rs.getString("email"),rs.getBigDecimal("PhoneNumber").intValue());
                 reservationString = rs.getString("reservations");
                 
-            } //end while
-            for(int i = 0; i<reservationString.split(", ").length; i++){
-                reservations[i].setReservationId(Integer.parseInt(reservationString.split(", ")[i]));
             }
-            member.setReservations(reservations);
+            for(int i = 0; i<(reservationString.split(", ").length); i++){
+                System.out.println(reservationString + "\n");
+                System.out.println(reservationString.split(", ")[i].length());
+                try{
+                    reservations[i].setReservationId(Integer.parseInt(reservationString.split(", ")[i]));
+                }
+                catch(NullPointerException e){
+                    break;
             
-            Utility.con.close();
+                }
+            }
+            member.setReservations(reservations);            
+            new Utility().con.close();
         } //end try
         
         catch(SQLException e) {e.printStackTrace();}
     
-    new MakeReservation(this.employee, member);
+    new MakeReservation(this.employee, member).setVisible(true);
     this.setVisible(false);
 
 }//GEN-LAST:event_makeReservationActionPerformed
+
 
 private void cancelReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelReservationActionPerformed
 // TODO add your handling code here:
@@ -359,14 +352,14 @@ private void cancelReservationActionPerformed(java.awt.event.ActionEvent evt) {/
                     JOptionPane.PLAIN_MESSAGE, null, null,null);
     String reservationString = null;
 
-    String queryMember = "SELECT MemberID, FirstName, LastName, email, PhoneNumber, reservations  FROM members WHERE id = " + Integer.parseInt(s);
+    String queryMember = "SELECT MemberID, FirstName, LastName, email, PhoneNumber, reservations  FROM members WHERE MemberID = " + Integer.parseInt(s);
 
     try {
             ResultSet rs = Utility.stmt.executeQuery(queryMember);
 
             while (rs.next()) {
                 member = new MemberAccount(rs.getInt("MemberID"),rs.getString("FirstName"), rs.getString("LastName"), 
-                        rs.getString("email"),rs.getInt("PhoneNumber"));
+                        rs.getString("email"),rs.getLong("PhoneNumber"));
                 reservationString = rs.getString("reservations");
                 
             } //end while
@@ -386,20 +379,22 @@ private void cancelReservationActionPerformed(java.awt.event.ActionEvent evt) {/
 }//GEN-LAST:event_cancelReservationActionPerformed
 
 private void createAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createAccountActionPerformed
-// TODO add your handling code here:
-    
+    createAcc = new CreateAccount(this.employee);    
     this.setVisible(false);
     createAcc.setVisible(true);
 
 }//GEN-LAST:event_createAccountActionPerformed
 
 private void suspensionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_suspensionActionPerformed
-// TODO add your handling code here:
-        String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
-                JOptionPane.PLAIN_MESSAGE, null, null,null);
-
+        try {
+            suspend = new SuspendPrivileges(this.employee);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
+        }
     this.setVisible(false);
-        suspend.setVisible(true);
+    suspend.setVisible(true);
 
 }//GEN-LAST:event_suspensionActionPerformed
 
@@ -417,7 +412,6 @@ private void removeItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         remove_item.setVisible(true);
 
 }//GEN-LAST:event_removeItemActionPerformed
-*/
 
   public static void main(String args[]) {
         /* Set the Nimbus look and feel */

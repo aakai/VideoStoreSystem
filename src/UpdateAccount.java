@@ -26,13 +26,14 @@ public class UpdateAccount extends javax.swing.JFrame {
     /** Creates new form UpdateAccount */
     public UpdateAccount() throws ClassNotFoundException, SQLException {
         initComponents();
+        Utility.connect();  
+        
+        /*
         String s = (String)JOptionPane.showInputDialog(this,"Scan Membership Card\n","Confirm Membership",
                 JOptionPane.PLAIN_MESSAGE, null, null,null);
         memberID.setText(s);
-        Utility.connect();  
-        Statement stmt = Utility.con.createStatement();
          
-        rs = stmt.executeQuery("SELECT * FROM members WHERE MemberID = " + s);
+        rs = new Utility().stmt.executeQuery("SELECT * FROM members WHERE MemberID = " + s);
          
          while(rs.next()){
              memberFirstName.setText(rs.getString("FirstName"));
@@ -43,7 +44,7 @@ public class UpdateAccount extends javax.swing.JFrame {
              
          }
          member = new MemberAccount(Integer.parseInt(s), memberFirstName.getText(), memberLastName.getText(),
-                 email.getText(), Integer.parseInt(phoneNumber.getText()));
+                 email.getText(), Integer.parseInt(phoneNumber.getText()));*/
     }
 
     UpdateAccount(Employee employee) throws ClassNotFoundException, SQLException {
@@ -53,10 +54,9 @@ public class UpdateAccount extends javax.swing.JFrame {
                 JOptionPane.PLAIN_MESSAGE, null, null,null);
         memberID.setText(s);
         
-        Utility.connect();  
-        Statement stmt = Utility.con.createStatement();
+        new Utility().connect();  
          
-        rs = stmt.executeQuery("SELECT * FROM members WHERE MemberID = " + s);
+        rs = new Utility().stmt.executeQuery("SELECT * FROM members WHERE MemberID = " + s);
          
          while(rs.next()){
              memberFirstName.setText(rs.getString("FirstName"));
@@ -288,7 +288,13 @@ private void updateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new UpdateAccount().setVisible(true);
+                try {
+                    new UpdateAccount().setVisible(true);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(UpdateAccount.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(UpdateAccount.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

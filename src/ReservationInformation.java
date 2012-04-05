@@ -1,13 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/*
- * ReservationInformation.java
- *
- * Created on Jan 25, 2012, 9:51:38 AM
- */
 /**
  *
  * @author anearcan
@@ -48,9 +38,9 @@ public class ReservationInformation extends javax.swing.JFrame {
         memberFirstname.setText(member.getFirstName());
         memberLastname.setText(member.getLastName());
         memberEmail.setText(member.getEmail());
-        phoneNumber.setText(Integer.toString(member.getPhone()));    
-        String queryRes = "SELECT reservationID, itemNo, itemTitle, pickUpDate FROM reservations WHERE reservationID = "+ rID;
-
+        phoneNumber.setText(Long.toString(member.getPhone()));    
+        String queryRes = "SELECT * FROM reservations WHERE id = "+ rID;
+        ResultSet rsItem;
         try {
             new Utility().connect();
 
@@ -58,10 +48,20 @@ public class ReservationInformation extends javax.swing.JFrame {
             rsReservation = stmtRes.executeQuery();
             
             while (rsReservation.next()) {
-                itemTitle.setText(rsReservation.getString("itemTitle"));
+                if(rsReservation.getString("itemType").equals("game")){
+                     rsItem = new Utility().stmt.executeQuery("SELECT * FROM games WHERE id = "+ rsReservation.getInt("itemNo"));
+                     while(rsItem.next()){
+                         itemTitle.setText(rsItem.getString("title"));
+                     }
+                }else{
+                     rsItem = new Utility().stmt.executeQuery("SELECT * FROM movies WHERE id = "+ rsReservation.getInt("itemNo"));                     
+                     while(rsItem.next()){
+                         itemTitle.setText(rsItem.getString("Title"));
+                     }
+                }
                 pickUpDate.setText(rsReservation.getDate("pickUpDate").toString());
             } //end while
-            con.close();
+            new Utility().con.close();
         } //end try
 
         catch(ClassNotFoundException e) {e.printStackTrace();}
@@ -228,7 +228,13 @@ private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-
                 Logger.getLogger(ReservationInformation.class.getName()).log(Level.SEVERE, null, ex);
             }
     }else{
-        new LoginSuccessful(employee).setVisible(true);
+            try {
+                new LoginSuccessful(employee).setVisible(true);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ReservationInformation.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(ReservationInformation.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
     this.setVisible(false);
 }//GEN-LAST:event_cancelButtonActionPerformed
@@ -245,7 +251,13 @@ private void printReservationActionPerformed(java.awt.event.ActionEvent evt) {//
             Logger.getLogger(ReservationInformation.class.getName()).log(Level.SEVERE, null, ex);
         }
     }else{
-        new LoginSuccessful(employee).setVisible(true);
+            try {
+                new LoginSuccessful(employee).setVisible(true);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ReservationInformation.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(ReservationInformation.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }
     this.setVisible(false);
 }//GEN-LAST:event_printReservationActionPerformed

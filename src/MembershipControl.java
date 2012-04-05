@@ -13,7 +13,7 @@ class MembershipControl{
         
 	MembershipControl(Employee user){
 		employee = user;
- 
+                member = new MemberAccount();
         }
         
 	MembershipControl(Employee user, MemberAccount m){
@@ -45,7 +45,7 @@ class MembershipControl{
 	}
 	
 	 public MemberAccount createAccount(String firstName, String lastName, String streetAddress, String addressCity,
-            String addressProvince, String email, int phoneNo){
+            String addressProvince, String email, long phoneNo){
             int memberID = 0;
             String newMemberInformation = null;
 
@@ -60,23 +60,39 @@ class MembershipControl{
             try {
                 Utility.connect();
                 newMemberInformation = "('"+member.getEmail()+"', '"+ member.getFirstName()+ "', '"+member.getLastName()
-                        +"', '" + fullAddress+ "', "+Integer.toString(member.getPhoneNumber())+")";
+                        +"', '" + fullAddress+ "', "+Long.toString(member.getPhoneNumber())+")";
 
-                ResultSet checkExistence = Utility.stmt.executeQuery("SELECT email FROM members WHERE email = " + member.getEmail()); 
+                ResultSet checkExistence = Utility.stmt.executeQuery("SELECT email FROM members WHERE email = '" + member.getEmail()+"'"); 
                 
                 if(checkExistence.next()){
                     System.out.println(checkExistence.getString("email")+ " already exists. This member already has an account");
                 }else{
                     //Member does not exist in our database, and is eligible to create new account
-                    int rs = Utility.stmt.executeUpdate("INSERT INTO members ('email', 'FirstName', 'LastName', 'Address', 'PhoneNumber')"
+                    ResultSet results = new Utility().stmt.executeQuery("SELECT * FROM members");
+                    /*int rs = Utility.stmt.executeUpdate("INSERT INTO members ('email', 'FirstName', 'LastName', 'Address', 'PhoneNumber')"
                             + " VALUES" + newMemberInformation, Statement.RETURN_GENERATED_KEYS);
-                    ResultSet results = Utility.stmt.getGeneratedKeys();
+                    ResultSet results = Utility.stmt.getGeneratedKeys();*/
                     if (results.next()) {
                         // Retrieve the auto generated key(s).
-                            memberID = results.getInt(1);
+                        
+                           /* memberID = results.getInt(1);
+                            System.out.println(Integer.toString(results.getInt(1)));*/
+                            
+                            results.moveToInsertRow();
+                            results.updateString("email",member.getEmail());
+                            results.updateString("FirstName", member.getFirstName());
+                            results.updateString("LastName", member.getLastName());
+                            results.updateString("Address", member.getAddress());
+                            results.updateLong("PhoneNumber", member.getPhoneNumber());
+                            results.updateString("currentItems", "");
+                            results.updateString("pastItems", "");
+                            results.updateString("reservations", "");                            
                             results.updateString("Status", "Active");
-                            results.updateDate("ExpiryDate", (java.sql.Date)Utility.addDays(today, 365));
-                            results.updateRow();
+                            results.updateString("ExpiryDate", new Utility().addDays(today, 365).toString());
+                            results.insertRow();
+                            results.last();
+                            memberID = results.getInt("MemberID");
+
                     }
                     member.setMemberID(memberID);
                     member.setStatus("Active");
@@ -94,7 +110,7 @@ class MembershipControl{
 	}
 	
 	//Suspend privileges
-	public void suspend(MemberAccount member) throws ClassNotFoundException, SQLException{
+	public void suspend(MemberAccount member, String reason) throws ClassNotFoundException, SQLException{
             	Utility.connect();
                 member.setStatus("Suspended");
                 ResultSet rs = Utility.stmt.executeQuery("SELECT * FROM members WHERE memberID = "
@@ -148,4 +164,5 @@ class MembershipControl{
 		return charge;
 	
 	}
+
 }

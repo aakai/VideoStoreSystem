@@ -67,7 +67,7 @@ public class LoginSuccessful extends javax.swing.JFrame {
         searchButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Successful Login");
+        setTitle("Main Menu");
 
         rentItem.setText("Rent Item");
         rentItem.addActionListener(new java.awt.event.ActionListener() {
@@ -188,9 +188,8 @@ private void purchaseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 }//GEN-LAST:event_purchaseActionPerformed
 
 private void editAccountInfoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editAccountInfoActionPerformed
- try {
-            // TODO add your handling code here:
-                updateAcc = new UpdateAccount(this.employee);
+        try {
+            updateAcc = new UpdateAccount(this.employee);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -222,8 +221,7 @@ private void rentItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRS
 private void returnItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnItemActionPerformed
 // TODO add your handling code here:
     this.setVisible(false);
-    returnIt.setVisible(true);
-
+    returnIt.main(new String[2]);
 }//GEN-LAST:event_returnItemActionPerformed
 
 private void makeReservationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_makeReservationActionPerformed

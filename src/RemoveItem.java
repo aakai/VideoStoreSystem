@@ -16,15 +16,21 @@ public class RemoveItem extends javax.swing.JFrame {
     
     private RemoveGame removeGame;
     private RemoveVideo removeVideo;
+    private Employee employee;
     /** Creates new form RemoveItem */
     public RemoveItem() {
-        removeGame = new RemoveGame();
-        removeVideo = new RemoveVideo();
+        employee = new Employee();
+        removeGame = new RemoveGame(employee);
+        removeVideo = new RemoveVideo(employee);
         initComponents();
     }
 
     RemoveItem(Employee employee) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        this.employee = employee;
+        removeGame = new RemoveGame(employee);
+        removeVideo = new RemoveVideo(employee);
+        initComponents();
+        
     }
 
     /** This method is called from within the constructor to

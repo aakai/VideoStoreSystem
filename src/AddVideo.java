@@ -1,5 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -26,7 +29,7 @@ public class AddVideo extends javax.swing.JFrame implements ListDataListener {
     public String []actors = new String [10];
     
     /** Creates new form AddVideo */
-    public AddVideo() {
+    public AddVideo() throws SQLException {
         listModel = new DefaultListModel();
         initComponents();
         videoControl = new ItemControl();
@@ -35,7 +38,7 @@ public class AddVideo extends javax.swing.JFrame implements ListDataListener {
         actorList.setVisibleRowCount(5);
     }
 
-    AddVideo(Employee employee) {
+    AddVideo(Employee employee) throws SQLException {
         listModel = new DefaultListModel();
         initComponents();
         videoControl = new ItemControl();
@@ -408,7 +411,11 @@ private void noOfCopiesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FI
         java.awt.EventQueue.invokeLater(new Runnable() {
 
             public void run() {
-                new AddVideo().setVisible(true);
+                try {
+                    new AddVideo().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AddVideo.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }

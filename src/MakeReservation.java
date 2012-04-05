@@ -33,6 +33,7 @@ public class MakeReservation extends javax.swing.JFrame {
         employee = new Employee();
         today = new java.util.Date();
         rID = new Random();
+        item = new  Item();
     }
 
     MakeReservation(Employee employee) {
@@ -40,6 +41,7 @@ public class MakeReservation extends javax.swing.JFrame {
         this.employee = employee;
         today = new java.util.Date();
         rID = new Random();
+        item = new  Item();
     }
 
     MakeReservation(Employee employee, MemberAccount member) {
@@ -48,6 +50,7 @@ public class MakeReservation extends javax.swing.JFrame {
         this.member = member;
         memberId.setText(Integer.toString(member.getMemberID()));
         rID = new Random();    
+        item = new  Item();
     }
     
     
@@ -98,7 +101,7 @@ public class MakeReservation extends javax.swing.JFrame {
         jLabel4.setText("MemberID");
 
         memberId.setDisplayedMnemonic('M');
-        memberId.setText("<id>");
+        memberId.setText("2");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -150,14 +153,12 @@ public class MakeReservation extends javax.swing.JFrame {
 
 private void reserveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reserveButtonActionPerformed
 // TODO add your handling code here:
-    if(itemType.getSelectedItem() =="Game"){
-        item = new Game();
+    if(((String)itemType.getSelectedItem()).equals("Game")){
         item = queryGame(itemTitle.getText());
-    }else if(itemType.getSelectedItem() == "Movie"){
-        item = new Video();
+    }else if(((String)itemType.getSelectedItem()).equals("Movie")){
         item = queryMovie(itemTitle.getText());
     }
-    Reservation reservation = rControl.makeReservation(item, member, rID.nextInt(1000),pickUp , today);
+    Reservation reservation = rControl.makeReservation(item, member, rID.nextInt(1000),pickUp , today, (String)itemType.getSelectedItem());
     new ReservationInformation(employee, member, reservation.getReservationId()).setVisible(true);
     this.setVisible(false);
 }//GEN-LAST:event_reserveButtonActionPerformed
@@ -217,20 +218,18 @@ private void itemTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
     private Video queryMovie(String title) {
         Video movie = null;
-        String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
-        String query = "SELECT * FROM movies WHERE Title = " + title;
+        String query = "SELECT * FROM movies WHERE Title = '" + title+"'";
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+            new Utility().connect();
+            ResultSet rs = new Utility().stmt.executeQuery(query);
 
             while (rs.next()) {
                 movie = new Video(rs.getInt("id"), title, rs.getInt("rentalPrice"), rs.getInt("purchasePrice"));
+                movie.setNoOfCopies(rs.getInt("noOfCopies"));
             } //end while
 
-            con.close();
+            new Utility().con.close();
         } //end try
 
         catch(ClassNotFoundException e) { e.printStackTrace();}
@@ -241,20 +240,18 @@ private void itemTitleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIR
 
     private Game queryGame(String title) {
         Game game = null;
-        String dbUrl = "jdbc:mysql://host111.hostmonster.com:3306/sourceit_VideoStore";
         String query = "SELECT * FROM movies WHERE Title = " + title;
 
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection (dbUrl, "sourceit_SYSC","sysc4907");
-            Statement stmt = con.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+            new Utility().connect();
+            ResultSet rs = new Utility().stmt.executeQuery(query);
 
             while (rs.next()) {
                 game = new Game(rs.getInt("id"), title, rs.getInt("rentalPrice"), rs.getInt("purchasePrice"));
+                game.setNoOfCopies(rs.getInt("noOfCopies"));
             } //end while
 
-            con.close();
+            new Utility().con.close();
         } //end try
 
         catch(ClassNotFoundException e) { e.printStackTrace();}

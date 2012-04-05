@@ -17,9 +17,9 @@ public class ReservationControl{
             r = null;
 	}
 	
-        public Reservation makeReservation(Item item, MemberAccount member, int reservationID, Date pickUpDate, Date reservationDate ){
+        public Reservation makeReservation(Item item, MemberAccount member, int reservationID, Date pickUpDate, Date reservationDate, String type){
             r = new Reservation(reservationID, pickUpDate, reservationDate, item, member);
-  
+            r.setType(type);
 	    if(item.getNoOfCopies() > 0){
 			System.out.println("There is a copy of this item available. No need to make a reservation. YOU MAY RENT NOW.");
 			
@@ -27,23 +27,23 @@ public class ReservationControl{
 		
                 String newReservationInformation = null;
                 try {
-                      Class.forName(dbClass);
-                      Connection con = DriverManager.getConnection (dbUrl, "root","");
-                      Statement stmt = con.createStatement();
+                      new Utility().connect();
+                      newReservationInformation = "('"+ r.getReservationDate().toString()+ "', '"+r.getPickUpDate().toString()
+                              +"', '"+ Integer.toString(member.getMemberID())+"', '"+Integer.toString(r.getItem().getProductID())
+                              +"', '"+ r.getType()+"')";
 
-                      newReservationInformation = "('"+Integer.toString(r.getReservationId())+"', '"+ r.getPickUpDate().toString()+ "', '"+r.getReservationDate().toString()
-                              +"', '" + r.getItem().getProductID()+"', '"+ member.getMemberID()+")";
-
-                      int rs = stmt.executeUpdate("INSERT INTO reservation ('reservationID', 'pickUpDate', 'reservationDate', 'itemID', 'member')"
+                      int rs = new Utility().stmt.executeUpdate("INSERT INTO reservations ('reservationDate', 'pickUpDate',  'MemberID', 'itemNo', 'itemType')"
                               + " VALUES" + newReservationInformation, Statement.RETURN_GENERATED_KEYS);
-                      ResultSet results = stmt.getGeneratedKeys();
+                      ResultSet results = new Utility().stmt.getGeneratedKeys();
                       if (results.next()) {
                           // Retrieve the auto generated key(s).
-                              reservationID = results.getInt(1);
+                          results.updateInt("id", results.getInt(0));    
+                          reservationID = results.getInt(0);
+                              
                       }
                       r.setReservationId(reservationID);
 
-                      con.close();
+                      new Utility().con.close();
                   } //end try
 
                   catch(ClassNotFoundException e) {
@@ -61,9 +61,9 @@ public class ReservationControl{
 	public void cancelReservation(MemberAccount member, int reservationID){
 //		 r = new Reservation(reservationID, pickUpDate, reservationDate,item ,member);
                  try {
-                      Utility.connect();
+                      new Utility().connect();
                     //  Statement stmt = Utility.con.createStatement();
-                      int delete = Utility.stmt.executeUpdate("DELETE FROM reservation WHERE reservationID = " + r.getReservationId());
+                      int delete = new Utility().stmt.executeUpdate("DELETE FROM reservation WHERE reservationID = " + r.getReservationId());
                       if (delete == 1) {
                           // Retrieve the auto generated key(s).
                           System.out.println("Delete complete");
@@ -71,7 +71,7 @@ public class ReservationControl{
                           System.out.println("Row is not deleted.");
                        }
 
-                      Utility.con.close();
+                      new Utility().con.close();
                   } //end try
 
                   catch(ClassNotFoundException e) {

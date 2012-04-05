@@ -32,10 +32,14 @@
                       <Component id="memberID" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="jLabel4" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Component id="jLabel2" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="1">
+                              <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Component id="accountBalance1" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -81,6 +85,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="totalRentalCost" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -102,7 +107,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="totalRentalCost">
       <Properties>
-        <Property name="text" type="java.lang.String" value="$51.00"/>
+        <Property name="text" type="java.lang.String" value="22.00"/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">
@@ -136,7 +141,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="memberID">
       <Properties>
-        <Property name="text" type="java.lang.String" value="0000005"/>
+        <Property name="text" type="java.lang.String" value="2"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel4">
@@ -146,7 +151,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="accountBalance">
       <Properties>
-        <Property name="text" type="java.lang.String" value="$0.00"/>
+        <Property name="text" type="java.lang.String" value="$20.00"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JComboBox" name="paymentMethodcomboBox">
@@ -175,6 +180,11 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="payRentalButtonActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel5">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="$"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

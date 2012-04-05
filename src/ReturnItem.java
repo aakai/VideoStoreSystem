@@ -9,7 +9,7 @@ import javax.swing.*;
  */
 public class ReturnItem extends javax.swing.JFrame {
 
-    private Item returnedItem;
+    private static Item returnedItems[] = new Item[Utility.numberOfTransactions];
     private Employee employee;
     private static MemberAccount member;
     private static DefaultListModel listModel;
@@ -21,7 +21,6 @@ public class ReturnItem extends javax.swing.JFrame {
         listModel = new DefaultListModel();
         employee = null;
         member = null;
-        returnedItem = null;
         control = new ItemControl();
         initComponents();
     }
@@ -30,7 +29,6 @@ public class ReturnItem extends javax.swing.JFrame {
         listModel = new DefaultListModel();
         this.employee = employee;
         member = null;
-        returnedItem = null;
         control = new ItemControl();
         
     }
@@ -50,6 +48,8 @@ public class ReturnItem extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         memberID = new javax.swing.JLabel();
         Done = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        accBalance = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Return Item");
@@ -75,25 +75,33 @@ public class ReturnItem extends javax.swing.JFrame {
             }
         });
 
+        jLabel2.setText("Account Balance: $");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(30, 30, 30)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(18, 18, 18)
-                        .addComponent(memberID, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(Done)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addGap(18, 18, 18)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(9, 9, 9))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(48, 48, 48)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel7)
+                                .addGap(18, 18, 18)
+                                .addComponent(memberID, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel2)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(accBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(57, 57, 57)
+                        .addComponent(Done)))
+                .addContainerGap(60, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,14 +109,18 @@ public class ReturnItem extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel7)
-                    .addComponent(memberID, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(accBalance, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(memberID, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(23, 23, 23)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 179, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
                 .addComponent(Done)
-                .addGap(38, 38, 38))
+                .addContainerGap())
         );
 
         pack();
@@ -133,15 +145,22 @@ public class ReturnItem extends javax.swing.JFrame {
                 while (rsGame.next()) {
                     
                      listModel.addElement(rsGame.getString("title"));
+                     returnedItems[count] = new Game(Integer.parseInt(id), rsGame.getString("title"), rsGame.getInt("rentalPrice"), rsGame.getInt("purchasePrice"));
+
+                     //CHECK OVERDUE AND MANAGE FEES
+                     
                      //Select the new item and make it visible.
                     unreturnedItems.setSelectedIndex(count);
                     unreturnedItems.ensureIndexIsVisible(count);
- 
                 }
 
                 ResultSet rsMovies = movieStmt.executeQuery();
                 while(rsMovies.next()){
                      listModel.addElement(rsMovies.getString("Title") + " $" + rsMovies.getInt("rentalPrice"));
+                     returnedItems[count] = new Video(Integer.parseInt(id), rsGame.getString("title"), rsGame.getInt("rentalPrice"), rsGame.getInt("purchasePrice"));
+                     
+                     //CHECK OVERDUE AND MANAGE
+                     
                      //Select the new item and make it visible.                     
                     unreturnedItems.setSelectedIndex(count);
                     unreturnedItems.ensureIndexIsVisible(count);
@@ -163,11 +182,24 @@ public class ReturnItem extends javax.swing.JFrame {
 
 private void DoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DoneActionPerformed
 // TODO add your handling code here:
+    for(int i= 0; i <count; i++){
+        if(returnedItems[i].getClass().equals(Game.class)){
+            control.returnGame((Game)returnedItems[i], member);
+        }else if(returnedItems[i].getClass().equals(Video.class)){
+            control.returnVideo((Video)returnedItems[i], member);
+        }else{
+            System.err.println("Returned Item entry is was not converted to either Video or  Game class");
+        }
+            try {
+                new Utility().returnToMainMenu(employee);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(ReturnItem.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(ReturnItem.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }
 }//GEN-LAST:event_DoneActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -213,7 +245,8 @@ private void DoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
                                 rs.getString("email"), (int)rs.getLong("PhoneNumber"));
                 member.setAddress(rs.getString("Address"));
                 member.setStatus(rs.getString("Status"));
-                member.setTotalCharge(rs.getFloat("accountBalance"));            
+                member.setTotalCharge(rs.getFloat("accountBalance"));    
+                accBalance.setText(Double.toString(member.getTotalCharge()));
             }
        } catch (SQLException ex) {
             Logger.getLogger(AdminLoginSuccess.class.getName()).log(Level.SEVERE, null, ex);
@@ -223,7 +256,9 @@ private void DoneActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:ev
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Done;
+    private static javax.swing.JLabel accBalance;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane1;
     private static javax.swing.JLabel memberID;

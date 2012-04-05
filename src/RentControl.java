@@ -83,6 +83,8 @@ public class RentControl{
 	          }
                   returnDate = new Utility().addDays(currentDate, 3);
                   r.setReturnDate(returnDate);
+                  System.out.println(r.toString());
                   return r;
+
 	}
 }

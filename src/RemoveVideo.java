@@ -1,21 +1,25 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+import javax.swing.*;
+import java.sql.*;
 
-/*
- * RemoveVideo.java
- *
- * Created on Nov 28, 2011, 12:53:49 AM
- */
 /**
  *
  * @author anearcan
  */
 public class RemoveVideo extends javax.swing.JFrame {
 
+    private Employee employee;
+    private Video video;
+    private static JFrame frame;
     /** Creates new form RemoveVideo */
     public RemoveVideo() {
+        employee = new Employee();
+        frame = new JFrame();
+        initComponents();
+    }
+    
+    public RemoveVideo(Employee emp){
+        employee = emp;
+        frame = new JFrame();
         initComponents();
     }
 

@@ -178,22 +178,12 @@ private void purchasePayButtonActionPerformed(java.awt.event.ActionEvent evt) {/
         }
         
         new PrinterInterface().printReceipt(purchasePayment);
-        if(employee.IsAdmin()){
-            try {
-                new AdminLoginSuccess(employee).setVisible(true);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(PurchasePayment.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(PurchasePayment.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }else{
-            try {
-                new LoginSuccessful().setVisible(true);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(PurchasePayment.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(PurchasePayment.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        try {
+            new Utility().returnToMainMenu(employee);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PurchasePayment.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(PurchasePayment.class.getName()).log(Level.SEVERE, null, ex);
         }
         this.setVisible(false);
 }//GEN-LAST:event_purchasePayButtonActionPerformed
